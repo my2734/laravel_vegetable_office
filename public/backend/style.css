@@ -1,0 +1,10 @@
+.demo{
+    white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100px;
+}
+
+.cursor_pointer{
+  cursor: pointer;
+}
