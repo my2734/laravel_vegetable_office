@@ -78,18 +78,33 @@
         </div>
         <div class="col-3">
           <div class="form-group">
-            <label for="exampleInputEmail1">Ngày bắt đầu</label>
+            <label for="exampleInputEmail1">Ngày kết thúc</label>
             <input type="text" id="datepicker2" class="form-control" id="exampleInputEmail1">
           </div>
         </div>
-        <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
+        <div class="col-6">
+          <div class="form-group">
+            <label for="exampleInputEmail1">Thống kê theo</label>
+            <div class="form-group">
+            <div class="btn-group" role="group" aria-label="Basic example">
+              <button type="button" class="btn btn-secondary btn_7ngaytruoc">7 ngày trước</button>
+              <button type="button" class="btn btn-secondary btn_30ngaytruoc">1 tháng trước</button>
+              <button type="button" class="btn btn-secondary btn_90ngaytruoc">3 tháng trước</button>
+            </div>
+            </div>
+          </div>
+        </div>
+      
+</div>
+        <!-- <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
         <div class="col-3">
           <div class="form-group">
             <label for="exampleInputEmail1">Ngày bắt đầu</label>
           </div>
         </div>
-      </div>
-     <div class="mt-5" id="myfirstchart" style="height: 250px;"></div>
+      </div> -->
+    <h4 class="ml-3" id="title_thong_ke"></h4>
+     <div class="mt-3" id="myfirstchart" style="height: 250px;"></div>
       
       
       

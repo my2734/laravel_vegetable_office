@@ -70,7 +70,7 @@
                     <div class="col-lg-6 col-md-6 col-sm-6">
                         <div class="blog__item">
                             <div class="blog__item__pic">
-                                <a href="href="{{route('home.blog_detail',$blog->slug)}}"">
+                                <a href="{{route('home.blog_detail',$blog->slug)}}">
                                     <img class="custom_img_blog" src="{{asset('Uploads/'.$blog->image)}}" alt="">
                                 </a>
                             </div>

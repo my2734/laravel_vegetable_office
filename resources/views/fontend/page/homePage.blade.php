@@ -1,9 +1,10 @@
 @extends('fontend.layout.master')
 @section('search_page_home')
 <div class="hero__search__form" style="postion: relative;">
-    <form action="#" style="postion: relative;">
-        <input type="text" id="search_key" placeholder="What do yo u need?">
+    <form action="{{route('home.search_product')}}" method="POST" style="postion: relative;">
+        <input type="text" id="search_key" name="search_key" placeholder="What do yo u need?">
         <button type="submit" class="site-btn">SEARCH</button>
+        @csrf
     </form>
 </div>
 <div class="autocomplete">
@@ -116,7 +117,7 @@
                                     <li><i class="fa fa-comment-o"></i> {{$product->comment->count()}}</li>
                             </ul>
                             <h6><a class="font-weight-bold" href="{{route('home.product',$product->slug)}}">{{$product->name}}</a></h6>
-                            <h5>${{$product->price_unit}}</h5>
+                            <h5>{{number_format($product->price_unit)}}vnđ</h5>
                         </div>
                     </div>    
                 </div>
@@ -161,7 +162,7 @@
                                     </div>
                                     <div class="latest-product__item__text">
                                         <h6>{{$product->name}}</h6>
-                                        <span>${{$product->price_unit}}</span>
+                                        <span>{{number_format($product->price_unit)}}vnđ</span>
                                     </div>
                                 </a>
                                 @endforeach
@@ -184,7 +185,7 @@
                                         </div>
                                         <div class="latest-product__item__text">
                                             <h6>{{$product->name}}</h6>
-                                            <span>${{$product->price_unit}}</span>
+                                            <span>{{number_format($product->price_unit)}}vnđ</span>
                                         </div>
                                     </a>
                                 @endforeach

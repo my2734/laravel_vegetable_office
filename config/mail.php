@@ -93,7 +93,7 @@ return [
 
     'from' => [
         'address' => 'phammy773734@gmail.com',
-        'name' => 'test auth',
+        'name' => 'Nông sản sạch 3SachFood',
     ],
 
     /*

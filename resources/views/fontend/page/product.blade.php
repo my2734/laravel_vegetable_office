@@ -52,7 +52,7 @@
                         <i class="fa fa-star-half-o"></i>
                         <span>({{$quantity_comment}} reviews)</span>
                     </div>
-                    <div class="product__details__price">${{($product_slug->price_promotion) ? $product_slug->price_promotion : $product_slug->price_unit}}</div>
+                    <div class="product__details__price">{{($product_slug->price_promotion) ? number_format($product_slug->price_promotion) : number_format($product_slug->price_unit)}}vnđ</div>
                     <p>{{$product_slug->description}}</p>
                     <div class="product__details__quantity">
                         <div class="quantity">

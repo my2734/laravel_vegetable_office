@@ -42,21 +42,19 @@
                             <div class="header__top__left">
                                 <ul>
                                     <li><i class="fa fa-envelope"></i> phammy773734@gmail.com</li>
-                                    <li>Miễn phí ship trong bán kính 2km</li>
+                                    <li>@lang('lang.free_ship_2km')</li>
                                 </ul>
                             </div>
                         </div>
                         <div class="col-lg-7">
                             <div class="header__top__right">
-                                <div class="header__top__right__social">
-                                    <a href="#"><i class="fa fa-facebook"></i></a>
-                                    <a href="#"><i class="fa fa-twitter"></i></a>
-                                    <a href="#"><i class="fa fa-linkedin"></i></a>
-                                    <a href="#"><i class="fa fa-pinterest-p"></i></a>
+                            <div class="header__top__right__social">
+                                    <a href="{{route('change.languge','vi')}}">@lang('lang.vietnames')</a>
+                                    <a href="{{route('change.languge','en')}}">@lang('lang.english')</a>
                                 </div>
                                 @auth
                                 <div class="header__top__right__language">
-                                    <a href="{{route('checkout.lich_su_mua_hang')}}" style="color: #000;" class="">Lịch sử mua hàng</a>
+                                    <a href="{{route('checkout.lich_su_mua_hang')}}" style="color: #000;" class="">@lang('lang.purchase_history')</a>
                                 </div>
                                 
                                 <div class="header__top__right__language">
@@ -80,7 +78,7 @@
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel">Bạn chắn chắc muốn Logout</h5>
+                                                    <h5 class="modal-title" id="exampleModalLabel">@lang('lang.do_you_want_sign_out')</h5>
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                     </button>
@@ -88,18 +86,18 @@
                                                 <div class="modal-body">
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Không</button>
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang('lang.no')</button>
                                                     <!-- <a href="{{route('logout')}}"><i class="fa fa-user"></i> Logout</a> -->
                                                     <form id="logout-form" action="{{ route('logout') }}" method="POST">
                                                         @csrf
-                                                        <button type="submit" class="btn btn-danger text-white">Chắc chắn</button>
+                                                        <button type="submit" class="btn btn-danger text-white">@lang('lang.sure')</button>
                                                     </form>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 @else
-                                <a style="color: #000;" href="{{route('login')}}"><i class="fa fa-user"></i> Login</a>
+                                <a style="color: #000;" href="{{route('login')}}"><i class="fa fa-user"></i> @lang('lang.login')</a>
                                 @endauth
                             </div>
                         </div>
@@ -116,10 +114,10 @@
                     <div class="col-lg-6">
                         <nav class="header__menu">
                             <ul>
-                                <li><a href="{{route('home.index')}}">Home</a></li>
-                                <li><a href="{{route('home.all_product')}}">Shop</a></li>
-                                <li><a href="{{route('home.blog')}}">Blog</a></li>
-                                <li><a href="{{route('home.contact')}}">Contact</a></li>
+                                <li><a href="{{route('home.index')}}">@lang('lang.home')</a></li>
+                                <li><a href="{{route('home.all_product')}}">@lang('lang.shop')</a></li>
+                                <li><a href="{{route('home.blog')}}">@lang('lang.blog')</a></li>
+                                <li><a href="{{route('home.contact')}}">@lang('lang.contact')</a></li>
                             </ul>
                         </nav>
                     </div>
@@ -159,7 +157,7 @@
                         <div class="hero__categories">
                             <div class="hero__categories__all">
                                 <i class="fa fa-bars"></i>
-                                <span>All category</span>
+                                <span>@lang('lang.all_category')</span>
                             </div>
                             <ul>
                                 @foreach($categories as $category)
@@ -177,7 +175,7 @@
                                 </div>
                                 <div class="hero__search__phone__text">
                                     <h5>+65 11.188.888</h5>
-                                    <span>support 24/7 time</span>
+                                    <span>@lang('lang.suport_24')</span>
                                 </div>
                             </div>
                         </div>
@@ -198,40 +196,40 @@
                                 <a href="./index.html"><img src="{{asset('fontend/img/logo.png')}}" alt=""></a>
                             </div>
                             <ul>
-                                <li>Address: 60-49 Road 11378 New York</li>
-                                <li>Phone: +65 11.188.888</li>
+                                <li>@lang('lang.address'): 60-49 Road 11378 New York</li>
+                                <li>@lang('lang.phone'): +65 11.188.888</li>
                                 <li>Email: hello@colorlib.com</li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-6 offset-lg-1">
                         <div class="footer__widget">
-                            <h6>Useful Links</h6>
+                            <h6>@lang('lang.usefull_link')</h6>
                             <ul>
-                                <li><a href="#">About Us</a></li>
-                                <li><a href="#">About Our Shop</a></li>
-                                <li><a href="#">Secure Shopping</a></li>
-                                <li><a href="#">Delivery infomation</a></li>
-                                <li><a href="#">Privacy Policy</a></li>
-                                <li><a href="#">Our Sitemap</a></li>
+                                <li><a href="#">@lang('lang.about_us')</a></li>
+                                <li><a href="#">@lang('lang.our_shop')</a></li>
+                                <li><a href="#">@lang('lang.secure_shopping')</a></li>
+                                <li><a href="#">@lang('lang.delivery_infomation')</a></li>
+                                <li><a href="#">@lang('lang.privacy_policy')</a></li>
+                                <li><a href="#">@lang('lang.our_sitemap')</a></li>
                             </ul>
                             <ul>
-                                <li><a href="#">Who We Are</a></li>
-                                <li><a href="#">Our Services</a></li>
-                                <li><a href="#">Projects</a></li>
-                                <li><a href="#">Contact</a></li>
-                                <li><a href="#">Innovation</a></li>
-                                <li><a href="#">Testimonials</a></li>
+                                <li><a href="#">@lang('lang.who_we_are')</a></li>
+                                <li><a href="#">@lang('lang.our_services')</a></li>
+                                <li><a href="#">@lang('lang.projects')</a></li>
+                                <li><a href="#">@lang('lang.contact')</a></li>
+                                <li><a href="#">@lang('lang.innovation')</a></li>
+                                <li><a href="#">@lang('lang.testimonials')</a></li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-12">
                         <div class="footer__widget">
-                            <h6>Join Our Newsletter Now</h6>
-                            <p>Get E-mail updates about our latest shop and special offers.</p>
+                            <h6>@lang('lang.join_our_newsletter_now')</h6>
+                            <p>@lang('lang.get_mail_updates')</p>
                             <form action="#">
                                 <input type="text" placeholder="Enter your mail">
-                                <button type="submit" class="site-btn">Subscribe</button>
+                                <button type="submit" class="site-btn">@lang('lang.subscribe')</button>
                             </form>
                             <div class="footer__widget__social">
                                 <a href="#"><i class="fa fa-facebook"></i></a>
@@ -398,6 +396,21 @@
                 });
                
             });
+            
+        </script>
+
+        <script>
+            // $('.btn_loc').click(function(){
+            //     const min_string = $('#minamount').val();
+            //     const min_array = min_string.split('$');
+            //     const min = min_array[1];
+
+            //     const max_string = $('#maxamount').val();
+            //     const max_array = min_string.split('$');
+            //     const max = min_array[1];
+               
+            // });
+
             
         </script>
     </body>

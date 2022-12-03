@@ -21,6 +21,12 @@ class HomeController extends Controller
     public function index(){
         
         $categories = Category::where('status',1)->get();
+
+        foreach($categories as $category){
+            $product_each_category = Product::where('status',1)->where('cat_id',$category->id)->get();
+        }
+        // echo json_encode($product_each_category);
+        // die();
         $products = Product::with('comment')->where('status',1)->get();
         $product_laster =  Product::where('status',1)->orderBy('updated_at','DESC')->limit(3)->get();
     
@@ -37,7 +43,7 @@ class HomeController extends Controller
     public function category($slug){
         $categories = Category::where('status',1)->get();
         $category_slug = Category::where('slug',$slug)->first();
-        $products = Product::with('comment')->where('status',1)->where('cat_id',$category_slug->id)->paginate(8);
+        $products = Product::with('comment')->where('status',1)->where('cat_id',$category_slug->id)->paginate(9);
         $product_sales = Product::with('comment')->where('price_promotion','>',0)->get();
         $product_laster =  Product::where('status',1)->orderBy('updated_at','DESC')->simplePaginate(3);
         $product_top_rate =  Product::where('status',1)->where('top_rate',1)->simplePaginate(3);
@@ -59,7 +65,7 @@ class HomeController extends Controller
 
     public function all_product(){
         $categories = Category::where('status',1)->get();
-        $products = Product::with('comment')->where('status',1)->paginate(8);
+        $products = Product::with('comment')->where('status',1)->paginate(9);
         $product_sales = Product::with('comment')->where('price_promotion','>',0)->get();
         $product_laster =  Product::where('status',1)->orderBy('updated_at','DESC')->simplePaginate(3);
         $blogs =  Blog::get();
@@ -179,25 +185,7 @@ class HomeController extends Controller
         return redirect()->back()->with('message_success','Cập nhật thông cá nhân tin thành công');
     }
 
-    public function search_ajax(Request $request){
-        $key = $request->key;
-        $list_product = Product::where('status',1)->where('name','LIKE',"%{$key}%")->get();
-        $html = '<ul style="display: block;">';
-        foreach($list_product as $product){
-            // $html.='<li><a href="http://127.0.0.1:8001/san-pham/'.$product->slug.'">'.$product->name.'</a></li>';
-            $html.='<li style="display:block;" class="mt-3">
-                    <a href="http://127.0.0.1:8001/san-pham/'.$product->slug.'"><img height="50" width="50" class="float-left mr-3" src="http://127.0.0.1:8001/Uploads/'.$product->image.'" alt=""></a>
-                    <span >
-                        <a href="http://127.0.0.1:8001/san-pham/'.$product->slug.'" class="">'.$product->name.'</a><br>
-                        <span class="info_search_item">'.$product->created_at.'</span>
-                    </span>
-                </li>';
-
-        }
-        $html.='</ul>';
-        
-    echo $html;
-    }
+    
 
     public function wish_list(Request $request){
         $wish_list_exist = Wish_List::where('user_id',session('login.id'))->where('product_id',$request->product_id)->first();
@@ -215,4 +203,124 @@ class HomeController extends Controller
         echo "hello ca nha ye";
     }
 
+    public function search_ajax(Request $request){
+        $key = $request->key;
+        $list_product = Product::where('status',1)->where('name','LIKE',"%{$key}%")->take(10)->get();
+        $html = '<ul style="display: block;">';
+        foreach($list_product as $product){
+            // $html.='<li><a href="http://127.0.0.1:8001/san-pham/'.$product->slug.'">'.$product->name.'</a></li>';
+            $html.='<li style="display:block;" class="mt-3">
+                    <a href="http://127.0.0.1:8001/san-pham/'.$product->slug.'"><img height="50" width="50" class="float-left mr-3" src="http://127.0.0.1:8001/Uploads/'.$product->image.'" alt=""></a>
+                    <span >
+                        <a href="http://127.0.0.1:8001/san-pham/'.$product->slug.'" class="">'.$product->name.'</a><br>
+                        <span class="info_search_item">'.$product->created_at.'</span>
+                    </span>
+                </li>';
+
+        }
+        $html.='</ul>';
+        
+    echo $html;
+    }
+
+    public function search_product(Request $request){
+        $search_key = $request->search_key;
+
+        $key = $request->search_key;
+        $products = Product::where('status',1)->where('name','LIKE',"%{$key}%")->paginate(9);
+        $categories = Category::where('status',1)->get();
+        $product_sales = Product::with('comment')->where('price_promotion','>',0)->get();
+        $product_laster =  Product::where('status',1)->orderBy('updated_at','DESC')->simplePaginate(3);
+        $blogs =  Blog::get();
+        return view('fontend.page.all_product',compact('categories','products','blogs','product_sales','search_key'));
+    }
+
+    public function filter_product(Request $request){
+        $min_string = $request->minamount;
+        $min_array = explode('$',$min_string);
+        $min = $min_array[1];
+
+        $max_string = $request->maxamount;
+        $max_array = explode('$',$max_string);
+        $max = $max_array[1];
+
+        $products = Product::where('status',1)->whereBetween('price_unit',[$min,$max])->paginate(9);
+        $filter_page=1;
+        $categories = Category::where('status',1)->get();
+        $product_sales = Product::with('comment')->where('price_promotion','>',0)->get();
+        $product_laster =  Product::where('status',1)->orderBy('updated_at','DESC')->simplePaginate(3);
+        $blogs =  Blog::get();
+        return view('fontend.page.all_product',compact('categories','products','blogs','product_sales','min','max'));
+    }
+
+    public function filter_product_by_category(Request $request){
+        $slug = $request->cat_slug;
+        $min_string = $request->minamount;
+        $min_array = explode('$',$min_string);
+        $min = $min_array[1];
+
+        $max_string = $request->maxamount;
+        $max_array = explode('$',$max_string);
+        $max = $max_array[1];
+
+        $categories = Category::where('status',1)->get();
+        $category_slug = Category::where('slug',$slug)->first();
+        $products = Product::where('status',1)->whereBetween('price_unit',[$min,$max])->where('cat_id',$category_slug->id)->paginate(9);
+        
+        $product_sales = Product::with('comment')->where('price_promotion','>',0)->get();
+        $product_laster =  Product::where('status',1)->orderBy('updated_at','DESC')->simplePaginate(3);
+        $product_top_rate =  Product::where('status',1)->where('top_rate',1)->simplePaginate(3);
+        $blogs =  Blog::get();
+        // echo json_encode($products);
+        return view('fontend.page.category',compact('categories','products','product_laster','product_top_rate','blogs','category_slug','product_sales','min','max'));
+    }
+
+    public function sort_low_to_high_all_product(){
+        $categories = Category::where('status',1)->get();
+        $products = Product::with('comment')->where('status',1)->orderBy('price_unit','ASC')->paginate(9);
+        $product_sales = Product::with('comment')->where('price_promotion','>',0)->get();
+        $product_laster =  Product::where('status',1)->orderBy('updated_at','DESC')->simplePaginate(3);
+        $blogs =  Blog::get();
+        $low_to_high=1;
+        return view('fontend.page.all_product',compact('categories','products','blogs','product_sales','low_to_high'));
+    }
+
+    public function sort_high_to_low_all_product(){
+        $categories = Category::where('status',1)->get();
+        $products = Product::with('comment')->where('status',1)->orderBy('price_unit','DESC')->paginate(9);
+        $product_sales = Product::with('comment')->where('price_promotion','>',0)->get();
+        $product_laster =  Product::where('status',1)->orderBy('updated_at','DESC')->simplePaginate(3);
+        $blogs =  Blog::get();
+        $high_to_low=1;
+        return view('fontend.page.all_product',compact('categories','products','blogs','product_sales','high_to_low'));
+    }
+
+    public function sort_low_to_high_category($slug){
+
+        $categories = Category::where('status',1)->get();
+        $category_slug = Category::where('slug',$slug)->first();
+        $products = Product::where('status',1)->where('cat_id',$category_slug->id)->orderBy('price_unit','ASC')->paginate(9);
+        
+        $product_sales = Product::with('comment')->where('price_promotion','>',0)->get();
+        $product_laster =  Product::where('status',1)->orderBy('updated_at','DESC')->simplePaginate(3);
+        $product_top_rate =  Product::where('status',1)->where('top_rate',1)->simplePaginate(3);
+        $blogs =  Blog::get();
+        $low_to_high=1;
+        return view('fontend.page.category',compact('categories','products','product_laster','product_top_rate','blogs','category_slug','product_sales','low_to_high'));
+    }
+    
+
+    public function sort_high_to_low_category($slug){
+        $categories = Category::where('status',1)->get();
+        $category_slug = Category::where('slug',$slug)->first();
+        $products = Product::where('status',1)->where('cat_id',$category_slug->id)->orderBy('price_unit','DESC')->paginate(9);
+        
+        $product_sales = Product::with('comment')->where('price_promotion','>',0)->get();
+        $product_laster =  Product::where('status',1)->orderBy('updated_at','DESC')->simplePaginate(3);
+        $product_top_rate =  Product::where('status',1)->where('top_rate',1)->simplePaginate(3);
+        $blogs =  Blog::get();
+        $high_to_low=1;
+        return view('fontend.page.category',compact('categories','products','product_laster','product_top_rate','blogs','category_slug','product_sales','high_to_low'));
+    }
+    
 }

@@ -48,7 +48,7 @@
                 <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
                     <div class="card border-0 shadow rounded-3 my-5">
                         <div class="card-body p-4 p-sm-5">
-                            <h5 class="card-title text-center mb-5 fw-light fs-5 mb-2">Sign In</h5>
+                            <h5 class="card-title text-center mb-5 fw-light fs-5 mb-2">@lang('lang.sign_in')</h5>
                             @if(session('register_success'))
                             <div class="alert alert-success alert-dismissible mt-2 fade show text-center" role="alert">
                               <strong>{{session('register_success')}}</strong>
@@ -67,7 +67,7 @@
                             @endif
                             <form method="POST" action="{{route('customer.post_login')}}">
                                 <div class="form-floating mb-3">
-                                  <label for="floatingInput">Email address</label>
+                                  <label for="floatingInput">@lang('lang.email_address')</label>
                                     <input type="email" class="form-control" value="{{old('email')}}" name="email" id="floatingInput" placeholder="name@example.com">
                                     @if($errors->has('email'))
                                         @foreach($errors->get('email') as $error)
@@ -76,7 +76,7 @@
                                     @endif
                                 </div>
                                 <div class="form-floating mb-3">
-                                  <label for="floatingPassword">Password</label>
+                                  <label for="floatingPassword">@lang('lang.password')</label>
                                     <input type="password" class="form-control" value="{{old('password')}}" name="password" id="floatingPassword" placeholder="Password">
                                     @if($errors->has('password'))
                                         @foreach($errors->get('password') as $error)
@@ -87,12 +87,12 @@
                                 <div class="form-check mb-3">
                                     <input class="form-check-input" name="remember" type="checkbox" value="" id="rememberPasswordCheck">
                                     <label class="form-check-label" for="rememberPasswordCheck">
-                                    Remember password
+                                    @lang('lang.remember_password')
                                     </label>
                                 </div>
                                 <div class="d-grid">
-                                    <button class="btn btn-primary btn-sm btn-login text-uppercase fw-bold" type="submit">Đăng nhập</button>
-                                    <a class="btn btn-secondary float-right btn-sm btn-login text-uppercase fw-bold" href="{{route('customer.register')}}">Đăng ký</a>
+                                    <button class="btn btn-primary btn-sm btn-login text-uppercase fw-bold" type="submit">@lang('lang.login')</button>
+                                    <a class="btn btn-secondary float-right btn-sm btn-login text-uppercase fw-bold" href="{{route('customer.register')}}">@lang('lang.login')</a>
                                 </div>
                                 <hr class="my-4">
                                 @csrf

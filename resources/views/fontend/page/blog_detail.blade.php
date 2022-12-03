@@ -7,11 +7,11 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="blog__details__hero__text">
-                        <h2>The Moment You Need To Remove Garlic From The Menu</h2>
+                        <h2>{{$blog_detail->title}}</h2>
                         <ul>
-                            <li>By Michael Scofield</li>
-                            <li>January 14, 2019</li>
-                            <li>8 Comments</li>
+                            <li>By Admin</li>
+                            <li>{{$blog_detail->created_at}}</li>
+                            <!-- <li>8 Comments</li> -->
                         </ul>
                     </div>
                 </div>
@@ -34,7 +34,7 @@
                         <div class="blog__sidebar__item">
                             <h4>Categories</h4>
                             <ul>
-                                <li><a href="#">All</a></li>
+                                <li><a href="#">@lang('lang.all')</a></li>
                                 @foreach($category_of_blogs as $category_of_blog)
                                 <li><a href="{{route('home.category_of_blog',$category_of_blog->slug)}}">{{$category_of_blog->name}} ({{$blogs->where('cat_id',$category_of_blog->id)->count()}})</a></li>
                                @endforeach
@@ -90,8 +90,8 @@
                             <div class="col-lg-6">
                                 <div class="blog__details__widget">
                                     <ul>
-                                        <li><span>Categories:</span> {{$blog_detail->category_of_blog->name}}</li>
-                                        <li><span>Tags: </span>
+                                        <li><span>@lang('lang.categories'):</span> {{$blog_detail->category_of_blog->name}}</li>
+                                        <li><span>@lang('lang.tags'): </span>
                                                     @foreach($blog_detail->tagses as $key => $tags)
                                                     {{ $key != 0 ? "," : ""}} {{$tags->name}}
                                                     @endforeach
@@ -121,7 +121,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="section-title related-blog-title">
-                        <h2>Post You May Like</h2>
+                        <h2>@lang('lang.post_you_may_like')</h2>
                     </div>
                 </div>
             </div>

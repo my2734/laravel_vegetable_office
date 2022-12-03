@@ -51,7 +51,7 @@
                                     </a>
                                 </td>
                                 <td class="shoping__cart__price">
-                                    ${{$cart->price}}
+                                    {{number_format($cart->price)}}vnđ
                                 </td>
                                 <td class="shoping__cart__quantity">
                                     <div class="quantity">
@@ -61,7 +61,7 @@
                                     </div>
                                 </td>
                                 <td class="shoping__cart__total" id="price_product{{$cart->rowId}}">
-                                    ${{($cart->qty*$cart->price)}}
+                                    {{number_format($cart->qty*$cart->price)}}vnđ
                                 </td>
                                 <td class="shoping__cart__item__close">
                                     <a href="{{route('cart.delete_one_cart',$cart->rowId)}}"><span class="icon_close"></span></a>
@@ -77,8 +77,6 @@
             <div class="col-lg-12">
                 <div class="shoping__cart__btns">
                     <a style="background: #7fad39;" href="{{route('home.all_product')}}" class="text-white primary-btn cart-btn "><i class="fa fa-undo" aria-hidden="true"></i> CONTINUE SHOPPING</a>
-{{--                    <a href="#" class="primary-btn cart-btn cart-btn-right"><span class="icon_loading"></span>--}}
-{{--                        Upadate Cart</a>--}}
                 </div>
             </div>
             <div class="col-lg-6">
@@ -93,11 +91,12 @@
                 </div>
             </div>
             <div class="col-lg-6">
+                
                 <div class="shoping__checkout">
                     <h5>Cart Total</h5>
                     <ul>
-                        <li>Subtotal <span class="btn_sub_total_shopping_cart">${{$sub_total}}</span></li>
-                        <li>Total <span class="btn_total_shopping_cart">${{$sub_total}}</span></li>
+                        <li>Subtotal <span class="btn_sub_total_shopping_cart">{{$sub_total}}vnđ</span></li>
+                        <li>Total <span class="btn_total_shopping_cart">{{$sub_total}}vnđ</span></li>
                     </ul>
                     <a href="{{route('checkout.show')}}" class="primary-btn">PROCEED TO CHECKOUT</a>
                 </div>

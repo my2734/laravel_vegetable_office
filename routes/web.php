@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminLoginController;
 use App\Http\Controllers\AdminController;
+use Illuminate\Http\Request;
 
 
 use App\Http\Controllers\CategoryController;
@@ -29,6 +30,18 @@ use App\Http\Controllers\UserController;
 */
 
 
+//change languge
+Route::get('/lang/{locale}',function($locale,Request $request){
+    
+    // if(!in_array($locale,['en','vi'])){
+    //     abort(404);
+    // }
+    // session()->put('locale',$locale);
+    $request->session()->put('locale',$locale);
+    return redirect()->back();
+})->name('change.languge');
+
+
 
 
 //Admin - login
@@ -45,7 +58,10 @@ Route::prefix('admin')->middleware('auth_admin')->group(function(){
     Route::get('/',[AdminController::class,'index'])->name('admin.index');
     //thong-ke
     
-    Route::post('/thongke_start_end',[AdminController::class,'thongke_start_end'])->name('admin.thongke_start_end');
+    Route::get('/thongke_start_end',[AdminController::class,'thongke_start_end'])->name('admin.thongke_start_end');
+    Route::get('/thongke_7_date',[AdminController::class,'thongke_7_date'])->name('admin.thongke_7_date');
+    Route::get('/thongke_30_date',[AdminController::class,'thongke_30_date'])->name('admin.thongke_30_date');
+    Route::get('/thongke_90_date',[AdminController::class,'thongke_90_date'])->name('admin.thongke_90_date');
     Route::get('/user',[AdminController::class,'list_user'])->name('user.index');
 
     // Danh-muc
@@ -72,6 +88,7 @@ Route::prefix('admin')->middleware('auth_admin')->group(function(){
 
         Route::get('/change_status',[ProductController::class,'change_status'])->name('product.change_status');
 
+        Route::post('/search-san-pham',[ProductController::class,'search_product'])->name('product.search_product');
     });
 
     // Tags
@@ -112,7 +129,10 @@ Route::prefix('admin')->middleware('auth_admin')->group(function(){
     Route::prefix('/order')->group(function(){
         Route::get('/',[OrderController::class,'index'])->name('order.index');
         Route::get('/change-status',[OrderController::class,'change_status'])->name('order.change_status');
+        Route::get('/print-pdf/{order_id}',[OrderController::class,'print_pdf'])->name('order.print_pdf');
     });
+
+    
 });
 
 
@@ -174,6 +194,8 @@ Route::prefix('/checkout')->middleware('verified')->group(function(){
     Route::get('/receive-order',[CheckoutController::class,'receive_order'])->name('checkout.receive_order');
     Route::get('/detroy-order/{id}',[CheckoutController::class,'detroy_order'])->name('checkout.detroy_order');
 
+    Route::post('/thanh-toan-vnpay',[CheckoutController::class,'payment_momo'])->name('checkout.payment_momo');
+
     //comment
     Route::post('/post-comment',[ProductController::class,'post_comment'])->name('product.post_comment');
     Route::get('/delete-comment/{id}',[ProductController::class,'delete_comment'])->name('delete.comment');
@@ -226,4 +248,18 @@ Route::get('/test-emails',[HomeController::class,'test_mail']);
 Route::get('/test-emails2',[HomeController::class,'test_mail2']);
 
 //Search product
-route::get('/search-san-pham',[HomeController::class,'search_ajax'])->name('home.search_ajax');
+route::get('/search-san-pham-ajax',[HomeController::class,'search_ajax'])->name('home.search_ajax');
+route::post('/search-san-pham',[HomeController::class,'search_product'])->name('home.search_product');
+
+//Filter product
+route::post('/filter-san-pham',[HomeController::class,'filter_product'])->name('home.filter_product');
+route::post('/filter-san-pham-by-danh-muc',[HomeController::class,'filter_product_by_category'])->name('home.filter_product_by_category');
+
+//Sort By
+route::get('/low-to-high-all-product',[HomeController::class,'sort_low_to_high_all_product'])->name('sort_low_to_high_all_product');
+route::get('/high-to-low-all-product',[HomeController::class,'sort_high_to_low_all_product'])->name('sort_high_to_low_all_product');
+
+route::get('/low-to-high-category/{slug}',[HomeController::class,'sort_low_to_high_category'])->name('sort_low_to_high_category');
+route::get('/high-to-low-category/{slug}',[HomeController::class,'sort_high_to_low_category'])->name('sort_high_to_low_category');
+
+

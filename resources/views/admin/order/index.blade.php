@@ -35,7 +35,9 @@
                     @foreach($orders as $key => $order)
                     <tr>
                         <th scope="row">{{($key+1)}}</th>
-                        <td>{{$order->full_name}}</td>
+                        <td>{{$order->full_name}} <br>
+                            <a class="badge badge-secondary" href="{{route('order.print_pdf',$order->id)}}" ><i class="fa fa-print" aria-hidden="true"></i> In hóa đơn<a>
+                        </td>
                         <td style="width: 200px;">
                             @php
                                 $total = 0;
@@ -49,10 +51,10 @@
                             </span><br>
                             <span>
                                 <img height="40" width="40" src="{{asset('Uploads/'.$order_detail->pro_image)}}" alt="">
-                                <span class="text-secondary float-right">${{$order_detail->pro_price}} x {{$order_detail->pro_quantity}}</span>
+                                <span class="text-secondary float-right">{{number_format($order_detail->pro_price)}}vnđ x {{$order_detail->pro_quantity}}</span>
                             </span><br>
                             @endforeach
-                            <p class="font-weight-bold mt-3">Thanh toán <span class="ml-5">${{$total}}</span></p>
+                            <p class="font-weight-bold mt-3">Thanh toán <span class="ml-5">{{number_format($total)}}vnđ</span></p>
                         </td>
 
                         <td>

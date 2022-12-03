@@ -207,17 +207,54 @@
       $('.btn_thong_ke').click(function(){
         const ngaybatdau = $('#datepicker1').val();
         const ngayketthuc = $('#datepicker2').val();
-        const _token = $('input[name="_token"]').val();
-        $.post({
+        $.get({
           url:"{{route('admin.thongke_start_end')}}",
-          data:{ngaybatdau:ngaybatdau,ngayketthuc:ngayketthuc,_token:_token},
+          data:{ngaybatdau:ngaybatdau,ngayketthuc:ngayketthuc},
           success: function(data){
-            // // alert(data);
-            chart.setData(data);
+           data = JSON.parse(data);
+           chart.setData(data['chart_data']);
+           const ngaybatdau = data['ngaybatdau'];
+           const ngayketthuc = data['ngayketthuc'];
+           $('#title_thong_ke').html("Kết quả thống kê từ ngày "+ngaybatdau+" đến ngày "+ngayketthuc);
           }
         });
       });
 
+      $('.btn_7ngaytruoc').click(function(){
+        $.get({
+          url:"{{route('admin.thongke_7_date')}}",
+          success: function(data){
+           data = JSON.parse(data);
+           chart.setData(data['chart_data']);
+          
+           $('#title_thong_ke').html("Kết quả thống kê 7 ngày qua");
+          }
+        });
+      });
+
+      $('.btn_30ngaytruoc').click(function(){
+        $.get({
+          url:"{{route('admin.thongke_30_date')}}",
+          success: function(data){
+           data = JSON.parse(data);
+           chart.setData(data['chart_data']);
+          
+           $('#title_thong_ke').html("Kết quả thống kê 1 tháng qua");
+          }
+        });
+      });
+    
+      $('.btn_90ngaytruoc').click(function(){
+        $.get({
+          url:"{{route('admin.thongke_90_date')}}",
+          success: function(data){
+           data = JSON.parse(data);
+           chart.setData(data['chart_data']);
+          
+           $('#title_thong_ke').html("Kết quả thống kê 3 tháng qua");
+          }
+        });
+      });
       
 
       

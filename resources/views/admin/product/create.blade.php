@@ -94,7 +94,11 @@
                         <div class="col-md-9 col-sm-9  offset-md-3">
                             <a href="{{route('product.index')}}"><button type="button" class="btn btn-primary">Cancel</button></a>
                             <button class="btn btn-primary" type="reset">Reset</button>
+                            @if(isset($product_edit))
+                            <button type="submit" class="btn btn-danger">Update</button>
+                            @else
                             <button type="submit" class="btn btn-success">Submit</button>
+                            @endif
                         </div>
                     </div>
                     

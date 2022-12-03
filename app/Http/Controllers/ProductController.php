@@ -81,7 +81,7 @@ class ProductController extends Controller
 
     public function delete($id){
         //unlink image product
-        $product = Product::find($id)->with('product_image')->first();
+        $product = Product::where('id',$id)->with('product_image')->first();
         foreach($product->product_image as $pro_image){
             $path_file = public_path().'\Uploads/'.$pro_image->image;
             if(file_exists($path_file)){
@@ -232,6 +232,12 @@ class ProductController extends Controller
         $data['product_id'] = $product_id;
         $data['status_number'] = $product_edit->status;
         echo json_encode($data);
+    }
+
+    public function search_product(Request $request){
+        $key = $request->search_key;
+        $products = Product::with('product_image','category')->where('name','LIKE',"%{$key}%")->orderBy('updated_at','DESC')->paginate(20);
+        return view('admin.product.index',compact('products'));
     }
 
 }

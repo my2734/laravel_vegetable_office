@@ -80,7 +80,7 @@
                         <div class="col-md-9 col-sm-9  offset-md-3">
                             <a href="{{route('blog.index')}}"><button type="button" class="btn btn-primary">Cancel</button></a>
                             <button class="btn btn-primary" type="reset">Reset</button>
-                            <button type="submit" class="btn btn-success">Submit</button>
+                            <button type="submit" class="btn btn-success">{{isset($blog_edit)?"Update":"Submit"}}</button>
                         </div>
                     </div>
                     

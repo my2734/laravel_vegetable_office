@@ -43,10 +43,10 @@
                                         </span><br>
                                         <span>
                                             <img height="50" width="50" src="{{asset('Uploads/'.$order_detail->pro_image)}}" alt="">
-                                            <span class="float-right text-secondary">${{$order_detail->pro_price}} x {{$order_detail->pro_quantity}}</span>
+                                            <span class="float-right text-secondary">{{number_format($order_detail->pro_price)}}vnđ x {{$order_detail->pro_quantity}}</span>
                                         </span><br>
                                         @endforeach
-                                        <p class="font-weight-bold mt-3">Thanh toán <span class="float-right ">${{$total}}</span></p>
+                                        <p class="font-weight-bold mt-3">Thanh toán <span class="float-right ">{{number_format($total)}}vnđ</span></p>
                                     </td>
 
                                     <td>

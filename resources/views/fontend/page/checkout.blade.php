@@ -104,18 +104,37 @@
                             <div class="checkout__order__products">Products <span>Total</span></div>
                             <ul>
                                 @foreach($carts as $cart)
-                                <li>{{$cart->name}} x {{$cart->qty}} <span>${{$cart->price}}</span></li>
+                                <li>{{$cart->name}} x {{$cart->qty}} <span>{{number_format($cart->price)}}vnđ</span></li>
                                 @endforeach
                             </ul>
-                            <div class="checkout__order__subtotal">Subtotal <span>${{$sub_total}}</span></div>
-                            <div class="checkout__order__total">Total <span>${{$sub_total}}</span></div>
-
-                            <button type="submit" class="site-btn">PLACE ORDER</button>
+                            <div class="checkout__order__subtotal">Subtotal <span>{{$sub_total}}vnđ</span></div>
+                            <div class="checkout__order__total">Total <span>{{$sub_total}}vnđ</span></div>
+                            <input type='hidden' name="total" value={{$sub_total}}>
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input class="form-check-input" value="offline" type="radio" name="method_payment" checked>
+                                    <label class="form-check-label">Thanh toán khi nhận hàng</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" value="vnpay" type="radio" name="method_payment">
+                                    <label class="form-check-label">Thanh toán VNPay</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" value="momo" type="radio" name="method_payment" >
+                                    <label class="form-check-label">Thanh toán MOMO</label>
+                                </div>
+                            </div>
+                            <button type="submit" name="redirect" class="site-btn">PLACE ORDER</button>
                         </div>
                     </div>
                 </div>
                 @csrf
             </form>
+
+            <!-- <form method='POST' action="{{route('checkout.payment_momo')}}">
+                <button type="submit" name='redirect'>Thanh toan baag momo</button>
+                @csrf
+            </form> -->
         </div>
     </div>
 </section>

@@ -33,113 +33,54 @@
                         </div>
                         <div class="sidebar__item">
                             <h4>Price</h4>
-                            <div class="price-range-wrap">
-                                <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
-                                    data-min="10" data-max="540">
-                                    <div class="ui-slider-range ui-corner-all ui-widget-header"></div>
-                                    <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
-                                    <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
-                                </div>
-                                <div class="range-slider">
-                                    <div class="price-input">
-                                        <input type="text" id="minamount">
-                                        <input type="text" id="maxamount">
+                            <form method="POST" action="{{route('home.filter_product_by_category')}}">
+                                <div class="price-range-wrap">
+                                    <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
+                                        data-min="20000" data-max="1000000">
+                                        <div class="ui-slider-range ui-corner-all ui-widget-header"></div>
+                                        <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
+                                        <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
                                     </div>
+                                    <div class="range-slider">
+                                        <div class="price-input">
+                                            <input type="text" class="" style="font-size: 11px;" name="minamount" id="minamount">
+                                            <input type="text" class="ml-5" style="font-size: 11px;" name="maxamount" id="maxamount">
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="cat_slug" value="{{$category_slug->slug}}">
+                                    <input type="submit" value="Lọc" class="btn btn-primary mt-4">
                                 </div>
-                            </div>
+                                @csrf
+                            <form>    
                         </div>
-                        <div class="sidebar__item sidebar__item__color--option">
-                            <h4>Colors</h4>
-                            <div class="sidebar__item__color sidebar__item__color--white">
-                                <label for="white">
-                                    White
-                                    <input type="radio" id="white">
-                                </label>
-                            </div>
-                            <div class="sidebar__item__color sidebar__item__color--gray">
-                                <label for="gray">
-                                    Gray
-                                    <input type="radio" id="gray">
-                                </label>
-                            </div>
-                            <div class="sidebar__item__color sidebar__item__color--red">
-                                <label for="red">
-                                    Red
-                                    <input type="radio" id="red">
-                                </label>
-                            </div>
-                            <div class="sidebar__item__color sidebar__item__color--black">
-                                <label for="black">
-                                    Black
-                                    <input type="radio" id="black">
-                                </label>
-                            </div>
-                            <div class="sidebar__item__color sidebar__item__color--blue">
-                                <label for="blue">
-                                    Blue
-                                    <input type="radio" id="blue">
-                                </label>
-                            </div>
-                            <div class="sidebar__item__color sidebar__item__color--green">
-                                <label for="green">
-                                    Green
-                                    <input type="radio" id="green">
-                                </label>
-                            </div>
-                        </div>
-                        <div class="sidebar__item">
-                            <h4>Popular Size</h4>
-                            <div class="sidebar__item__size">
-                                <label for="large">
-                                    Large
-                                    <input type="radio" id="large">
-                                </label>
-                            </div>
-                            <div class="sidebar__item__size">
-                                <label for="medium">
-                                    Medium
-                                    <input type="radio" id="medium">
-                                </label>
-                            </div>
-                            <div class="sidebar__item__size">
-                                <label for="small">
-                                    Small
-                                    <input type="radio" id="small">
-                                </label>
-                            </div>
-                            <div class="sidebar__item__size">
-                                <label for="tiny">
-                                    Tiny
-                                    <input type="radio" id="tiny">
-                                </label>
-                            </div>
-                        </div>
+                        
                        
                     </div>
                 </div>
                 <div class="col-lg-9 col-md-7">
                     <div class="filter__item">
                         <div class="row">
-                            <div class="col-lg-4 col-md-5">
+                            <div class="col-lg-5 col-md-5">
+                               
                                 <div class="filter__sort">
-                                    <span>Sort By</span>
-                                    <select>
-                                        <option value="0">Default</option>
-                                        <option value="0">Default</option>
-                                    </select>
+                                    <a href="{{route('sort_low_to_high_category',$category_slug->slug)}}" class="btn btn-default"><i class="fa fa-sort-amount-asc" aria-hidden="true"></i>Thấp đến cao</a>
+                                    <a href="{{route('sort_high_to_low_category',$category_slug->slug)}}" class="btn btn-default"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i>Cao đến thấp</a>
                                 </div>
                             </div>
-                            <div class="col-lg-4 col-md-4">
+                            <div class="col-lg-7 col-md-7">
                                 <div class="filter__found">
-                                    <h3><span>Tất cả sản phẩm</span></h3>
+                                @if(isset($min))
+                                <h5><span style="font-weight: 700">Kết quả lọc từ {{$min}}đ - {{$max}}đ</span></h5> 
+                                @elseif(isset($low_to_high))
+                                <h3><span style="font-weight: 700">Kết quả sắp xếp từ thấp đến cao</span></h3>
+                                @elseif(isset($high_to_low))
+                                <h3><span style="font-weight: 700">Kết quả sắp xếp từ cao đến thấp</span></h3>
+                                @else
+                                <h5><span style="font-weight: 700">Sản phẩm của {{$category_slug->name}}</span></h5>
+                                @endif
                                 </div>
                             </div>
-                            <div class="col-lg-4 col-md-3">
-                                <div class="filter__option">
-                                    <span class="icon_grid-2x2"></span>
-                                    <span class="icon_ul"></span>
-                                </div>
-                            </div>
+                            
                         </div>
                     </div>
                     <div class="row">
@@ -159,7 +100,7 @@
                                         <li><i class="fa fa-comment-o"></i> {{$product->comment->count()}}</li>
                                     </ul>
                                     <h6><a class="font-weight-bold" href="{{route('home.product',$product->slug)}}">{{$product->name}}</a></h6>
-                                    <h5>${{$product->price_unit}}</h5>
+                                    <h5>{{number_format($product->price_unit)}}vnđ</h5>
                                 </div>
                             </div>
                         </div>
@@ -191,7 +132,7 @@
                                                     <li><i class="fa fa-comment-o"></i> {{$product->comment->count()}}</li>
                                             </ul>
                                             <h6><a class="font-weight-bold" href="{{route('home.product',$product->slug)}}">{{$product->name}}</a></h6>
-                                            <h5>${{$product->price_unit}}</h5>
+                                            <h5>{{number_format($product->price_unit)}}vnđ</h5>
                                         </div>
                                     </div>
                                 </div>
