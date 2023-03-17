@@ -23,57 +23,42 @@
           <li role="presentation" class="nav-item dropdown open">
             <a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1" data-toggle="dropdown" aria-expanded="false">
               <i class="fa fa-envelope-o"></i>
-              <span class="badge bg-green">6</span>
+              <span id="total_news" class="badge bg-green">{{ isset($total_news)? $total_news : 0 }}</span>
             </a>
             <ul class="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1">
-              <li class="nav-item">
-                <a class="dropdown-item">
-                  <span class="image"><img src="{{asset('backend/images/img.jpg')}}" alt="Profile Image" /></span>
-                  <span>
-                    <span>John Smith</span>
-                    <span class="time">3 mins ago</span>
-                  </span>
-                  <span class="message">
-                    Film festivals used to be do-or-die moments for movie makers. They were where...
-                  </span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="dropdown-item">
-                  <span class="image"><img src="{{asset('backend/images/img.jpg')}}" alt="Profile Image" /></span>
-                  <span>
-                    <span>John Smith</span>
-                    <span class="time">3 mins ago</span>
-                  </span>
-                  <span class="message">
-                    Film festivals used to be do-or-die moments for movie makers. They were where...
-                  </span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="dropdown-item">
-                  <span class="image"><img src="{{asset('backend/images/img.jpg')}}" alt="Profile Image" /></span>
-                  <span>
-                    <span>John Smith</span>
-                    <span class="time">3 mins ago</span>
-                  </span>
-                  <span class="message">
-                    Film festivals used to be do-or-die moments for movie makers. They were where...
-                  </span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="dropdown-item">
-                  <span class="image"><img src="{{asset('backend/images/img.jpg')}}" alt="Profile Image" /></span>
-                  <span>
-                    <span>John Smith</span>
-                    <span class="time">3 mins ago</span>
-                  </span>
-                  <span class="message">
-                    Film festivals used to be do-or-die moments for movie makers. They were where...
-                  </span>
-                </a>
-              </li>
+                @if(isset($news))
+                  @foreach($news as $key => $news_item)
+                  <li  @if($news_item->status==0) style="background-color: #CACFD2 !important;" else style="background-color: white !important" @endif class="nav-item row_news{{$news_item->id}}">
+                    <a id="{{ $news_item->id }}" class="change_status_news" @if($news_item->topic == "gmail") href="{{ $news_item->link }}" @else href="{{ route($news_item->link)}}" @endif  class="dropdown-item">
+                      <span class="image">
+                        @if($news_item->User_Info->avatar=="")
+                        <img src="{{asset('backend/images/img.jpg')}}" alt="Profile Image" />
+                        @else
+                        <img src="{{asset('Uploads/'.$news_item->User_Info->avatar)}}" alt="">
+                        @endif
+                      </span>
+                      <span>
+                        <span class="font-weight-bold">{{ $news_item->User->name}}</span>
+                        <span class="time"><p>{{ $news_item->created_at }}</p></span> 
+                       <!-- <button class="ml-auto btn btn-sm btn-primary"><i class="fa fa-share" aria-hidden="true"></i></button> -->
+                      </span>
+                      <span class="message mt-2">
+                        <p>
+                        @if($news_item->topic == 'gmail')
+                        {{ $news_item->User->name}} đã gửi Email cho bạn. Vui lòng kiểm tra lại Email.
+                        @elseif($news_item->topic == 'comment')
+                        {{ $news_item->User->name}} đã bình luận vào sản phẩm của shop. Vui lòng duyệt bình luận.
+                        @else
+                        {{ $news_item->User->name}} đã đặt đơn hàng mới vui lòng nhận đơn hàng.
+                        @endif
+                        <a @if($news_item->topic == "gmail") href="{{ $news_item->link }}" @else href="{{ route($news_item->link)}}" @endif><i class="fa fa-share" aria-hidden="true"></i></a>
+                        </p>
+                      </span>
+                  </a>
+                  </li>
+                  @endforeach
+                @endif
+
               <li class="nav-item">
                 <div class="text-center">
                   <a class="dropdown-item">

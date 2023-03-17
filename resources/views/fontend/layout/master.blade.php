@@ -59,8 +59,9 @@
                                 
                                 <div class="header__top__right__language">
                                     <a href="{{route('home.get_user_info')}}">
-                                            
+                                            <!-- <h1>{{ Auth::user()->avatar }}</h1> -->
                                             @if(!Auth::user()->avatar)
+                                            
                                                 <div class="cover_img_avatar">
                                                     <img src="https://i.pinimg.com/280x280_RS/2e/45/66/2e4566fd829bcf9eb11ccdb5f252b02f.jpg">
                                                 </div>
@@ -333,6 +334,8 @@
                     }
                 });
             });
+
+
         </script>
         <script>
             $('#dropdownMenu2').click(function(){
@@ -365,6 +368,18 @@
                         }
                     }
                     $(this).addClass('active');
+                });
+
+                $('.btn_delete_wish_list').click(function(){
+                    const wish_list_id = $(this).attr('id');
+                    $.get({
+                        url: "{{route('home.delete_wish_list')}}",
+                        data: {wish_list_id:wish_list_id},
+                        success: function(data){
+                            data = JSON.parse(data);
+                            $('.row_wish_list'+data).remove();
+                        }
+                    });
                 });
             });
         </script>

@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Tags;
 use App\Models\Blog;
+use App\Models\Product;
 use App\Models\Blog_Tags;
+use App\Models\News;
 use App\Models\CategoryOfBlog;
 use Carbon\Carbon;
 use Response;
@@ -20,13 +22,17 @@ class BlogController extends Controller
         // echo json_encode(Blog::count());
         // die();
         // return response()->json($blogs);
-        return view('admin.blog.index',compact('blogs'));
+        $news = News::with('User')->with('User_Info')->get();
+        $total_news = News::where('status',0)->count();
+        return view('admin.blog.index',compact('blogs','news','total_news'));
     }
 
     public function create(){
         $category_of_blogs = CategoryOfBlog::get();
         $tagses = Tags::get();
-        return view('admin.blog.create',compact('category_of_blogs','tagses'));
+        $news = News::with('User')->with('User_Info')->get();
+        $total_news = News::where('status',0)->count();
+        return view('admin.blog.create',compact('category_of_blogs','tagses','news','total_news'));
     }
 
     public function store(Request $request){
@@ -95,7 +101,9 @@ class BlogController extends Controller
         //     echo "Ton tai";
         // }
         // return response()->json($blog_edit);
-        return view('admin.blog.create',compact('category_of_blogs','tagses','blog_edit','tags_of_blog'));
+        $news = News::with('User')->with('User_Info')->get();
+        $total_news = News::where('status',0)->count();
+        return view('admin.blog.create',compact('category_of_blogs','tagses','blog_edit','tags_of_blog','news','total_news'));
     }
 
     public function update($id, Request $request){

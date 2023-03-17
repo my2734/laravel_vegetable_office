@@ -6,6 +6,7 @@ use App\Models\Product_Image;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\CommentPro;
+use App\Models\Warehouse;
 
 class Product extends Model
 {
@@ -26,6 +27,10 @@ class Product extends Model
 
     public function category(){
         return $this->belongsTo(Category::class,'cat_id','id');
+    }
+
+    public function warehouse(){
+        return $this->hasOne(Warehouse::class,'product_id', 'id');
     }
 
     public function comment(){

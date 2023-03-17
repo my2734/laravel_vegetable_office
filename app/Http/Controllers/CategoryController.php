@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\News;
 use Carbon\Carbon;
 use App\Models\Image;
 use Illuminate\Support\Str;
@@ -13,12 +14,15 @@ class CategoryController extends Controller
 {
     public function index(){
         $categories = Category::orderBy('updated_at','DESC')->get();
-       
-        return view('admin.category.index',compact('categories'));
+        $news = News::with('User')->with('User_Info')->get();
+        $total_news = News::where('status',0)->count();
+        return view('admin.category.index',compact('categories','news','total_news'));
     }
 
     public function create(){
-        return view('admin.category.create');
+        $news = News::with('User')->with('User_Info')->get();
+        $total_news = News::where('status',0)->count();
+        return view('admin.category.create',compact('news','total_news'));
     }
     
     public function store(Request $request){
@@ -46,6 +50,7 @@ class CategoryController extends Controller
             $category->image = $new_file;
         }
         $category->save();
+        $products = Product::with('product_image','category')->orderBy('updated_at','DESC')->get();
         return redirect()->route('category.index');
     }
 
@@ -66,11 +71,15 @@ class CategoryController extends Controller
     }
 
     public function edit($id){
+        $products = Product::with('product_image','category')->orderBy('updated_at','DESC')->get();
         $category_edit = Category::find($id);
-        return view('admin.category.create',compact('category_edit'));
+        $news = News::with('User')->with('User_Info')->get();
+        $total_news = News::where('status',0)->count();
+        return view('admin.category.create',compact('category_edit','news','total_news'));
     }
 
     public function update(Request $request, $id){
+        $products = Product::with('product_image','category')->orderBy('updated_at','DESC')->get();
         $request->validate([
             'name'  => 'required',
             'images' => 'required'

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\OrderDetail;
+use App\Models\News;
 use PDF;
 use Illuminate\Http\Request;
 
@@ -10,7 +11,9 @@ class OrderController extends Controller
 {
     public function index(){
         $orders = Order::with('OrderDetail')->orderBy('updated_at','DESC')->paginate(4);
-        return view('admin.order.index',compact('orders'));
+        $news = News::with('User')->with('User_Info')->get();
+        $total_news = News::where('status',0)->count();
+        return view('admin.order.index',compact('orders','news','total_news'));
     }
 
     public function change_status(Request $request){
@@ -36,6 +39,25 @@ class OrderController extends Controller
         foreach($list_order_detail as $order_detail){
             $total+=$order_detail->pro_price*$order_detail->pro_quantity;
         }
-        return view('admin.order.pdf',compact('order','list_order_detail','total'));
+        $news = News::with('User')->with('User_Info')->get();
+        $total_news = News::where('status',0)->count();
+        return view('admin.order.pdf',compact('order','list_order_detail','total','news','total_news'));
     }
+
+    public function filter_by_status($status){
+        $orders = Order::where('status',$status)->with('OrderDetail')->orderBy('updated_at','DESC')->paginate(4);
+        if($status == 0){
+            $message = "Đơn hàng chờ xác nhận";
+        }elseif($status == 1){
+            $message = "Đơn hàng đang giao";
+        }elseif($status == 2){
+            $message = "Đơn hàng đã giao thành công";
+        }else{
+            $message = "Đơn hàng đã hủy";
+        }
+        $news = News::with('User')->with('User_Info')->get();
+        $total_news = News::where('status',0)->count();
+        return view('admin.order.index',compact('orders','news','total_news'))->with('message',$message);
+    }
+
 }

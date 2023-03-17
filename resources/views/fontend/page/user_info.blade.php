@@ -77,7 +77,7 @@
             </div>
             <div class="checkout__input">
                 <p>Địa chỉ chi tiết<span>*</span></p>
-                <textarea style="color: #333 !important" name="address_detail" value="{{isset($user_edit->full_name)?$user_edit->full_name:''}}" rows="4" class="form-control"></textarea>
+                <textarea style="color: #333 !important" name="address_detail" value="{{isset($user_edit->full_name)?$user_edit->full_name:''}}" rows="4" class="form-control">{{ isset($user_edit->address_detail)?$user_edit->address_detail:"" }}</textarea>
             </div>
         </div>
         <div class="col-lg-4 col-md-6">

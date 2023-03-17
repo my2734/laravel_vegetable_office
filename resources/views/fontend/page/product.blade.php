@@ -63,10 +63,40 @@
                             </form>
                         </div>
                     </div>
-                    <button  id="{{$product_slug->id}}" class="primary-btn add_mul_product">ADD TO CARD</button>
+
+                    <?php 
+                        $inventory = $product_slug->warehouse->import_quantity - $product_slug->warehouse->export_quantity;
+                    ?>
+                    
+                    @if($inventory > 0)
+                        <button  id="{{$product_slug->id}}" class="primary-btn add_mul_product">ADD TO CARD <?php echo $inventory ?> </button>
+                    @else
+                        <button  data-toggle="modal" data-target="#notification_add_cart" class="primary-btn">ADD TO CARD </button>
+                    @endif
+
+                    <!-- Modal notification_add_cart -->
+                    <div class="modal fade" id="notification_add_cart" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Số lượng sản phẩm không đủ. Vui lòng chọn sản phẩm khác.</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <!-- <button type="button" class="btn btn-danger">Save changes</button> -->
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+
+
                     <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
                     <ul>
-                        <li><b>Availability</b> <span>In Stock</span></li>
+                        <li><b>Availability</b> <span><?php echo ($product_slug->warehouse->import_quantity - $product_slug->export_quantity)>0 ? "In Stock" : "Out In Stock" ?></span></li>
+                        <li><b>Quanlity</b> <span> {{ ($product_slug->warehouse->import_quantity - $product_slug->export_quantity)}}</span></li>
                         <li><b>Shipping</b> <span>01 day shipping. <samp>Free pickup today</samp></span></li>
                         <li><b>Weight</b> <span>0.5 kg</span></li>
                         <li><b>Share on</b>
@@ -106,6 +136,13 @@
                                         @endif
                                     </div>
                                     <hr class="">
+                                    @if($comment->reply!="")
+                                    <div style="height: 80px; margin-left: 100px;">
+                                        <h6>Admin<span style="margin-left: 10px;font-weight: 300; font-size: 16;">( Trả lời bình luận <span style="font-weight: 900;">{{$comment->User->name}}</span>)<span> </h6>
+                                        <p>{{$comment->reply}} <span class="float-right">
+                                    </div>
+                                    <hr class="">
+                                    @endif
                                 @endforeach
                                 <form class="mt-5" action="{{isset($comment_edit)?route('update.comment',$comment_edit->id):route('product.post_comment')}}" method="POST">
                                     <span class="text-danger">{{$errors->has('content')?$errors->first('content'):""}}</span>
@@ -150,6 +187,12 @@
             <div class="col-lg-3 col-md-4 col-sm-6">
                 <div class="product__item">
                     <div class="product__item__pic set-bg" data-setbg="{{asset('Uploads/'.$product->image)}}">
+                    <p>
+                            <?php 
+                                $qr_code = url('san-pham',$product->slug);
+                                echo QrCode::size(100)->generate($qr_code);
+                            ?>
+                        </p>
                         <ul class="product__item__pic__hover">
                             <li><a href="#"><i class="fa fa-heart"></i></a></li>
                             <li><a href="{{route('home.product',$product->slug)}}"><i class="fa fa-retweet"></i></a></li>

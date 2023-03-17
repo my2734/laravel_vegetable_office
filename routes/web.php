@@ -17,6 +17,9 @@ use App\Models\CategoryOfBlog;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\DataInputOutputController;
+use App\Http\Controllers\WarehouseController;
+use App\Http\Controllers\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -89,6 +92,7 @@ Route::prefix('admin')->middleware('auth_admin')->group(function(){
         Route::get('/change_status',[ProductController::class,'change_status'])->name('product.change_status');
 
         Route::post('/search-san-pham',[ProductController::class,'search_product'])->name('product.search_product');
+        Route::post('/filter-by-category',[ProductController::class,'filter_by_category'])->name('product.filter_by_category');
     });
 
     // Tags
@@ -130,8 +134,55 @@ Route::prefix('admin')->middleware('auth_admin')->group(function(){
         Route::get('/',[OrderController::class,'index'])->name('order.index');
         Route::get('/change-status',[OrderController::class,'change_status'])->name('order.change_status');
         Route::get('/print-pdf/{order_id}',[OrderController::class,'print_pdf'])->name('order.print_pdf');
+        Route::get('/filter/{status}',[OrderController::class,'filter_by_status'])->name('order.filter_status');
     });
 
+    //Data input output
+    Route::prefix('/data-input-output')->group(function(){
+        Route::get('/input-index',[DataInputOutputController::class,'input_index'])->name('datainputoutput.input_index'); //cac don da nhap
+        Route::get('/input-create',[DataInputOutputController::class,'input_create'])->name('datainputoutput.input_create'); //tao moi san pham va so luong
+        Route::post('/input-store',[DataInputOutputController::class,'input_store'])->name('datainputoutput.input_store'); //tao moi san pham va so luong
+       
+        Route::get('/output-index',[DataInputOutputController::class,'output_index'])->name('datainputoutput.output_index'); //cac don xuat hang
+        Route::get('/output-create',[DataInputOutputController::class,'output_create'])->name('datainputoutput.output_create'); //cac don xuat hang
+
+
+        Route::get('/print-pdf/{order_id}',[DataInputOutputController::class,'print_pdf'])->name('order.print_pdf');
+    });
+    //Statistical
+    Route::prefix('/statistical')->group(function(){
+        Route::get('/',[OrderController::class,'index'])->name('order.index');
+        Route::get('/change-status',[OrderController::class,'change_status'])->name('order.change_status');
+        Route::get('/print-pdf/{order_id}',[OrderController::class,'print_pdf'])->name('order.print_pdf');
+    });
+
+    //Warehouse
+    Route::prefix('/kho-hang')->group(function(){
+        Route::get('/',[WarehouseController::class,'index'])->name('warehouse.index');
+        Route::post('/import-quantity/{product_id}',[WarehouseController::class,'import_quantity'])->name('warehouse.import_quantity');
+        Route::post('/search-kho-hang',[WarehouseController::class,'search_product'])->name('warehouse.search_product');
+    });
+
+     //Manager Comment
+    Route::prefix('/binh-luan')->group(function(){
+        Route::get('/',[CommentController::class,'index'])->name('comment.index');
+        Route::get('/change-status',[CommentController::class,'change_status'])->name('comment.change_status');
+        Route::get('/reply-comment',[CommentController::class,'reply_comment'])->name('comment.reply_comment');
+        Route::get('/delete-comment',[CommentController::class,'delete_comment'])->name('comment.delete_comment');
+    });
+
+    //Manager human
+    Route::prefix('/nhan-su')->middleware('check_role_admin')->group(function(){
+        Route::get('/',[AdminController::class,'manager_human_index'])->name('manager_human.index');
+        Route::get('/delete-role',[AdminController::class,'manager_human_delete_role'])->name('manager_human.delete_role');
+        Route::get('/change-role',[AdminController::class,'manager_human_change_role'])->name('manager_human.change_role');
+        Route::get('/change-user-current/{id}',[AdminController::class,'manager_human_change_user_current'])->name('manager_human.change_user_current');
+    });
+
+    //News
+    Route::prefix('/thong-bao')->group(function(){
+        Route::get('/change-status',[AdminController::class,'news_change_status'])->name('news.change_status');
+    });
     
 });
 
@@ -191,9 +242,9 @@ Route::prefix('/checkout')->middleware('verified')->group(function(){
     Route::get('/',[CheckoutController::class,'checkout_show'])->name('checkout.show');
     Route::post('/add-order',[CheckoutController::class,'add_order'])->name('check.add_order');
     Route::get('/lich-su-mua-hang',[CheckoutController::class,'lich_su_mua_hang'])->name('checkout.lich_su_mua_hang');
+    Route::get('/lich-su-mua-hang-filter/{status}',[CheckoutController::class,'lich_su_mua_hang_filter'])->name('checkout.lich_su_mua_hang_filter');
     Route::get('/receive-order',[CheckoutController::class,'receive_order'])->name('checkout.receive_order');
-    Route::get('/detroy-order/{id}',[CheckoutController::class,'detroy_order'])->name('checkout.detroy_order');
-
+    Route::post('/detroy-order/{id}',[CheckoutController::class,'detroy_order'])->name('checkout.detroy_order');
     Route::post('/thanh-toan-vnpay',[CheckoutController::class,'payment_momo'])->name('checkout.payment_momo');
 
     //comment
@@ -205,6 +256,7 @@ Route::prefix('/checkout')->middleware('verified')->group(function(){
     //wish List 
     Route::post('/wish-list',[HomeController::class,'wish_list'])->name('home.wish_list');
     Route::get('/get-wish-list',[HomeController::class,'get_wish_list'])->name('home.get_wish_list');
+    Route::get('/delete-wish-list',[HomeController::class,'delete_wish_list'])->name('home.delete_wish_list');
 });
 
 
@@ -263,3 +315,8 @@ route::get('/low-to-high-category/{slug}',[HomeController::class,'sort_low_to_hi
 route::get('/high-to-low-category/{slug}',[HomeController::class,'sort_high_to_low_category'])->name('sort_high_to_low_category');
 
 
+
+
+// Route::get('qr-code', function () {
+//     return QrCode::size(500)->generate('Welcome to kerneldev.com!');
+// });

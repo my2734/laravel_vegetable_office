@@ -5,17 +5,25 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Models\Tags;
+use App\Models\Product;
+use App\Models\News;
 use Carbon\Carbon;
 
 class TagsController extends Controller
 {
     public function index(){
+        $products = Product::with('product_image','category')->orderBy('updated_at','DESC')->get();
         $tagses = Tags::orderBy('updated_at',"DESC")->get();
-        return view('admin.tags.index',compact('tagses'));
+        $news = News::with('User')->with('User_Info')->get();
+        $total_news = News::where('status',0)->count();
+        return view('admin.tags.index',compact('tagses','news','total_news'));
     }
 
     public function create(){
-        return view('admin.tags.create');
+        $products = Product::with('product_image','category')->orderBy('updated_at','DESC')->get();
+        $news = News::with('User')->with('User_Info')->get();
+        $total_news = News::where('status',0)->count();
+        return view('admin.tags.create',compact('news','total_news'));
     }
 
     public function store(Request $request){
@@ -36,13 +44,17 @@ class TagsController extends Controller
     }
 
     public function delete($id){
+        $products = Product::with('product_image','category')->orderBy('updated_at','DESC')->get();
         Tags::find($id)->delete();
         return redirect()->back();
     }
 
     public function edit($id){
+        $products = Product::with('product_image','category')->orderBy('updated_at','DESC')->get();
         $tags_edit = Tags::find($id);
-        return view('admin.tags.create',compact('tags_edit'));
+        $news = News::with('User')->with('User_Info')->get();
+        $total_news = News::where('status',0)->count();
+        return view('admin.tags.create',compact('tags_edit','news','total_news'));
     }
 
     public function update($id, Request $request){

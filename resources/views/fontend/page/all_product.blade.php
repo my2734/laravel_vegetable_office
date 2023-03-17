@@ -99,6 +99,12 @@
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
                                 <div class="product__item__pic set-bg" data-setbg="{{asset('Uploads/'.$product->image)}}">
+                                <p>
+                                                    <?php 
+                                                        $qr_code = url('san-pham',$product->slug);
+                                                        echo QrCode::size(100)->generate($qr_code);
+                                                    ?>
+                                                </p>
                                     <ul class="product__item__pic__hover">
                                         <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                         <li><a href="{{route('home.product',$product->slug)}}"><i class="fa fa-retweet"></i></a></li>
@@ -110,7 +116,14 @@
                                         <li><i class="fa fa-calendar-o"></i> {{$product->updated_at}}</li>
                                         <li><i class="fa fa-comment-o"></i> {{$product->comment->count()}}</li>
                                     </ul>
-                                    <h6><a class="font-weight-bold" href="{{route('home.product',$product->slug)}}">{{$product->name}}</a></h6>
+                                    <?php 
+                                        $inventory = $product->warehouse->import_quantity - $product->warehouse->export_quantity;
+                                    ?>
+                                    <h6><a class="font-weight-bold" href="{{route('home.product',$product->slug)}}">{{$product->name}}</a>
+                                        @if($inventory <=0 )
+                                            <span>(Hết hàng)</span>
+                                        @endif
+                                    </h6>
                                     <h5>{{number_format($product->price_unit)}}vnđ</h5>
                                 </div>
                             </div>
@@ -129,7 +142,21 @@
                                     <div class="product__discount__item">
                                         <div class="product__discount__item__pic set-bg"
                                             data-setbg="{{asset('Uploads/'.$product->image)}}">
-                                            <div class="product__discount__percent">Sale</div>
+                                           <div class='row'>
+                                                <div class='col'>
+                                                <p>
+                                                    <?php 
+                                                        $qr_code = url('san-pham',$product->slug);
+                                                        echo QrCode::size(100)->generate($qr_code);
+                                                    ?>
+                                                </p>
+                                                </div>
+                                                <div class='col'>
+                                                    <div class="product__discount__percent">Sale</div>
+                                                </div>
+                                            
+                                                
+                                           </div>
                                             <ul class="product__item__pic__hover">
                                                 <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                                 <li><a href="{{route('home.product',$product->slug)}}"><i class="fa fa-retweet"></i></a></li>
@@ -142,7 +169,14 @@
                                                     <li><i class="fa fa-calendar-o"></i> {{$product->updated_at}}</li>
                                                     <li><i class="fa fa-comment-o"></i> {{$product->comment->count()}}</li>
                                             </ul>
-                                            <h6><a class="font-weight-bold" href="{{route('home.product',$product->slug)}}">{{$product->name}}</a></h6>
+                                            <?php 
+                                                $inventory = $product->warehouse->import_quantity - $product->warehouse->export_quantity;
+                                            ?>
+                                            <h6><a class="font-weight-bold" href="{{route('home.product',$product->slug)}}">{{$product->name}}</a>
+                                            @if($inventory <= 0)
+                                                <span>(Hết hàng)</span>
+                                            @endif
+                                            </h6>
                                             <h5>{{number_format($product->price_unit)}}vnđ</h5>
                                         </div>
                                     </div>

@@ -158,6 +158,20 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
 
+
+      <script>
+      $( function() {
+        $( "#datepicker3" ).datepicker({
+          dateFormat :"yy-mm-dd"
+        });
+      } );
+      $( function() {
+        $( "#datepicker4" ).datepicker({
+          dateFormat :"yy-mm-dd"
+        });
+      } );
+      </script>
+
     <script>
       $('.btn_change_status').click(function(){
         var order_id = $(this).attr('id');
@@ -203,6 +217,7 @@
           dateFormat :"yy-mm-dd"
         });
       } );
+      
 
       $('.btn_thong_ke').click(function(){
         const ngaybatdau = $('#datepicker1').val();
@@ -282,6 +297,88 @@
             }
           });
         });
+
+        //Change status comment
+        $(document).ready(function(){
+          $('.btn_change_comment').click(function(){
+            const comment_id = $(this).attr('id');
+           
+            $.get({
+              url: "{{route('comment.change_status')}}",
+              data: {comment_id: comment_id},
+              success: function(data){
+                data = JSON.parse(data);
+                if(data.status == 0){//css chua duyet
+                  $('.btn_change_status'+data['id']).html('Duyệt');
+                  $('.btn_change_status'+data['id']).removeClass('btn-danger');
+                  $('.btn_change_status'+data['id']).addClass('btn-primary');
+                  $('.row_change_status'+data['id']).css({"background-color":"#E8E9EB"});
+                }else{ //css da duyet
+                  $('.btn_change_status'+data['id']).html('Bỏ duyệt');
+                  $('.btn_change_status'+data['id']).removeClass('btn-primary');
+                  $('.btn_change_status'+data['id']).addClass('btn-danger');
+                  $('.row_change_status'+data['id']).css({"background-color":""});
+                }
+              }
+            });
+          });
+
+          //change status news
+          $('.change_status_news').click(function(event){
+            event.preventDefault();
+            const news_id = $(this).attr('id');
+            const href = $(this).attr('href');
+            $.get({
+              url:"{{route('news.change_status')}}",
+              data: {news_id:news_id},
+              success: function(data){
+                data = JSON.parse(data);
+                $('.row_news'+data['id']).css({"background-color": "#F7F7F7"});
+                $('#total_news').html(data['total_news']);
+              }
+            });
+          });
+
+          //reply comment
+          $('.btn_reply_comment').click(function(){
+            const comment_id = $(this).attr('id');
+            const reply = $('.text_reply_comment'+comment_id).val();
+
+            $.get({
+              url: "{{route('comment.reply_comment')}}",
+              data: {comment_id:comment_id, reply: reply},
+              success: function(data){
+                data = JSON.parse(data);
+                if(data.status == 0){//css chua duyet
+                  $('.btn_change_status'+data['id']).html('Duyệt');
+                  $('.btn_change_status'+data['id']).removeClass('btn-danger');
+                  $('.btn_change_status'+data['id']).addClass('btn-primary');
+                  $('.row_change_status'+data['id']).css({"background-color":"#E8E9EB"});
+                }else{ //css da duyet
+                  $('.btn_change_status'+data['id']).html('Bỏ duyệt');
+                  $('.btn_change_status'+data['id']).removeClass('btn-primary');
+                  $('.btn_change_status'+data['id']).addClass('btn-danger');
+                  $('.row_change_status'+data['id']).css({"background-color":""});
+                }
+              }
+            });
+          });
+
+          $('.btn_delete_comment').click(function(){
+            const comment_id = $(this).attr('id');
+            $.get({
+              url:"{{route('comment.delete_comment')}}",
+              data: {comment_id:comment_id},
+              success: function(data){
+                data = JSON.parse(data);
+                console.log(data);
+                $('.row_change_status'+data['id']).remove();
+              } 
+            })
+          })
+        });
+
+
       });
     </script>
 
@@ -347,7 +444,144 @@
             }
           });
         });
+        //delete user manager human
+        $('.btn_delete_manager_human').click(function(){
+            const id = $(this).attr('id');
+
+            $.get({
+              url:"{{route('manager_human.delete_role')}}",
+              data: {id: id},
+              success: function(data){
+                
+                $('.row_manger_human'+data).remove();
+              }
+            });
+          });
+
+        
+
+        $('.delete').click(function(){
+          $("#table_input_create tbody tr").each(function(){
+              var isChecked = $(this).find('input[type="checkbox"]').is(":checked");
+              var tableSize = $(".table tbody tr").length;
+              if(tableSize == 1){
+                  alert('All rows cannot be deleted.');
+              }else if(isChecked){
+                  $(this).remove();
+              }
+          });
+        });
+
+        $('.btn_authorize_manager_human').click(function(){
+          const id = $(this).attr('id');
+
+          let role = ''
+
+          let role_admin = 0;
+
+          if($('.input_role_admin'+id).attr('checked')){ //admin
+            role_admin = 1;
+            role = 'Admin'
+          }else{
+            if($('.input_role_staff'+id).attr('checked')){ //staff
+              role_staff = 1;
+              role = 'Staff';
+            }
+          }
+
+          $.get({
+            url:"{{route('manager_human.change_role')}}",
+            data: {id: id, role: role},
+            success: function(data){
+              data = JSON.parse(data);
+              $('.td_role_manager_human'+data['id']).html(data['role']);
+              $('#message_change_role_manager_human_success').html(`<div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Chúc mừng bạn đã cập nhật phân quyền thành công!</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>`)
+            }
+          })
+
+
+         
+         
+        });
+
+        $('.input_role_admin').change(function(){
+          if($(this).attr('checked')){
+            $(this).removeAttr('checked');
+          }else{
+            $( this ).attr( 'checked', true )
+          }
+        });
+        $('.input_role_staff').change(function(){
+          if($(this).attr('checked')){
+            $(this).removeAttr('checked');
+          }else{
+            $( this ).attr( 'checked', true )
+          }
+        }); 
+
+        
+
+        $('.quantity_keypress').keyup(function() {
+          alert($(this).val());
+        });
+
+
       });
+
+
+
+
+      $(document).ready(function(){
+            // Add new row
+            $("#add-row").click(function(){
+                var firstname = $("#firstname").val();
+                var lastname = $("#lastname").val();
+                var email = $("#email").val();
+                $(".table tbody tr").last().after(
+                    '<tr class="fadetext">'+
+                        '<td><input type="checkbox" id="select-row"></td>'+
+                        '<td>'+firstname+'</td>'+
+                        '<td>'+lastname+'</td>'+
+                        '<td>'+email+'</td>'+
+                    '</tr>'
+                );
+            })
+
+            // Select all checkbox
+            $("#select-all").click(function(){
+                var isSelected = $(this).is(":checked");
+                if(isSelected){
+                    $(".table tbody tr").each(function(){
+                        $(this).find('input[type="checkbox"]').prop('checked', true);
+                    })
+                }else{
+                    $(".table tbody tr").each(function(){
+                        $(this).find('input[type="checkbox"]').prop('checked', false);
+                    })
+                }
+            });
+            
+            // Remove selected rows
+            $("#remove-row").click(function(){
+                $(".table tbody tr").each(function(){
+                    var isChecked = $(this).find('input[type="checkbox"]').is(":checked");
+                    var tableSize = $(".table tbody tr").length;
+                    if(tableSize == 1){
+                        alert('All rows cannot be deleted.');
+                    }else if(isChecked){
+                        $(this).remove();
+                    }
+                });
+            });
+            
+        })
+
+
     </script>
   
 

@@ -26,15 +26,15 @@
                     @foreach($list_user as $key => $user)
                     <tr>
                         <th scope="row">{{($key+1)}}</th>
-                        <td>{{$user->full_name}}</td>
+                        <td>{{$user->User_Info->full_name}}</td>
                         <td>
-                            @if(isset($user->avatar))
-                            <img height="50" width="50" style="object-fit:cover" src="{{asset('Uploads/'.$user->avatar)}}" alt="">
+                            @if(isset($user->User_Info->avatar))
+                            <img height="50" width="50" style="object-fit:cover" src="{{asset('Uploads/'.$user->User_Info->avatar)}}" alt="">
                             @else
                             <img height="50" width="50" style="object-fit:cover" src="https://i.pinimg.com/280x280_RS/2e/45/66/2e4566fd829bcf9eb11ccdb5f252b02f.jpg" alt="">
                             @endif
                         </td>
-                        <td>{{$user->phone}}</td>
+                        <td>{{$user->User_Info->phone}}</td>
                         <td>
                            {{$user->email}}
                         </td>

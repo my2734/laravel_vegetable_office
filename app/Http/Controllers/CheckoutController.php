@@ -5,7 +5,11 @@ use App\Models\Category;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\User;
+use App\Models\User_Info;
 use App\Models\Statistic;
+use App\Models\Warehouse;
+use App\Models\Wish_List;
+use App\Models\News;
 use Mail;
 use Illuminate\Http\Request;
 use Cart;
@@ -14,13 +18,26 @@ use Auth;
 class CheckoutController extends Controller
 {
     public function checkout_show(){
+        if(Auth::id()){
+            $user = User::find(Auth::id());
+            $user_info = User_Info::where('email', $user->email)->first();
+             if(!$user_info->user_id){
+                 $user_info->user_id = Auth::id();
+                 $user_info->save();
+             }
+             Auth::user()->avatar = $user_info->avatar;
+         }
         $categories = Category::where('status',1)->get();
         $carts = Cart::content();
         $sub_total = Cart::subtotal();
-        $user_buy = User::find(Auth::user()->id);
+        $user_buy = User_Info::where('user_id',$user->id)->first();
         // echo json_encode($user_buy);
+        $count_wish_list = 0;
+        if(Auth::id()){
+            $count_wish_list = Wish_List::where('user_id',Auth::user()->id)->count();
+        }
 
-        return view('fontend.page.checkout',compact('categories','carts','sub_total','user_buy'));
+        return view('fontend.page.checkout',compact('categories','carts','sub_total','user_buy','count_wish_list'));
     }
 
     public function payment_vnpay(){
@@ -168,6 +185,7 @@ class CheckoutController extends Controller
 
     public function add_order(Request $request){
        
+       
         $request->validate([
             'full_name'        => 'required',
             'country'           => 'required',
@@ -219,6 +237,12 @@ class CheckoutController extends Controller
             $order_detail->save();
             $total += $order_detail->pro_price* $order_detail->pro_quantity;
             $quantity_of_cart +=  $order_detail->pro_quantity;
+
+            //update kho hang
+            $warehouse_item = Warehouse::where('product_id',$order_detail->pro_id)->first();
+            $warehouse_item->export_quantity = $warehouse_item->export_quantity+$order_detail->pro_quantity;
+            $warehouse_item->save();
+
         }
 
         //add Statistic
@@ -227,6 +251,7 @@ class CheckoutController extends Controller
         $profit = $total*0.1;
         $quantity = $quantity_of_cart;
         $statistic_item = Statistic::where('order_date',$order_date)->first();
+       
         if($statistic_item!=null){
             $statistic_item->sales = $sales + $statistic_item->sales;
             $statistic_item->profit = $profit + $statistic_item->profit;
@@ -242,6 +267,8 @@ class CheckoutController extends Controller
             $statistic->total_order=1;
             $statistic->save();
         }
+
+        
        
       
         //Gui mail 
@@ -254,6 +281,7 @@ class CheckoutController extends Controller
             $email->to($user->email,$user->user_name);
         });
         Cart::destroy();
+        $total =  $total * 100;
         if(isset($request->method_payment) && $request->method_payment=='vnpay'){
             $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
             $vnp_Returnurl = "http://127.0.0.1:8001/checkout/lich-su-mua-hang";
@@ -263,7 +291,7 @@ class CheckoutController extends Controller
             $vnp_TxnRef = $order->id;; //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
             $vnp_OrderInfo = 'Thanh toan demo';
             $vnp_OrderType = 'billpayment';
-            $vnp_Amount = $total * 100;
+            $vnp_Amount = $total;
             $vnp_Locale = 'vn';
             $vnp_BankCode = 'NCB';
             $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
@@ -391,6 +419,15 @@ class CheckoutController extends Controller
             // return redirect()->back();
                 die();
         }
+
+
+        $news = new News();
+        $news->user_id = Auth::id();
+        $news->topic = "order";
+        $news->link = "order.index";
+        $news->created_at =  Carbon::now();
+        $news->save();
+       
        
         return redirect()->route('checkout.lich_su_mua_hang')->with('order_success','Đặt hàng thành công, Vui lòng kiểm tra lại Email!');
 
@@ -398,26 +435,83 @@ class CheckoutController extends Controller
     }
 
     public function lich_su_mua_hang(){
+        if(Auth::id()){
+            $user = User::find(Auth::id());
+            $user_info = User_Info::where('email', $user->email)->first();
+             if(!$user_info->user_id){
+                 $user_info->user_id = Auth::id();
+                 $user_info->save();
+             }
+             Auth::user()->avatar = $user_info->avatar;
+         }
         $categories = Category::where('status',1)->get();
         $user_id = Auth::user()->id;
         $orders = Order::where('user_id',$user_id)->with('OrderDetail')->orderBy('id','DESC')->get();
         // return response()->json($orders);
-        return view('fontend.page.lich_su_mua_hang',compact('categories','orders'));
+        $count_wish_list = 0;
+        if(Auth::id()){
+            $count_wish_list = Wish_List::where('user_id',Auth::user()->id)->count();
+        }
+        return view('fontend.page.lich_su_mua_hang',compact('categories','orders','count_wish_list'));
     }
 
     public function receive_order(Request $request){
+        if(Auth::id()){
+            $user = User::find(Auth::id());
+            $user_info = User_Info::where('email', $user->email)->first();
+             if(!$user_info->user_id){
+                 $user_info->user_id = Auth::id();
+                 $user_info->save();
+             }
+             Auth::user()->avatar = $user_info->avatar;
+         }
         $order_id = $request->order_id;
         $order = Order::find($order_id);
         $order->status = 2;
         $order->save();
     }
 
-    public function detroy_order(Request $request){
-        $order_id = $request->id;
+    public function detroy_order(Request $request,$id){
+        if(Auth::id()){
+            $user = User::find(Auth::id());
+            $user_info = User_Info::where('email', $user->email)->first();
+             if(!$user_info->user_id){
+                 $user_info->user_id = Auth::id();
+                 $user_info->save();
+             }
+             Auth::user()->avatar = $user_info->avatar;
+         }
+        $order_id = $id;
+       
         //delete order_dtail
-        OrderDetail::where('order_id',$order_id)->delete();
+        // OrderDetail::where('order_id',$order_id)->delete();
         //delete order
-        Order::find($order_id)->delete();
-        return redirect()->back()->with('message_success','Xóa đơn hàng thành công');
+        $order = Order::find($order_id);
+        $order->status = -1;
+        $order->reason = $request->reason;
+        $order->save();
+        return redirect()->back()->with('message_success','Hủy đơn hàng thành công');
+    }
+
+    public function lich_su_mua_hang_filter($status){
+    
+        if(Auth::id()){
+            $user = User::find(Auth::id());
+            $user_info = User_Info::where('email', $user->email)->first();
+             if(!$user_info->user_id){
+                 $user_info->user_id = Auth::id();
+                 $user_info->save();
+             }
+             Auth::user()->avatar = $user_info->avatar;
+         }
+        $categories = Category::where('status',1)->get();
+        $user_id = Auth::user()->id;
+        $orders = Order::where('user_id',$user_id)->where('status',$status)->with('OrderDetail')->orderBy('id','DESC')->get();
+        // return response()->json($orders);
+        $count_wish_list = 0;
+        if(Auth::id()){
+            $count_wish_list = Wish_List::where('user_id',Auth::user()->id)->count();
+        }
+        return view('fontend.page.lich_su_mua_hang',compact('categories','orders','count_wish_list'))->with("message","Hello ca nha yeu");
     }
 }

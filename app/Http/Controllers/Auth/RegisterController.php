@@ -8,6 +8,8 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Carbon;
+use App\Models\User_Info;
 
 class RegisterController extends Controller
 {
@@ -64,10 +66,45 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+
+        // $user = User::create([
+        //     'id' => 
+        //     'name' => $data['name'],
+        //     'email' => $data['email'],
+        //     'password' => Hash::make($data['password']),
+        
+        // ]);
+
+        // echo (Carbon::now()->timestamp);
+        // die();
+
+        $user_info = User_Info::create([
             'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+            'user_id' => Carbon::now()->timestamp,
+            'email'=>$data['email'],
         ]);
+
+
+        // json_encode($user_info);
+        // die();
+
+        $user = new User();
+        $user->id = $user_info->user_id;
+        $user->name = $data['name'];
+        $user->email = $data['email'];
+        $user->password = Hash::make($data['password']);
+        $user->save();
+
+        // User_Info::create([
+        //     'name' => $data['name'],
+        //     'user_id' => $user->id,
+        //     'email'=>$data['email'],
+        // ]);
+
+        return $user;
+        
+        
+
+        
     }
 }

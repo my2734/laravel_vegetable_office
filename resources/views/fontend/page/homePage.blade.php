@@ -97,6 +97,12 @@
                 <div class="col-lg-3 col-md-4 col-sm-6 mix demo{{$product->cat_id}} fresh-meat">
                     <div class="featured__item">
                         <div class="featured__item__pic set-bg" data-setbg="{{asset('Uploads/'.$product->image)}}">
+                        <p>
+                            <?php 
+                                $qr_code = url('san-pham',$product->slug);
+                                echo QrCode::size(100)->generate($qr_code);
+                            ?>
+                        </p>
                             <ul class="featured__item__pic__hover">
                                 <li> 
                                     <form method="POST" action="{{route('home.wish_list')}}">
@@ -116,11 +122,19 @@
                                     <li><i class="fa fa-calendar-o"></i> {{$product->updated_at}}</li>
                                     <li><i class="fa fa-comment-o"></i> {{$product->comment->count()}}</li>
                             </ul>
-                            <h6><a class="font-weight-bold" href="{{route('home.product',$product->slug)}}">{{$product->name}}</a></h6>
+                            <?php 
+                                $inventory = $product->warehouse->import_quantity - $product->warehouse->export_quantity;
+                            ?>
+                            <h6><a class="font-weight-bold" href="{{route('home.product',$product->slug)}}">{{$product->name}}</a>
+                                @if($inventory <= 0)
+                                    <span>(Hết hàng)</span>
+                                @endif
+                            </h6>
                             <h5>{{number_format($product->price_unit)}}vnđ</h5>
                         </div>
                     </div>    
                 </div>
+                
                 @endforeach
             </div>
         </div>
@@ -161,7 +175,14 @@
                                         <img height="110px" width="110px" style="object-fit: cover;" src="{{asset('Uploads/'.$product->image)}}" alt="">
                                     </div>
                                     <div class="latest-product__item__text">
-                                        <h6>{{$product->name}}</h6>
+                                        <?php 
+                                            $inventory = $product->warehouse->import_quantity - $product->warehouse->export_quantity;
+                                        ?>
+                                        <h6>{{$product->name}}
+                                            @if($inventory <= 0)
+                                                <span>(Hết hàng)</span>
+                                            @endif
+                                        </h6>
                                         <span>{{number_format($product->price_unit)}}vnđ</span>
                                     </div>
                                 </a>
@@ -184,7 +205,11 @@
                                             <img height="110px" width="110px" style="object-fit: cover;" src="{{asset('Uploads/'.$product->image)}}" alt="">
                                         </div>
                                         <div class="latest-product__item__text">
-                                            <h6>{{$product->name}}</h6>
+                                        <?php 
+                                            $inventory = $product->warehouse->import_quantity - $product->warehouse->export_quantity;
+                                        ?>
+                                            <h6>{{$product->name}} @if($inventory <= 0)<span>(Hết hàng)</span>@endif
+                                            </h6>
                                             <span>{{number_format($product->price_unit)}}vnđ</span>
                                         </div>
                                     </a>

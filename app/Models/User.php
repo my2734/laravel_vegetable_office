@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\User_Info;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -41,4 +42,8 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function User_Info(){
+        return $this->hasOne(User_Info::class,'user_id', 'id');
+    }
 }

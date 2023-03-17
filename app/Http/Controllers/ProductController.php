@@ -5,6 +5,8 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\Product_Image;
 use App\Models\CommentPro;
+use App\Models\Warehouse;
+use App\Models\News;
 use GuzzleHttp\Handler\Proxy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -12,16 +14,23 @@ use Illuminate\Support\Str;
 class ProductController extends Controller
 {
     public function index(){
+        $categories = Category::get();
+        $products = Product::with('product_image','category')->orderBy('updated_at','DESC')->get();
         $products = Product::with('product_image','category')->orderBy('updated_at','DESC')->paginate(20);
         // return response()->json($products[0]->category->name);
         $product_quantity = Product::count();
+        $news = News::with('User')->with('User_Info')->get();
+        $total_news = News::where('status',0)->count();
         
-        return view('admin.product.index',compact('products','product_quantity'));
+        return view('admin.product.index',compact('products','product_quantity','categories','news','total_news'));
     }
 
     public function create(){
+        $products = Product::with('product_image','category')->orderBy('updated_at','DESC')->get();
         $categories = Category::where('status',1)->get();
-        return view('admin.product.create',compact('categories'));
+        $news = News::with('User')->with('User_Info')->get();
+        $total_news = News::where('status',0)->count();
+        return view('admin.product.create',compact('categories','news','total_news'));
     }
 
     public function store(Request $request){
@@ -30,13 +39,13 @@ class ProductController extends Controller
         $request->validate([
             'name'                  => 'required',
             'price_unit'            => 'required|numeric',
-            'quantity'              => 'required|numeric',
+            // 'quantity'              => 'required|numeric',
             'images'                 => 'required'
         ],[
             'name.required'         => 'Vui lòng nhập tên sản phẩm',
             'price_unit.required'   => 'Vui lòng nhập giá sản phẩm',
             'price_unit.numeric'    => 'Nhập sai định dạng',
-            'quantity.required'     => 'Vui lòng nhập số lượng',
+            // 'quantity.required'     => 'Vui lòng nhập số lượng',
             'quantity.numeric'      => 'Nhập sai định dạng',
             'images'                => 'Vui lòng nhập hình ảnh sản phẩm'
         ]);
@@ -48,7 +57,7 @@ class ProductController extends Controller
         $product->price_promotion = (int)$request->price_promotion;
         $product->description = $request->description;
         $product->status = isset($request->status) ? 1 : 0;
-        $product->quantity = isset($request->quantity) ? (int)($request->quantity) : 0;
+        // $product->quantity = isset($request->quantity) ? (int)($request->quantity) : 0;
         $product->cat_id = $request->cat_id;
         $product->top_rate = isset($request->top_rate) ? 1 : 0;
         $product->created_at = Carbon::now();
@@ -76,6 +85,9 @@ class ProductController extends Controller
         }
       
         $product->save();
+        $warehouse = new Warehouse();
+        $warehouse->product_id = $product->id;
+        $warehouse->save();
         return redirect()->route('product.index');
     }
 
@@ -96,7 +108,9 @@ class ProductController extends Controller
     public function edit($id){
         $product_edit = Product::find($id);
         $categories = Category::where('status',1)->get();
-        return view('admin.product.create',compact('categories','product_edit'));
+        $news = News::with('User')->with('User_Info')->get();
+        $total_news = News::where('status',0)->count();
+        return view('admin.product.create',compact('categories','product_edit','news','total_news'));
     }
 
     public function update($id,Request $request){
@@ -105,14 +119,11 @@ class ProductController extends Controller
             'name'          => 'required',
             'price_unit'    => 'required|numeric',
             'price_promotion'=> 'numeric',
-            'quantity'      => 'required|numeric'
         ],[
             'name.required'         => 'Vui lòng nhập tên sản phẩm',
             'price_unit.required'   => 'Vui lòng nhập giá sản phẩm',
             'price_unit.numeric'     => 'Nhập sai định dạng',
             'price_promotion.numeric'=> 'Nhập sai định dạng',
-            'quantity.required'     => 'Nhập số lượng sản phẩm',
-            'quantity.numeric'       => 'Nhập sai định dạng'
         ]);
         $product = Product::find($id);
         $product->name = $request->name;
@@ -184,6 +195,13 @@ class ProductController extends Controller
         $comment->product_id = $request->product_id;
         $comment->content = trim($request->input('content'));
         $comment->save();
+
+        $news = new News();
+        $news->user_id = $request->user_id;
+        $news->topic = "comment";
+        $news->link = "comment.index";
+        $news->created_at =  Carbon::now();
+        $news->save();
         return redirect()->back();
 //        return response()->json($comment);
     }
@@ -197,17 +215,21 @@ class ProductController extends Controller
 
 
     public function edit_comment($id){
+        $products = Product::with('product_image','category')->orderBy('updated_at','DESC')->get();
         $comment_edit =  CommentPro::find($id);
         $categories = Category::where('status',1)->get();
 //        return response()->json($comment_delete->Product);
         $product_slug = Product::with('product_image')->where('slug',$comment_edit->Product->slug)->first();
         $product_relate = Product::where('cat_id',$product_slug->cat_id)->where('id','<>',$product_slug->id)->get();
         $comments =  CommentPro::where('product_id',$product_slug->id)->with('LoyalCustomer')->get();
+        $news = News::with('User')->with('User_Info')->get();
+        $total_news = News::where('status',0)->count();
 
-        return view('fontend.page.product',compact('categories','product_slug','product_relate','comments','comment_edit'));
+        return view('fontend.page.product',compact('categories','product_slug','product_relate','comments','comment_edit','news','total_news'));
     }
 
     public function update_comment($id,Request $request){
+        $products = Product::with('product_image','category')->orderBy('updated_at','DESC')->get();
         $comment_edit = CommentPro::find($id);
         $comment_edit->content = trim($request->input('content'));
         $comment_edit->save();
@@ -216,7 +238,9 @@ class ProductController extends Controller
         $product_slug = Product::with('product_image')->where('slug',$comment_edit->Product->slug)->first();
         $product_relate = Product::where('cat_id',$product_slug->cat_id)->where('id','<>',$product_slug->id)->get();
         $comments =  CommentPro::where('product_id',$product_slug->id)->with('LoyalCustomer')->get();
-        return view('fontend.page.product',compact('categories','product_slug','product_relate','comments'));
+        $news = News::with('User')->with('User_Info')->get();
+        $total_news = News::where('status',0)->count();
+        return view('fontend.page.product',compact('categories','product_slug','product_relate','comments','news','total_news'));
     }
 
     public function change_status(){
@@ -235,9 +259,25 @@ class ProductController extends Controller
     }
 
     public function search_product(Request $request){
+        $products = Product::with('product_image','category')->orderBy('updated_at','DESC')->get();
         $key = $request->search_key;
         $products = Product::with('product_image','category')->where('name','LIKE',"%{$key}%")->orderBy('updated_at','DESC')->paginate(20);
-        return view('admin.product.index',compact('products'));
+        $categories = Category::get();
+        $news = News::with('User')->with('User_Info')->get();
+        $total_news = News::where('status',0)->count();
+        return view('admin.product.index',compact('products','categories','news','total_news'));
+    }
+
+    function filter_by_category(Request $request){
+        $cat_id = $request->cat_id;
+        $categories = Category::get();
+        $products = Product::with('product_image','category')->orderBy('updated_at','DESC')->get();
+        $products = Product::where('cat_id',$cat_id)->with('product_image','category')->orderBy('updated_at','DESC')->paginate(20);
+        // return response()->json($products[0]->category->name);
+        $product_quantity = Product::count();
+        $news = News::with('User')->with('User_Info')->get();
+        $total_news = News::where('status',0)->count();
+        return view('admin.product.index',compact('products','product_quantity','categories','news','total_news'));
     }
 
 }

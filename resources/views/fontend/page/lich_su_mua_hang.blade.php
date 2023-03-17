@@ -13,7 +13,12 @@
             <div class="col-md-12 col-sm-12  ">
                 <div class="x_panel">
                    <h4 class="my-4 font-weight-bold" id="receive_order">Lịch sử mua hàng</h4>
-                    <div class="x_content">
+                    <a href="{{route('checkout.lich_su_mua_hang_filter',0)}}" style="cursor:pointer;" class="ml-2 badge badge-primary text-white">Đơn hàng chờ xác nhận</a>
+                    <a href="{{route('checkout.lich_su_mua_hang_filter',1)}}" style="cursor:pointer;" class="ml-2 badge badge-secondary text-white">Đơn hàng đang giao</a>
+                    <a href="{{route('checkout.lich_su_mua_hang_filter',2)}}" style="cursor:pointer;" class="ml-2 badge badge-success text-white">Đơn hàng đã nhận</a>
+                    <a href="{{route('checkout.lich_su_mua_hang_filter',-1)}}" style="cursor:pointer;" class="ml-2 badge badge-danger text-white">Đơn hàng đã hủy</a>
+                    
+                    <div class="x_content mt-4">
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
@@ -73,10 +78,40 @@
                                     </td>
                                     <td>{{$order->created_at}}</td>
                                     <td>
-                                        @if($order->status==0) Chờ xác nhận <br><a href="{{route('checkout.detroy_order',$order->id)}}" class="btn btn-sm btn-danger text-white">Hủy đơn hàng</a>
+                                        @if($order->status==0) Chờ xác nhận <br><button data-toggle="modal" data-target="#delete_order" class="btn btn-sm btn-danger text-white">Hủy đơn hàng</button>
                                         @elseif($order->status==1) <button id="{{$order->id}}" class="btn btn-sm btn-primary receive_order">Nhận hàng</button>
-                                        @else Đã nhận hàng
+                                        @elseif($order->status == 2) Đã nhận hàng
+                                        @else Đã hủy
+                                        <br>
+                                        <h5>Lí do:</h5>
+                                        <p>{{ $order->reason }}</p>
                                         @endif
+
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="delete_order" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <form action="{{route('checkout.detroy_order',$order->id)}}" method="POST">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Bạn chắn chắc muốn hủy đơn hàng này</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <label>Lý do hủy đơn hàng:</label>
+                                                            <input type="text" name="reason" class="form-control" placeholder="">
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Không</button>
+                                                            <button type="submit" class="btn btn-danger text-white">Chắc chắn</a>
+                                                        </div>
+                                                        @csrf
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                                 @endforeach

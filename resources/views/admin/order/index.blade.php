@@ -5,21 +5,25 @@
         <div class="x_title">
             <h2 class="font-weight-bold">Danh sách đơn hàng</h2>
             <ul class="nav navbar-right panel_toolbox">
-                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                <li><a href="{{route('order.filter_status',0)}}"><button  class="btn btn-sm btn-primary">Đơn hàng chờ xác nhận</button></a>
                 </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="#">Settings 1</a>
-                        <a class="dropdown-item" href="#">Settings 2</a>
-                    </div>
+                <li class="dropdown ml-auto">
+                    
+                    <a href="{{route('order.filter_status',1)}}"><button  class="btn btn-sm btn-danger">Đơn hàng đang giao</button></a>
+                    
+                    <!-- <a class="btn btn-sm btn-danger">Đơn hàng đang giao</a>
+                    <a class="btn btn-sm btn-success">Đơn hàng đã giao</a> -->
                 </li>
-                <li><a class="close-link"><i class="fa fa-close"></i></a>
+                <li><a href="{{route('order.filter_status',2)}}"><button  class="btn btn-sm btn-success">Đơn hàng đã giao</button></a>
+                </li>
+                <li><a href="{{route('order.filter_status',-1)}}"><button  class="btn btn-sm btn-secondary">Đơn hàng đã hủy</button></a>
                 </li>
             </ul>
+           
             <div class="clearfix"></div>
         </div>
         <div class="x_content">
+            <h5>{{isset($message) ? $message : ""}}</h5>
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -83,7 +87,10 @@
                         <td>
                             @if($order->status==0) <button id="{{$order->id}}" class="btn btn-primary btn-sm btn_change_status">Xác nhận</button>
                             @elseif($order->status == 1) <p>Đang giao hàng</p>
-                            @else <p>Đã nhận hàng</p>
+                            @elseif($order->status == 2) <p>Đã nhận hàng</p>
+                            @else <p>Đã hủy</p>
+                                <h6>Lí do:</h6>
+                                <p>{{ $order->reason }}</p>
                             @endif
                         </td>
                     </tr>

@@ -4,21 +4,30 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\CategoryOfBlog;
+use App\Models\Product;
+use App\Models\News;
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
 
 class CategoryOfBlogController extends Controller
 {
     public function index(){
+        $products = Product::with('product_image','category')->orderBy('updated_at','DESC')->get();
         $category_of_blogs = CategoryOfBlog::orderBy('updated_at','DESC')->get();
-        return view('admin.category_of_blog.index',compact('category_of_blogs'));
+        $news = News::with('User')->with('User_Info')->get();
+        $total_news = News::where('status',0)->count();
+        return view('admin.category_of_blog.index',compact('category_of_blogs','news','total_news'));
     }
 
     public function create(){
-        return view('admin.category_of_blog.create');
+        $products = Product::with('product_image','category')->orderBy('updated_at','DESC')->get();
+        $news = News::with('User')->with('User_Info')->get();
+        $total_news = News::where('status',0)->count();
+        return view('admin.category_of_blog.create',compact('news','total_news'));
     }
 
     public function store(Request $request){
+        $products = Product::with('product_image','category')->orderBy('updated_at','DESC')->get();
         $request->validate([
             'name'  => 'required'
         ],[
@@ -35,12 +44,14 @@ class CategoryOfBlogController extends Controller
     }
 
     public function delete($id){
+        $products = Product::with('product_image','category')->orderBy('updated_at','DESC')->get();
         $category_of_blog = CategoryOfBlog::find($id);
         $category_of_blog->delete();
         return redirect()->route('category_of_blog.index');
     }
 
     public function edit($id){
+        $products = Product::with('product_image','category')->orderBy('updated_at','DESC')->get();
         $category_of_blog_edit = CategoryOfBlog::find($id);
         return view('admin.category_of_blog.create',compact('category_of_blog_edit'));
     }

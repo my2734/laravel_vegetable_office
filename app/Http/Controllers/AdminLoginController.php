@@ -79,6 +79,7 @@ class AdminLoginController extends Controller
             // echo "dang nhap thanh cong";
             // die();
             $request->session()->put('admin.name',$admin->name);
+            $request->session()->put('admin.id',$admin->id);
             
             return redirect()->route('admin.index')->with('message_success','Bạn đã đăng nhập thành công');
         } else {

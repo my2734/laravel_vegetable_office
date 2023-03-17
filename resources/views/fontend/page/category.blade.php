@@ -99,7 +99,14 @@
                                         <li><i class="fa fa-calendar-o"></i> {{$product->updated_at}}</li>
                                         <li><i class="fa fa-comment-o"></i> {{$product->comment->count()}}</li>
                                     </ul>
-                                    <h6><a class="font-weight-bold" href="{{route('home.product',$product->slug)}}">{{$product->name}}</a></h6>
+                                    <?php 
+                                        $inventory = $product->warehouse->import_quantity- $product->warehouse->export_quantity;
+                                    ?>
+                                    <h6><a class="font-weight-bold" href="{{route('home.product',$product->slug)}}">{{$product->name}}</a>
+                                        @if($inventory <=0)
+                                            <span>(Hết hàng)</span>
+                                        @endif
+                                    </h6>
                                     <h5>{{number_format($product->price_unit)}}vnđ</h5>
                                 </div>
                             </div>
@@ -131,7 +138,14 @@
                                                     <li><i class="fa fa-calendar-o"></i> {{$product->updated_at}}</li>
                                                     <li><i class="fa fa-comment-o"></i> {{$product->comment->count()}}</li>
                                             </ul>
-                                            <h6><a class="font-weight-bold" href="{{route('home.product',$product->slug)}}">{{$product->name}}</a></h6>
+                                            <?php 
+                                                $inventory = $product->warehouse->import_quantity - $product->warehouse->export_quantity;
+                                            ?>
+                                            <h6><a class="font-weight-bold" href="{{route('home.product',$product->slug)}}">{{$product->name}}</a>
+                                                @if($inventory <= 0 )
+                                                    <span>(Hết hàng)</span>
+                                                @endif
+                                            </h6>
                                             <h5>{{number_format($product->price_unit)}}vnđ</h5>
                                         </div>
                                     </div>

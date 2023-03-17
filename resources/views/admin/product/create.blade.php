@@ -43,12 +43,12 @@
                         
                     </div>
                     
-                    <div class="col-md-6 col-sm-6 form-group">
+                    <!-- <div class="col-md-6 col-sm-6 form-group">
                         <input type="text" class="form-control" value="{{isset($product_edit) ? $product_edit->quantity : old('quantity') }}" name="quantity" id="inputSuccess2" placeholder="Số lượng">
                         @if($errors->has('quantity'))
                             <span class="text-danger">{{$errors->first('quantity')}}</span>
                         @endif
-                    </div>
+                    </div> -->
                     <div class="col-md-6 col-sm-6 form-group">
                         <select class="select2_single form-control" name="cat_id" >
                             @foreach($categories as $category)
@@ -61,7 +61,7 @@
                         </select>
                         
                     </div>
-                    <div class="col-md-6 col-sm-6 form-group">
+                    <div class="col-md-12 col-sm-12 form-group">
                         <div class="custom-file">
                             <input type="file" name="images[]" class="custom-file-input" id="customFile" multiple>
                             <label class="custom-file-label" for="customFile">{{isset($product_edit) ? "Đã có ảnh" : "Chọn ảnh"}}</label>
