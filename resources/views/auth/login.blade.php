@@ -38,7 +38,7 @@
                                     </a>
                                 @endif
                                 <div class="d-grid">
-                                    <button class="btn btn-primary btn-sm btn-login text-uppercase fw-bold" type="submit">Đăng nhập</button>
+                                    <button class="site-btn btn-sm btn-login text-uppercase fw-bold" type="submit">Đăng nhập</button>
                                     <a href="{{route('register')}}" class="btn btn-secondary text-white float-right btn-sm btn-login text-uppercase fw-bold" >Đăng ký</a>
                                 </div>
                                 <hr class="my-4">

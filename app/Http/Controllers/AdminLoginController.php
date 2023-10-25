@@ -68,6 +68,10 @@ class AdminLoginController extends Controller
             'password' => $request->password,
         ];
 
+
+        // echo json_encode($arr);
+        // die();
+
         if (Auth::guard('admin')->attempt($arr)) {
            
             $admin = Admin::where('email',$request->email)->first();

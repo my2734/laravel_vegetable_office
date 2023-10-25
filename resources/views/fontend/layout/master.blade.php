@@ -9,6 +9,7 @@
         <title>Ogani | Template</title>
         <!-- Google Font -->
         <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+        <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
         <!-- Css Styles -->
         <link rel="stylesheet" href="{{asset('fontend/css/bootstrap.min.css')}}" type="text/css">
         <link rel="stylesheet" href="{{asset('fontend/css/font-awesome.min.css')}}" type="text/css">
@@ -26,15 +27,19 @@
             color: #1c1c1c;
             font-size: 15px;
             }
+
+            .header-menu-item-active{
+                color: #7fad39 !important;
+            }
         </style>
     </head>
-    <body>
+    <body style="user-select: none;">
         <!-- Page Preloder -->
         <div id="preloder">
             <div class="loader"></div>
         </div>
         <!-- Header Section Begin -->
-        <header class="header">
+        <header class="header" style="user-select: none;">
             <div class="header__top">
                 <div class="container">
                     <div class="row">
@@ -113,22 +118,42 @@
                         </div>
                     </div>
                     <div class="col-lg-6">
-                        <nav class="header__menu">
+                        <nav class="header__menu" style="user-select: none;">
+                            <?php 
+                                $class_home_active = "";
+                                $class_shop_active = "";
+                                $class_blog_active = "";
+                                $class_contact_active = "";
+                                if(isset($home_active) && $home_active){
+                                    $class_home_active = "header-menu-item-active";
+                                }    
+                                if(isset($shop_active) && $shop_active){
+                                    $class_shop_active = "header-menu-item-active";
+                                }
+
+                                if(isset($blog_active) && $blog_active){
+                                    $class_blog_active = "header-menu-item-active";
+                                }
+
+                                if(isset($contact_active) && $contact_active){
+                                    $class_contact_active = "header-menu-item-active";
+                                }
+                            ?>
                             <ul>
-                                <li><a href="{{route('home.index')}}">@lang('lang.home')</a></li>
-                                <li><a href="{{route('home.all_product')}}">@lang('lang.shop')</a></li>
-                                <li><a href="{{route('home.blog')}}">@lang('lang.blog')</a></li>
-                                <li><a href="{{route('home.contact')}}">@lang('lang.contact')</a></li>
+                                <li><a class="{{$class_home_active}}" href="{{route('home.index')}}">@lang('lang.home')</a></li>
+                                <li><a class="{{$class_shop_active}}" href="{{route('home.all_product')}}">@lang('lang.shop')</a></li>
+                                <li><a class="{{$class_blog_active}}" href="{{route('home.blog')}}">@lang('lang.blog')</a></li>
+                                <li><a class="{{$class_contact_active}}" href="{{route('home.contact')}}">@lang('lang.contact')</a></li>
                             </ul>
                         </nav>
                     </div>
                     <div class="col-lg-3">
                         <div class="header__cart">
                             <ul>
-                                <li><a href="{{route('home.get_wish_list')}}"><i class="fa fa-heart"></i> <span>{{isset($count_wish_list)?$count_wish_list:0}}</span></a></li>
+                                <li><a href="{{route('home.get_wish_list')}}"><i class="fa fa-heart"></i> <span id=qty_wish_list>{{isset($count_wish_list)?$count_wish_list:0}}</span></a></li>
                                 <li><a href="{{route('cart.show_cart')}}"><i class="fa fa-shopping-bag"></i> <span id="qty_cart">{{Cart::count()}}</span></a></li>
                             </ul>
-                            <div class="header__cart__price">item: <span class="cart_total_price">${{Cart::total()}}</span></div>
+                            <div class="header__cart__price">item: <span class="cart_total_price">{{Cart::total()}}vnđ</span></div>
                         </div>
                     </div>
                 </div>
@@ -160,7 +185,7 @@
                                 <i class="fa fa-bars"></i>
                                 <span>@lang('lang.all_category')</span>
                             </div>
-                            <ul>
+                            <ul style="user-select: none;">
                                 @foreach($categories as $category)
                                 <li><a href="{{route('home.category',$category->slug)}}">{{$category->name}}</a></li>
                                 @endforeach
@@ -259,6 +284,7 @@
         </footer>
         <!-- Footer Section End -->
         <!-- Js Plugins -->
+        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
         <script src="{{asset('fontend/js/jquery-3.3.1.min.js')}}"></script>
         <script src="{{asset('fontend/js/bootstrap.min.js')}}"></script>
         <script src="{{asset('fontend/js/jquery.nice-select.min.js')}}"></script>
@@ -267,7 +293,16 @@
         <script src="{{asset('fontend/js/mixitup.min.js')}}"></script>
         <script src="{{asset('fontend/js/owl.carousel.min.js')}}"></script>
         <script src="{{asset('fontend/js/main.js')}}"></script>
+        <script src="http://127.0.0.1:3000/socket.io/socket.io.js"></script>
+
         <script>
+            $(document).ready(function(){
+                AOS.init({
+                    // duration: 2000, 
+                    once: true,
+                    easing: 'ease',
+                });
+            })
             $('.add_one_cart').click(function(){
                 var id_product = $(this).attr('id');
                 var qty = 1;
@@ -314,13 +349,15 @@
             $('.update_cart').change(function(){
                 var rowId = $(this).attr('id');
                 var qty = $(this).val();
-            
-                $.get({
+                if(qty>0){
+                    $(this).attr('statusError',false);
+                    $('.error_quantity'+rowId).html('')
+                    $.get({
                     url:"{{route('cart.update_cart')}}",
                     data: {rowId:rowId,qty:qty},
                     success: function(data){
                         $('#qty_cart').html(data['total_count']);
-                        $('#price_product'+data['rowId']).html("$"+data['price_pro']);
+                        $('#price_product'+data['rowId']).html(data['price_pro']+"vnđ");
                         $('.cart_total_price').html("$"+data['total_cart']);
                         $('.alert_shopping_cart').html(`<div class="alert alert-success alert-dismissible fade show" role="alert">
                             <strong>Cập nhật giỏ hàng thành công</strong>
@@ -328,11 +365,18 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>`);
-                        $('.btn_sub_total_shopping_cart').html("$"+data['total_cart']);
-                        $('.btn_total_shopping_cart').html("$"+data['total_cart']);
+                        $('.btn_sub_total_shopping_cart').html(data['total_cart'] + "vnđ");
+                        $('.btn_total_shopping_cart').html(data['total_cart']+"vnđ");
             
                     }
                 });
+                }else{
+                    $('.error_quantity'+rowId).html('Số lượng lớn hơn 0')
+                    $('#price_product'+rowId).html("0vnđ");
+                    $(this).attr('statusError',true);
+                }
+            
+                
             });
 
 
@@ -360,15 +404,16 @@
         </script>
         <script>
             $(document).ready(function(){
-                $('.header__menu ul li').click(function(){
-                    var list_nav_header = $('.header__menu ul li');
-                    for(var nav of list_nav_header){
-                        if(nav.hasClass('active')){
-                            nav.removeClass('active');
-                        }
-                    }
-                    $(this).addClass('active');
-                });
+                // $('.header__menu ul li').click(function(){
+                    // console.log("ca click ca click")
+                    // var list_nav_header = $('.header__menu ul li');
+                    // for(var nav of list_nav_header){
+                    //     if(nav.hasClass('active')){
+                    //         nav.removeClass('active');
+                    //     }
+                    // }
+                    // $(this).addClass('active');
+                // });
 
                 $('.btn_delete_wish_list').click(function(){
                     const wish_list_id = $(this).attr('id');
@@ -377,7 +422,8 @@
                         data: {wish_list_id:wish_list_id},
                         success: function(data){
                             data = JSON.parse(data);
-                            $('.row_wish_list'+data).remove();
+                            $('.row_wish_list'+data.id_product).remove();
+                            $('#qty_wish_list').html(data.quantity_product_wish_list)
                         }
                     });
                 });
@@ -409,8 +455,13 @@
                         $('.autocomplete').hide();
                     }
                 });
-               
+              
             });
+
+            $('.btn-search-blog').click(function(e){
+                e.preventDefault();
+                console.log("hello ca nha yeu")
+            })
             
         </script>
 
@@ -426,7 +477,58 @@
                
             // });
 
+            $('.btn_click_showCart').click(function(e){
+                const listInputQuantity = $('.update_cart')
+                let statusCheckout = true;
+                for(let i=0;i< listInputQuantity.length;i++){
+                    if($(listInputQuantity[i]).attr('statusError')=="true") statusCheckout = false
+                }
+                if(!statusCheckout)  {
+                    e.preventDefault();
+                    $('.alert_error_quantity_cart').removeClass('d-none')
+                    setTimeout(() => {
+                        $('.alert_error_quantity_cart').addClass('d-none')
+                    }, 4000);
+                }else{
+                    const today = new Date();
+                    const name = $('#name').val();
+                    const avatar = $('#avatar').val();
+                    const date = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
+                    const time = today.toLocaleTimeString('en-US', { hour12: false });
+                    const data = {
+                        "name": name,
+                        "avatar": avatar,
+                        "date": date,
+                        "time": time,
+                        "topic": "order",
+                        "link": "{{route('order.index')}}",
+                    }
+                    socket.emit('sendMail',data)
+                    e.preventDefault();
+                }
+            })
+
             
+            var socket = io('http://127.0.0.1:3000', { transports: ['websocket'] });
+            
+            $('.btn_send_email').click(function(e){
+                const today = new Date();
+                const name = $('#name').val();
+                const avatar = $('#avatar').val();
+                const date = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
+                const time = today.toLocaleTimeString('en-US', { hour12: false });
+                const data = {
+                    "name": name,
+                    "avatar": avatar,
+                    "date": date,
+                    "time": time,
+                    "topic": "gmail",
+                    "link": "https://mail.google.com/mail/u/2/#inbox",
+                }
+                socket.emit('sendMail',data)
+                // const location = window.location;
+                // console.log(location.href)
+            })
         </script>
     </body>
 </html>

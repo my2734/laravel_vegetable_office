@@ -40,7 +40,7 @@ return [
             'port' =>  587,
             'encryption' => 'tls',
             'username' => 'phammy773734@gmail.com',
-            'password' => 'dswpxcorzmpubfgd',
+            'password' => 'jcesbwngfsdkfbue',
             'timeout' => null,
             'auth_mode' => null,
         ],

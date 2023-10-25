@@ -33,8 +33,8 @@
                             <td>{{$category_of_blog->name}}</td>
                             <td><span id="{{$category_of_blog->id}}" class="cursor_pointer badge change_status_categoryofblog{{$category_of_blog->id}} change_status_categoryofblog {{$category_of_blog->status==1?'badge-danger':'badge-secondary'}}">{{$category_of_blog->status==1?"Hiển thị":"Không hiển thị"}}<span></td>
                             <td>
-                                <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete_category_ofblog">Delete</button>
-                                <a href="{{route('category_of_blog.edit',$category_of_blog->id)}}" class="btn btn-warning btn-sm">Edit</a>
+                                <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete_category_ofblog"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                                <a href="{{route('category_of_blog.edit',$category_of_blog->id)}}" class="btn btn-warning btn-sm"><i class="fa fa-pencil" aria-hidden="true"></i></a>
                                 
                             
                                 <!-- Modal -->

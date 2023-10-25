@@ -54,7 +54,7 @@
                                 <img height="50px;" width="50px;" class="mt-1" src="{{asset('Uploads/'.$product->product_image[0]->image)}}" alt="">
                             </td>
                             <td>{{$product->id}}</td>
-                            <td>{{$product->name}}</td>
+                            <td><a href="{{route('product.edit',$product->id)}}">{{$product->name}}</a></td>
                             <td>{{$product->warehouse->import_quantity}}</td>
                             <td>{{$product->warehouse->export_quantity}}</td>
                             <td>{{ ($product->warehouse->import_quantity - $product->warehouse->export_quantity) }}<td>
@@ -63,7 +63,7 @@
                     </tbody>
                 </table>
                 <div class="float-right">
-                    {{$products->links()}}
+                    {{$products->links('vendor.pagination.custom')}}
                 </div>
             </div>
         </div>

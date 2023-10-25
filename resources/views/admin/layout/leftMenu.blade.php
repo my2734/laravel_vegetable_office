@@ -27,6 +27,7 @@
         <li><a href="{{route('user.index')}}"><i class="fa fa-user" aria-hidden="true"></i> User </a></li>
         <li><a href="{{route('comment.index')}}"><i class="fa fa-comments" aria-hidden="true"></i> Manager Comment </a></li>
         <li><a href="{{route('manager_human.index')}}"><i class="fa fa-users" aria-hidden="true"></i> Manager Human</a></li>
+        <li><a href="{{route('ship.index')}}"><i class="fa fa-bicycle" aria-hidden="true"></i> Shipment </a></li>
       </ul>
     </div>
   </div>

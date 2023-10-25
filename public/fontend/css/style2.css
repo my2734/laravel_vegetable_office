@@ -1,54 +1,104 @@
-.cover_img_user{
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    
+.cover_img_user {
+   width: 200px;
+   height: 200px;
+   border-radius: 50%;
+
 }
 
-.cover_img_user img{
+.cover_img_user img {
    width: 100%;
    height: 100%;
    object-fit: cover;
    border-radius: 50%;
 }
 
-.cover_img_avatar{
-    height: 30px;
-    width: 30px;
+.cover_img_avatar {
+   height: 30px;
+   width: 30px;
 }
 
-.cover_img_avatar img{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 50%;
- }
+.cover_img_avatar img {
+   width: 100%;
+   height: 100%;
+   object-fit: cover;
+   border-radius: 50%;
+}
 
 
- .autocomplete{
-    /* height: 100px; */
-    width: 55%;
-    background-color: #fff;
-    position: absolute;
-    z-index: 10000;
-    top:  11%;
- }
+.autocomplete {
+   /* height: 100px; */
+   width: 55%;
+   background-color: #fff;
+   position: absolute;
+   z-index: 10000;
+   top: 11%;
+}
 
- .autocomplete ul{
-    list-style: none;
-    margin: 10px;
- }
+.autocomplete ul {
+   list-style: none;
+   margin: 10px;
+}
 
- .autocomplete li a{
-    font-size: 14px;
-    color: #000 !important;
-    /* background-color: red; */
-   
-    
- }
+.autocomplete li a {
+   font-size: 14px;
+   color: #000 !important;
+   /* background-color: red; */
 
- .info_search_item{
-    font-size: 10px;
-    font-style: italic;
-    display: block; /* or inline-block */
- }
+
+}
+
+.info_search_item {
+   font-size: 10px;
+   font-style: italic;
+   display: block;
+   /* or inline-block */
+}
+
+.custom-primary-btn {
+   padding: 10px;
+   font-size: 12px;
+}
+
+.custom-primary-btn:hover {
+   color: #fff;
+}
+
+.custom-primary-btn-cancel{
+   background-color: #588157;
+   color: #000;
+}
+
+.custom-primary-btn-cancel:hover{
+   background-color: #588157;
+   color: #000;
+}
+
+.primary-btn{
+   border: none;
+}
+/* pagination */
+.custom_pagination{
+   list-style: none;
+   /* display: inline-flex; */
+}
+
+.page-active{
+   background-color: #7FAD39;
+   color: #fff !important;
+}
+
+.custom_margin-right_pagination{
+   margin-right: 5px !important;
+}
+
+.custom-btn-default{
+   box-shadow: none;
+}
+
+.active_btn_sort{
+   background-color: #7fad39;
+   color: #fff;
+}
+
+
+

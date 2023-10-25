@@ -30,7 +30,7 @@
                     @foreach($categories as $key => $cat)
                     <tr>
                         <th scope="row">{{($key+1)}}</th>
-                        <td>{{$cat->name}}</td>
+                        <td><a href="{{route('category.edit',$cat->id)}}">{{$cat->name}}</a></td>
                         <td>
                             {{-- @foreach($cat->image as $img) --}}
                             <img height="50px;" src="{{asset('Uploads/'.$cat->image)}}" alt="">
@@ -38,8 +38,8 @@
                         </td>
                         <td><span id="{{$cat->id}}" class="cursor_pointer change_status_category{{$cat->id}} change_status_category badge {{($cat->status==1?'badge-danger':'badge-secondary')}}">{{($cat->status==1)?"Hiển thị":"Không hiển thị"}}</span></td>
                         <td>
-                            <button class="btn btn_delete_category btn-danger btn-sm" data-toggle="modal" data-target="#delete_category">Delete</button>
-                            <a href="{{route('category.edit',$cat->id)}}" class="btn btn-warning btn-sm">Edit</a>
+                            <button class="btn btn_delete_category btn-danger btn-sm" data-toggle="modal" data-target="#delete_category"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                            <a href="{{route('category.edit',$cat->id)}}" class="btn btn-warning btn-sm"><i class="fa fa-pencil" aria-hidden="true"></i></a>
                             <!-- Modal -->
                             <div class="modal fade" id="delete_category" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">

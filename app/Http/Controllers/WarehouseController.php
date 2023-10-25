@@ -16,7 +16,7 @@ class WarehouseController extends Controller
     public function index(){
         $products = Product::with('product_image','category','warehouse')->orderBy('updated_at','DESC')->paginate(20);
         $product_quantity = Product::count();
-        $news = News::with('User')->with('User_Info')->get();
+        $news = News::with('User')->with('User_Info')->where('status',0)->orderBy('created_at','DESC')->take(6)->get();
         $total_news = News::where('status',0)->count();
         return view('admin.warehouse.index',compact('products','product_quantity','news','total_news'));
     }
@@ -33,7 +33,7 @@ class WarehouseController extends Controller
         $key = $request->search_key;
         $products = Product::with('product_image','category')->where('name','LIKE',"%{$key}%")->orderBy('updated_at','DESC')->paginate(20);
         $categories = Category::get();
-        $news = News::with('User')->with('User_Info')->get();
+        $news = News::with('User')->with('User_Info')->where('status',0)->orderBy('created_at','DESC')->take(6)->get();
         $total_news = News::where('status',0)->count();
         return view('admin.warehouse.index',compact('products','categories','news','total_news'));
     }

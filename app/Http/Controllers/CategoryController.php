@@ -14,13 +14,13 @@ class CategoryController extends Controller
 {
     public function index(){
         $categories = Category::orderBy('updated_at','DESC')->get();
-        $news = News::with('User')->with('User_Info')->get();
+        $news = News::with('User')->with('User_Info')->where('status',0)->orderBy('created_at','DESC')->take(6)->get();
         $total_news = News::where('status',0)->count();
         return view('admin.category.index',compact('categories','news','total_news'));
     }
 
     public function create(){
-        $news = News::with('User')->with('User_Info')->get();
+        $news = News::with('User')->with('User_Info')->where('status',0)->orderBy('created_at','DESC')->take(6)->get();
         $total_news = News::where('status',0)->count();
         return view('admin.category.create',compact('news','total_news'));
     }
@@ -73,7 +73,7 @@ class CategoryController extends Controller
     public function edit($id){
         $products = Product::with('product_image','category')->orderBy('updated_at','DESC')->get();
         $category_edit = Category::find($id);
-        $news = News::with('User')->with('User_Info')->get();
+        $news = News::with('User')->with('User_Info')->where('status',0)->orderBy('created_at','DESC')->take(6)->get();
         $total_news = News::where('status',0)->count();
         return view('admin.category.create',compact('category_edit','news','total_news'));
     }

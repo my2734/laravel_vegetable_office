@@ -13,9 +13,11 @@ use App\Models\User;
 use App\Models\User_Info;
 use App\Models\Wish_List;
 use Cart;
+
 class CartController extends Controller
 {
-    public function add_one_cart(Request $request){
+    public function add_one_cart(Request $request)
+    {
         $id = $request->id_product;
         $qty = $request->qty;
         $product = Product::find($id);
@@ -23,7 +25,7 @@ class CartController extends Controller
         $data['id'] = $product->id;
         $data['name'] = $product->name;
         $data['qty'] = $qty;
-        $data['price'] = ($product->price_promotion!=0) ? $product->price_promotion : $product->price_unit;
+        $data['price'] = ($product->price_promotion != 0) ? $product->price_promotion : $product->price_unit;
         $data['weight'] = 1;
         $data['options']['image'] = $product->image;
         $data['options']['slug'] = $product->slug;
@@ -39,45 +41,62 @@ class CartController extends Controller
     //     return response()->json($request);
     // }
 
-    public function show_cart(){
-//        return response()->json(Cart::tax());
-if(Auth::id()){
-    $user = User::find(Auth::id());
-    $user_info = User_Info::where('email', $user->email)->first();
-     if(!$user_info->user_id){
-         $user_info->user_id = Auth::id();
-         $user_info->save();
-     }
-     Auth::user()->avatar = $user_info->avatar;
- }
+    public function show_cart()
+    {
+        //        return response()->json(Cart::tax());
+        if (Auth::id()) {
+            $user = User::find(Auth::id());
+            $user_info = User_Info::where('email', $user->email)->first();
+            if (!$user_info->user_id) {
+                $user_info->user_id = Auth::id();
+                $user_info->save();
+            }
+            Auth::user()->avatar = $user_info->avatar;
+        }
         $carts = Cart::content();
-        $categories = Category::where('status',1)->get();
+        $categories = Category::where('status', 1)->get();
         $sub_total = Cart::total();
         $count_wish_list = 0;
-        if(Auth::user()->id){
-            $count_wish_list = Wish_List::where('user_id',Auth::user()->id)->count();
+
+        if (Auth::user()) {
+            $count_wish_list = Wish_List::where('user_id', Auth::user()->id)->count();
         }
-        return view('fontend.page.shoping_cart',compact('carts','categories','sub_total','count_wish_list'));
+        $quantity_cart = count($carts);
+
+        if(Auth::id()){
+            $user = User::find(Auth::id());
+            $user_info = User_Info::where('email', $user->email)->first();
+            if (!$user_info->user_id) {
+                $user_info->user_id = Auth::id();
+                $user_info->save();
+            }
+            Auth::user()->avatar = $user_info->avatar;
+            $name = $user_info->name;
+            $avatar = $user_info->avatar;
+            $date = date("Y/m/d");
+            $time = date("h:i:s");
+            return view('fontend.page.shoping_cart', compact('carts', 'categories', 'sub_total', 'count_wish_list', 'quantity_cart','name', 'avatar','date','time'));
+        }
+        return view('fontend.page.shoping_cart', compact('carts', 'categories', 'sub_total', 'count_wish_list', 'quantity_cart'));
     }
 
-    public function delete_one_cart($rowId){
+    public function delete_one_cart($rowId)
+    {
         Cart::remove($rowId);
         return redirect()->back();
     }
 
-    public function update_cart(Request $request){
+    public function update_cart(Request $request)
+    {
         $data = array();
         $rowId = $request->rowId;
         $qty = $request->qty;
-        Cart::update($rowId,$qty);
+        Cart::update($rowId, $qty);
         $cart = Cart::get($rowId);
         $data['rowId'] = $rowId;
         $data['total_count'] = Cart::count();
-//        $data['quantity_pro'] = $cart->quantity;
-        $data['price_pro'] = $cart->price*$cart->qty;
+        $data['price_pro'] = number_format($cart->price * $cart->qty);
         $data['total_cart'] = Cart::total();
         return response()->json($data);
     }
-
-
 }
