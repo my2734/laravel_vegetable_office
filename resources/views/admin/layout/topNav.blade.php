@@ -58,8 +58,7 @@
                   </li>
                   @endforeach
                 @endif
-
-              <li class="nav-item">
+              <li id="allAlert" class="nav-item">
                 <div class="text-center">
                   <a class="dropdown-item">
                     <strong>See All Alerts</strong>

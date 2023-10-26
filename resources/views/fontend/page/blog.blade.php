@@ -26,7 +26,7 @@
                     <div class="blog__sidebar__search">
                         <form action="#">
                             <input type="text" placeholder="Search...">
-                            <button type="submit"><span class="icon_search"></span></button>
+                            <button type="submit"><span class="icon_search btn-search-blog"></span></button>
                         </form>
                     </div>
                     <div class="blog__sidebar__item">
@@ -83,7 +83,7 @@
                         </div>
                     </div>
                     @endforeach
-                    {{$blogs->links()}}
+                    {{$blogs->links('vendor.pagination.custom')}}
                 </div>
             </div>
         </div>

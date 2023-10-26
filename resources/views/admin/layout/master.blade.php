@@ -18,6 +18,9 @@
         <link href="{{asset('backend/vendors/iCheck/skins/flat/green.css')}}" rel="stylesheet">
         <!-- bootstrap-progressbar -->
         <link href="{{asset('backend/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css')}}" rel="stylesheet">
+        {{-- bootstrap icon --}}
+        <!-- Option 1: Include in HTML -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
         <!-- JQVMap -->
         <link href="{{asset('backend/vendors/jqvmap/dist/jqvmap.min.css')}}" rel="stylesheet"/>
         <!-- bootstrap-daterangepicker -->
@@ -38,7 +41,7 @@
                 <div class="col-md-3 left_col">
                     <div class="left_col scroll-view">
                         <div class="navbar nav_title" style="border: 0;">
-                            <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>Gentelella Alela!</span></a>
+                            <a href="{{route('admin.index')}}" class="site_title"><i class="fa fa-paw"></i> <span>Gentelella Alela!</span></a>
                         </div>
                         <div class="clearfix"></div>
                         <!-- menu profile quick info -->
@@ -67,7 +70,7 @@
                             <a data-toggle="tooltip" data-placement="top" title="Lock">
                             <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
                             </a>
-                            <a data-toggle="tooltip" data-placement="top" title="Logout" href="login.html">
+                            <a data-toggle="tooltip" data-placement="top" title="Logout" href="{{route('admin.logout')}}">
                             <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
                             </a>
                         </div>
@@ -216,55 +219,111 @@
               });
             } );
             
+            function validate_datepicker(){
+              let statusSubmit = true;
+              if(!$('#datepicker1').val()){
+                  statusSubmit = false
+                  $('#datepicker1_error').html('Ngày bắt đầu không được để trống')
+              }else{
+                $('#datepicker1_error').html('')
+            
+              }
+              if(!$('#datepicker2').val()){
+                statusSubmit = false
+                $('#datepicker2_error').html('Ngày kết thúc không được để trống')
+              }else{
+                $('#datepicker2_error').html('')
+            
+              }
+              return statusSubmit
+            }
             
             $('.btn_thong_ke').click(function(){
-              const ngaybatdau = $('#datepicker1').val();
-              const ngayketthuc = $('#datepicker2').val();
-              $.get({
-                url:"{{route('admin.thongke_start_end')}}",
-                data:{ngaybatdau:ngaybatdau,ngayketthuc:ngayketthuc},
-                success: function(data){
-                 data = JSON.parse(data);
-                 chart.setData(data['chart_data']);
-                 const ngaybatdau = data['ngaybatdau'];
-                 const ngayketthuc = data['ngayketthuc'];
-                 $('#title_thong_ke').html("Kết quả thống kê từ ngày "+ngaybatdau+" đến ngày "+ngayketthuc);
-                }
-              });
+              const statusSubmit = validate_datepicker();
+              if(statusSubmit){
+                const ngaybatdau = $('#datepicker1').val();
+                const ngayketthuc = $('#datepicker2').val();
+                $.get({
+                  url:"{{route('admin.thongke_start_end')}}",
+                  data:{ngaybatdau:ngaybatdau,ngayketthuc:ngayketthuc},
+                  success: function(data){
+                  data = JSON.parse(data);
+                  const ngaybatdau = data['ngaybatdau'];
+                  const ngayketthuc = data['ngayketthuc'];
+                  if(data['chart_data'].length>0){
+                    chart.setData(data['chart_data']);
+                    $('#title_thong_ke').html("Kết quả thống kê doanh thu từ ngày "+ngaybatdau+" đến ngày "+ngayketthuc);
+                  }else{
+                    chart.setData([{}])
+                    $('#title_thong_ke').html("Từ ngày "+ngaybatdau+" đến ngày "+ngayketthuc+" không có đơn hàng nào");
+                  }
+                  }
+                });
+              }
+              
             });
             
             $('.btn_7ngaytruoc').click(function(){
+              //remove active
+              const arr_btn_sort = $('.custom-primary-btn-sort')
+              for(let i=0;i<arr_btn_sort.length;i++){
+                $(arr_btn_sort[i]).removeClass('custom-primary-btn-sort-active')
+              }
+              $(this).addClass('custom-primary-btn-sort-active')
               $.get({
                 url:"{{route('admin.thongke_7_date')}}",
                 success: function(data){
-                 data = JSON.parse(data);
-                 chart.setData(data['chart_data']);
-                
-                 $('#title_thong_ke').html("Kết quả thống kê 7 ngày qua");
+                  data = JSON.parse(data);
+                  if(data['chart_data'].length==0){
+                    chart.setData([{}]);
+                    $('#title_thong_ke').html("7 ngày qua không có đơn hàng");
+                  }else{
+                    chart.setData(data['chart_data']);
+                    $('#title_thong_ke').html("Kết quả thống kê doanh thu 7 ngày qua");
+                  }
                 }
               });
             });
             
             $('.btn_30ngaytruoc').click(function(){
+              const arr_btn_sort = $('.custom-primary-btn-sort')
+              for(let i=0;i<arr_btn_sort.length;i++){
+                $(arr_btn_sort[i]).removeClass('custom-primary-btn-sort-active')
+              }
+              $(this).addClass('custom-primary-btn-sort-active')
               $.get({
                 url:"{{route('admin.thongke_30_date')}}",
                 success: function(data){
                  data = JSON.parse(data);
-                 chart.setData(data['chart_data']);
-                
-                 $('#title_thong_ke').html("Kết quả thống kê 1 tháng qua");
+                //  console.log(data)
+                 if(data['chart_data'].length>0){
+                   chart.setData(data['chart_data']);
+                   $('#title_thong_ke').html("Kết quả thống kê doanh thu doanh thu 1 tháng qua");
+                 }else{
+                    chart.setData([{}]);
+                    $('#title_thong_ke').html("1 tháng qua không có đơn hàng nào");
+                 }
                 }
               });
             });
             
             $('.btn_90ngaytruoc').click(function(){
+              const arr_btn_sort = $('.custom-primary-btn-sort')
+              for(let i=0;i<arr_btn_sort.length;i++){
+                $(arr_btn_sort[i]).removeClass('custom-primary-btn-sort-active')
+              }
+              $(this).addClass('custom-primary-btn-sort-active')
               $.get({
                 url:"{{route('admin.thongke_90_date')}}",
                 success: function(data){
                  data = JSON.parse(data);
-                 chart.setData(data['chart_data']);
-                
-                 $('#title_thong_ke').html("Kết quả thống kê 3 tháng qua");
+                 if(data['chart_data'].length>0){
+                   chart.setData(data['chart_data']);
+                   $('#title_thong_ke').html("Kết quả thống kê doanh thu doanh thu 3 tháng qua");
+                 }else{
+                  chart.setData([{}])
+                  $('#title_thong_ke').html('3 tháng qua không có đơn hàng nào')
+                 }
                 }
               });
             });
@@ -274,8 +333,63 @@
         </script>
         <script>
             $(document).ready(function(){
-             
-            
+              var socket = io('http://127.0.0.1:3000', { transports: ['websocket'] });
+              socket.on('sendMail-to-client',(data)=>{
+                let quantity =  $('#total_news').text()*1 + 1;
+
+                $('#total_news').text(quantity)
+                console.log(quantity)
+                console.log($('#total_news').text())
+                if(data.topic == "gmail"){
+                  $('#allAlert').before(`
+                  <li style="background-color: #CACFD2 !important;" else="" class="nav-item row_news22">
+                      <a id="22" class="change_status_news" href=${data.link}>
+                          <span class="image">
+                          <img src="http://laravel_vegetable_office.local/Uploads/${data.avatar}" alt="">
+                          </span>
+                          <span>
+                              <span class="font-weight-bold">${data.name}</span>
+                              <span class="time">
+                                  <p>${data.date} ${data.time}</p>
+                              </span>
+                              <!-- <button class="ml-auto btn btn-sm btn-primary"><i class="fa fa-share" aria-hidden="true"></i></button> -->
+                          </span>
+                          <span class="message mt-2">
+                          </span>
+                      </a>
+                      <p><a id="22" class="change_status_news" href=${data.link}>
+                          ${data.name} đã gửi Email cho bạn. Vui lòng kiểm tra lại Email.
+                          </a><a href=${data.link}><i class="fa fa-share" aria-hidden="true"></i></a>
+                      </p>
+                  </li>
+                  `)
+                }else if(data.topic == "order"){
+                  $('#allAlert').before(`
+                  <li style="background-color: #CACFD2 !important;" else="" class="nav-item row_news22">
+                      <a id="22" class="change_status_news" href=${data.link}>
+                          <span class="image">
+                          <img src="http://laravel_vegetable_office.local/Uploads/${data.avatar}" alt="">
+                          </span>
+                          <span>
+                              <span class="font-weight-bold">${data.name}</span>
+                              <span class="time">
+                                  <p>${data.date} ${data.time}</p>
+                              </span>
+                              <!-- <button class="ml-auto btn btn-sm btn-primary"><i class="fa fa-share" aria-hidden="true"></i></button> -->
+                          </span>
+                          <span class="message mt-2">
+                          </span>
+                      </a>
+                      <p><a id="22" class="change_status_news" href=${data.link}>
+                          ${data.name} đã đặt một đơn hàng.
+                          </a><a href=${data.link}><i class="fa fa-share" aria-hidden="true"></i></a>
+                      </p>
+                  </li>
+                  `)
+                }
+              })
+
+
               $('.change_status_category').click(function(){
                 const category_id = $(this).attr('id');
                 $.get({
@@ -415,7 +529,7 @@
                         $('.change_status_categoryofblog'+data['categoryofblog_id']).addClass('badge-danger');
                       }else{
                         $('.change_status_categoryofblog'+data['categoryofblog_id']).html('Không hiển thị');
-                        $('.change_status_categoryofblog'+data['categoryofblog_id']).removeCLass('badge-danger');
+                        $('.change_status_categoryofblog'+data['categoryofblog_id']).removeClass('badge-danger');
                         $('.change_status_categoryofblog'+data['categoryofblog_id']).addClass('badge-secondary');
                       }
                   }
@@ -586,6 +700,24 @@
                               $(this).remove();
                           }
                       });
+                  });
+            
+                  $('#search_key').keyup(function(){
+                      const key = $(this).val();
+                      if(key!=''){
+                          $.get({
+                          url:"{{route('admin.search_ajax_admin')}}",
+                          data:{key:key},
+                          success: function(data){
+                              $('.autocomplete').show();
+                              $('.autocomplete').html(data);
+                              // alert(data);
+                          }
+                      });
+                      }else{
+                          $('.autocomplete').hide();
+                      }
+                      // alert("helloc ca nha yeu");
                   });
                   
               })

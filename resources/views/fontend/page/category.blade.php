@@ -48,7 +48,7 @@
                                         </div>
                                     </div>
                                     <input type="hidden" name="cat_slug" value="{{$category_slug->slug}}">
-                                    <input type="submit" value="Lọc" class="btn btn-primary mt-4">
+                                    <input type="submit" value="Lọc" class="btn btn-sm primary-btn  mt-4">
                                 </div>
                                 @csrf
                             <form>    
@@ -61,16 +61,28 @@
                     <div class="filter__item">
                         <div class="row">
                             <div class="col-lg-5 col-md-5">
-                               
+                                
                                 <div class="filter__sort">
-                                    <a href="{{route('sort_low_to_high_category',$category_slug->slug)}}" class="btn btn-default"><i class="fa fa-sort-amount-asc" aria-hidden="true"></i>Thấp đến cao</a>
-                                    <a href="{{route('sort_high_to_low_category',$category_slug->slug)}}" class="btn btn-default"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i>Cao đến thấp</a>
+                                     <!-- <span>Sort By</span> -->
+                                     <?php
+                                     $class_btn_low_to_high = "";
+                                     if(isset($low_to_high) && $low_to_high==1){
+                                         $class_btn_low_to_high = "active_btn_sort";
+                                     }
+
+                                     $class_btn_high_to_low = "";
+                                     if(isset($high_to_low) && $high_to_low==1){
+                                         $class_btn_high_to_low = "active_btn_sort";
+                                     }
+                                 ?>
+                                    <a href="{{route('sort_low_to_high_category',$category_slug->slug)}}" class="btn btn-default custom-btn-default {{$class_btn_low_to_high}}"><i class="fa fa-sort-amount-asc" aria-hidden="true"></i>Thấp đến cao</a>
+                                    <a href="{{route('sort_high_to_low_category',$category_slug->slug)}}" class="btn btn-default custom-btn-default {{$class_btn_high_to_low}}"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i>Cao đến thấp</a>
                                 </div>
                             </div>
                             <div class="col-lg-7 col-md-7">
                                 <div class="filter__found">
                                 @if(isset($min))
-                                <h5><span style="font-weight: 700">Kết quả lọc từ {{$min}}đ - {{$max}}đ</span></h5> 
+                                <h5><span style="font-weight: 700">Kết quả lọc từ {{number_format($min)}}vnđ - {{number_format($max)}}vnđ</span></h5> 
                                 @elseif(isset($low_to_high))
                                 <h3><span style="font-weight: 700">Kết quả sắp xếp từ thấp đến cao</span></h3>
                                 @elseif(isset($high_to_low))
@@ -84,10 +96,19 @@
                         </div>
                     </div>
                     <div class="row">
+                        @if(count($products)<=0)
+                            <h3 class="font-weight-bold">Không tìm thấy kết quả</h3>
+                        @else
                         @foreach($products as $key => $product)
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
                                 <div class="product__item__pic set-bg" data-setbg="{{asset('Uploads/'.$product->image)}}">
+                                <p>
+                                    <?php 
+                                        $qr_code = url('san-pham',$product->slug);
+                                        echo QrCode::size(100)->generate($qr_code);
+                                    ?>
+                                </p>
                                     <ul class="product__item__pic__hover">
                                         <li>
                                             
@@ -121,8 +142,9 @@
                             </div>
                         </div>
                         @endforeach
+                        @endif
                     </div>
-                    {{$products->links()}}
+                    {{$products->links('vendor.pagination.custom')}}
                     <div class="product__discount mt-5">
                         <div class="section-title product__discount__title">
                             <h2>Sale Off</h2>
@@ -134,7 +156,21 @@
                                     <div class="product__discount__item">
                                         <div class="product__discount__item__pic set-bg"
                                             data-setbg="{{asset('Uploads/'.$product->image)}}">
-                                            <div class="product__discount__percent">Sale</div>
+                                           <div class='row'>
+                                                <div class='col'>
+                                                <p>
+                                                    <?php 
+                                                        $qr_code = url('san-pham',$product->slug);
+                                                        echo QrCode::size(100)->generate($qr_code);
+                                                    ?>
+                                                </p>
+                                                </div>
+                                                <div class='col'>
+                                                    <div class="product__discount__percent font-weight-bold">Sale</div>
+                                                </div>
+                                            
+                                                
+                                           </div>
                                             <ul class="product__item__pic__hover">
                                                 <li>
                                                     
@@ -160,9 +196,9 @@
                                                 $inventory = $product->warehouse->import_quantity - $product->warehouse->export_quantity;
                                             ?>
                                             <h6><a class="font-weight-bold" href="{{route('home.product',$product->slug)}}">{{$product->name}}</a>
-                                                @if($inventory <= 0 )
-                                                    <span>(Hết hàng)</span>
-                                                @endif
+                                            @if($inventory <= 0)
+                                                <span>(Hết hàng)</span>
+                                            @endif
                                             </h6>
                                             <h5>{{number_format($product->price_unit)}}vnđ</h5>
                                         </div>
@@ -179,3 +215,4 @@
     </section>
 <!-- Product Section End -->
 @endsection
+

@@ -14,14 +14,14 @@ class TagsController extends Controller
     public function index(){
         $products = Product::with('product_image','category')->orderBy('updated_at','DESC')->get();
         $tagses = Tags::orderBy('updated_at',"DESC")->get();
-        $news = News::with('User')->with('User_Info')->get();
+        $news = News::with('User')->with('User_Info')->where('status',0)->orderBy('created_at','DESC')->take(6)->get();
         $total_news = News::where('status',0)->count();
         return view('admin.tags.index',compact('tagses','news','total_news'));
     }
 
     public function create(){
         $products = Product::with('product_image','category')->orderBy('updated_at','DESC')->get();
-        $news = News::with('User')->with('User_Info')->get();
+        $news = News::with('User')->with('User_Info')->where('status',0)->orderBy('created_at','DESC')->take(6)->get();
         $total_news = News::where('status',0)->count();
         return view('admin.tags.create',compact('news','total_news'));
     }
@@ -52,7 +52,7 @@ class TagsController extends Controller
     public function edit($id){
         $products = Product::with('product_image','category')->orderBy('updated_at','DESC')->get();
         $tags_edit = Tags::find($id);
-        $news = News::with('User')->with('User_Info')->get();
+        $news = News::with('User')->with('User_Info')->where('status',0)->orderBy('created_at','DESC')->take(6)->get();
         $total_news = News::where('status',0)->count();
         return view('admin.tags.create',compact('tags_edit','news','total_news'));
     }

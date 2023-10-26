@@ -33,8 +33,8 @@
                             <td>{{$tags->name}}</td>
                             <td><span id="{{$tags->id}}" class="cursor_pointer change_status_tags{{$tags->id}} change_status_tags badge {{$tags->status==1?'badge-danger':'badge-secondary'}}">{{$tags->status==1?"Hiển thị":"Không hiển thị"}}</span></td>
                             <td>
-                                <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete_tags">Delete</button>
-                                <a href="{{route('tags.edit',$tags->id)}}" class="btn btn-warning btn-sm">Edit</a>
+                                <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete_tags"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                                <a href="{{route('tags.edit',$tags->id)}}" class="btn btn-warning btn-sm"><i class="fa fa-pencil" aria-hidden="true"></a>
 
                                 <!-- Modal -->
                                 <div class="modal fade" id="delete_tags" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

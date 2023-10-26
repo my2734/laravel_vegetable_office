@@ -34,14 +34,14 @@
                                     <td class="text-center">
                                         <img width="50" height="50" src="{{asset('Uploads/'.$wish_list_item->Product->image)}}" alt="">
                                     </td>
-                                    <td class="text-center">{{ $wish_list_item->Product->price_unit }}</td>
+                                    <td class="text-center">{{ number_format($wish_list_item->Product->price_unit) }} vnđ</td>
                                     <td class="text-center">{{ $wish_list_item->inventory }} in stock</td>
                                     <td class="text-center"> 
                                         <input type="hidden" class="qty_mul_pro" value="1">
                                         @if($wish_list_item->inventory > 0)
-                                            <button  id="{{$wish_list_item->Product->id}}" class="primary-btn add_mul_product">ADD TO CARD</button>
+                                            <button  id="{{$wish_list_item->Product->id}}" class="btn primary-btn add_mul_product">ADD TO CARD</button>
                                         @else
-                                            <button  data-toggle="modal" data-target="#notification_add_cart_wish_list" class="primary-btn">ADD TO CARD</button>
+                                            <button  data-toggle="modal" data-target="#notification_add_cart_wish_list" class="btn primary-btn">ADD TO CARD</button>
                                         @endif
                                     </td>
                                     <td class="text-center"><button id="{{$wish_list_item->id}}" class="btn btn-warning btn_delete_wish_list{{$wish_list_item->id}} btn_delete_wish_list">Delete</button></td>

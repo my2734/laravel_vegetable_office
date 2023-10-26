@@ -3,14 +3,14 @@
 @section('content')
     <div class="title_left">
         
-        <h3>Kho hàng</h3>
+        <h3>Quản lý nhân viên</h3>
     </div>
     <div class="col-md-12 col-sm-12  ">
         <div class="x_panel">
             <div class="x_title">
                 <div class="row">
                     <div class="col-3">
-                        <h2>Product List</h2>
+                        {{-- <h2>Product List</h2> --}}
                     </div>
                     <div class="col-6">
                         <!-- <form method="POST" action="{{route('product.search_product')}}">

@@ -19,7 +19,7 @@ class ProductController extends Controller
         $products = Product::with('product_image','category')->orderBy('updated_at','DESC')->paginate(20);
         // return response()->json($products[0]->category->name);
         $product_quantity = Product::count();
-        $news = News::with('User')->with('User_Info')->get();
+        $news = News::with('User')->with('User_Info')->where('status',0)->orderBy('created_at','DESC')->take(6)->get();
         $total_news = News::where('status',0)->count();
         
         return view('admin.product.index',compact('products','product_quantity','categories','news','total_news'));
@@ -28,7 +28,7 @@ class ProductController extends Controller
     public function create(){
         $products = Product::with('product_image','category')->orderBy('updated_at','DESC')->get();
         $categories = Category::where('status',1)->get();
-        $news = News::with('User')->with('User_Info')->get();
+        $news = News::with('User')->with('User_Info')->where('status',0)->orderBy('created_at','DESC')->take(6)->get();
         $total_news = News::where('status',0)->count();
         return view('admin.product.create',compact('categories','news','total_news'));
     }
@@ -108,7 +108,7 @@ class ProductController extends Controller
     public function edit($id){
         $product_edit = Product::find($id);
         $categories = Category::where('status',1)->get();
-        $news = News::with('User')->with('User_Info')->get();
+        $news = News::with('User')->with('User_Info')->where('status',0)->orderBy('created_at','DESC')->take(6)->get();
         $total_news = News::where('status',0)->count();
         return view('admin.product.create',compact('categories','product_edit','news','total_news'));
     }
@@ -222,7 +222,7 @@ class ProductController extends Controller
         $product_slug = Product::with('product_image')->where('slug',$comment_edit->Product->slug)->first();
         $product_relate = Product::where('cat_id',$product_slug->cat_id)->where('id','<>',$product_slug->id)->get();
         $comments =  CommentPro::where('product_id',$product_slug->id)->with('LoyalCustomer')->get();
-        $news = News::with('User')->with('User_Info')->get();
+        $news = News::with('User')->with('User_Info')->where('status',0)->orderBy('created_at','DESC')->take(6)->get();
         $total_news = News::where('status',0)->count();
 
         return view('fontend.page.product',compact('categories','product_slug','product_relate','comments','comment_edit','news','total_news'));
@@ -238,7 +238,7 @@ class ProductController extends Controller
         $product_slug = Product::with('product_image')->where('slug',$comment_edit->Product->slug)->first();
         $product_relate = Product::where('cat_id',$product_slug->cat_id)->where('id','<>',$product_slug->id)->get();
         $comments =  CommentPro::where('product_id',$product_slug->id)->with('LoyalCustomer')->get();
-        $news = News::with('User')->with('User_Info')->get();
+        $news = News::with('User')->with('User_Info')->where('status',0)->orderBy('created_at','DESC')->take(6)->get();
         $total_news = News::where('status',0)->count();
         return view('fontend.page.product',compact('categories','product_slug','product_relate','comments','news','total_news'));
     }
@@ -263,8 +263,9 @@ class ProductController extends Controller
         $key = $request->search_key;
         $products = Product::with('product_image','category')->where('name','LIKE',"%{$key}%")->orderBy('updated_at','DESC')->paginate(20);
         $categories = Category::get();
-        $news = News::with('User')->with('User_Info')->get();
+        $news = News::with('User')->with('User_Info')->where('status',0)->orderBy('created_at','DESC')->take(6)->get();
         $total_news = News::where('status',0)->count();
+        // return json_encode($products);
         return view('admin.product.index',compact('products','categories','news','total_news'));
     }
 
@@ -275,9 +276,12 @@ class ProductController extends Controller
         $products = Product::where('cat_id',$cat_id)->with('product_image','category')->orderBy('updated_at','DESC')->paginate(20);
         // return response()->json($products[0]->category->name);
         $product_quantity = Product::count();
-        $news = News::with('User')->with('User_Info')->get();
+        $news = News::with('User')->with('User_Info')->where('status',0)->orderBy('created_at','DESC')->take(6)->get();
         $total_news = News::where('status',0)->count();
-        return view('admin.product.index',compact('products','product_quantity','categories','news','total_news'));
+        $cat_name = Category::find($cat_id)->name;
+        // echo json_encode($cat_name);
+        // die();
+        return view('admin.product.index',compact('products','product_quantity','categories','news','total_news','cat_id','cat_name'));
     }
 
 }

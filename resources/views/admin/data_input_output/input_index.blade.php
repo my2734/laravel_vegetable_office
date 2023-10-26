@@ -86,7 +86,7 @@
                     </tbody>
                 </table>
                 <div class="float-right">
-                    {{$products->links()}}
+                    {{$products->links('vendor.pagination.custom')}}
                 </div>
             </div>
         </div>

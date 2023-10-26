@@ -11,7 +11,7 @@ class OrderController extends Controller
 {
     public function index(){
         $orders = Order::with('OrderDetail')->orderBy('updated_at','DESC')->paginate(4);
-        $news = News::with('User')->with('User_Info')->get();
+        $news = News::with('User')->with('User_Info')->where('status',0)->orderBy('created_at','DESC')->take(6)->get();
         $total_news = News::where('status',0)->count();
         return view('admin.order.index',compact('orders','news','total_news'));
     }
@@ -39,7 +39,7 @@ class OrderController extends Controller
         foreach($list_order_detail as $order_detail){
             $total+=$order_detail->pro_price*$order_detail->pro_quantity;
         }
-        $news = News::with('User')->with('User_Info')->get();
+        $news = News::with('User')->with('User_Info')->where('status',0)->orderBy('created_at','DESC')->take(6)->get();
         $total_news = News::where('status',0)->count();
         return view('admin.order.pdf',compact('order','list_order_detail','total','news','total_news'));
     }
@@ -55,9 +55,9 @@ class OrderController extends Controller
         }else{
             $message = "Đơn hàng đã hủy";
         }
-        $news = News::with('User')->with('User_Info')->get();
+        $news = News::with('User')->with('User_Info')->where('status',0)->orderBy('created_at','DESC')->take(6)->get();
         $total_news = News::where('status',0)->count();
-        return view('admin.order.index',compact('orders','news','total_news'))->with('message',$message);
+        return view('admin.order.index',compact('orders','news','total_news','status'))->with('message',$message);
     }
 
 }

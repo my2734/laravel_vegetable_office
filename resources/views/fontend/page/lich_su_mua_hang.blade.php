@@ -13,11 +13,11 @@
             <div class="col-md-12 col-sm-12  ">
                 <div class="x_panel">
                    <h4 class="my-4 font-weight-bold" id="receive_order">Lịch sử mua hàng</h4>
-                    <a href="{{route('checkout.lich_su_mua_hang_filter',0)}}" style="cursor:pointer;" class="ml-2 badge badge-primary text-white">Đơn hàng chờ xác nhận</a>
-                    <a href="{{route('checkout.lich_su_mua_hang_filter',1)}}" style="cursor:pointer;" class="ml-2 badge badge-secondary text-white">Đơn hàng đang giao</a>
-                    <a href="{{route('checkout.lich_su_mua_hang_filter',2)}}" style="cursor:pointer;" class="ml-2 badge badge-success text-white">Đơn hàng đã nhận</a>
-                    <a href="{{route('checkout.lich_su_mua_hang_filter',-1)}}" style="cursor:pointer;" class="ml-2 badge badge-danger text-white">Đơn hàng đã hủy</a>
-                    
+                    <a href="{{route('checkout.lich_su_mua_hang_filter',0)}}" style="cursor:pointer; background-color: #a3b18a; color: #000;" class="ml-2 badge badge-primary">Đơn hàng chờ xác nhận</a>
+                    <a href="{{route('checkout.lich_su_mua_hang_filter',1)}}" style="cursor:pointer;background-color: #588157; " class="ml-2 badge badge-secondary">Đơn hàng đang giao</a>
+                    <a href="{{route('checkout.lich_su_mua_hang_filter',2)}}" style="cursor:pointer;background-color: #3a5a40; " class="ml-2 badge badge-success">Đơn hàng đã nhận</a>
+                    <a href="{{route('checkout.lich_su_mua_hang_filter',-1)}}" style="cursor:pointer;background-color: #344e41; " class="ml-2 badge badge-danger">Đơn hàng đã hủy</a>
+                    <h5 class="my-3 font-weight-bold">{{ (isset($title_page)? $title_page :"") }}</h5>
                     <div class="x_content mt-4">
                         <table class="table table-bordered">
                             <thead>
@@ -29,6 +29,7 @@
                                     <th class="text-center">Ngày đặt hàng</th>
                                     <th class="text-center">Tình trạng đơn hàng</th>
                                 </tr>
+                                
                             </thead>
                             <tbody>
                                 @foreach($orders as $key => $order)
@@ -90,6 +91,15 @@
                                             <p>{{ $order->reason }}</p>
                                         @endif
 
+                                        @if($order->status==0) Chờ xác nhận <br><button data-toggle="modal" data-target="#delete_order" class="btn btn-sm primary-btn custom-primary-btn custom-primary-btn-cancel">Hủy đơn hàng</button>
+                                        @elseif($order->status == 4) <button id="{{$order->id}}" class="btn btn-sm primary-btn custom-primary-btn receive_order">Nhận hàng</button>
+                                        @elseif($order->status == 5) Đã nhận hàng
+                                        @elseif($order->status == -1) Đã hủy
+                                            <br>
+                                            <h5>Lí do:</h5>
+                                            <p>{{ $order->reason }}</p>
+                                        @else Đang giao
+                                        @endif
 
                                         <!-- Modal -->
                                         <div class="modal fade" id="delete_order<?php echo $order->id ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -107,8 +117,8 @@
                                                             <input type="text" name="reason" class="form-control" placeholder="">
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Không</button>
-                                                            <button type="submit" class="btn btn-danger text-white">Chắc chắn</a>
+                                                            <button type="button" class="btn btn-sm primary-btn custom-primary-btn receive_order" data-dismiss="modal">Không</button>
+                                                            <button type="submit" class="btn btn-sm primary-btn custom-primary-btn custom-primary-btn-cancel">Chắc chắn</a>
                                                         </div>
                                                         @csrf
                                                     </form>

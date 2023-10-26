@@ -16,7 +16,7 @@ class CommentController extends Controller
         // $products = Product::with('product_image','category','warehouse')->orderBy('updated_at','DESC')->paginate(20);
         // $product_quantity = Product::count();
         $comments = CommentPro::with('User','Product')->orderBy('updated_at','DESC')->get();
-        $news = News::with('User')->with('User_Info')->get();
+        $news = News::with('User')->with('User_Info')->where('status',0)->orderBy('created_at','DESC')->take(6)->get();
         $total_news = News::where('status',0)->count();
         return view('admin.comment.index',compact('comments','news','total_news'));
     }

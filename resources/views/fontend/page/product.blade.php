@@ -52,11 +52,14 @@
                         <i class="fa fa-star-half-o"></i>
                         <span>({{$quantity_comment}} reviews)</span>
                     </div>
+                    @if(isset($product_slug->price_promotion))
+                        <del class="product__details__price" style="color: #ccc; font-size: 1rem">{{number_format($product_slug->price_unit)}} vnđ</del>
+                    @endif
                     <div class="product__details__price">{{($product_slug->price_promotion) ? number_format($product_slug->price_promotion) : number_format($product_slug->price_unit)}}vnđ</div>
                     <p>{{$product_slug->description}}</p>
                     <div class="product__details__quantity">
                         <div class="quantity">
-                            <form action="" method="POST">
+                            <form action="" method="POST"> 
                                 <div class="pro-qty">
                                     <input type="text" class="qty_mul_pro" value="1">
                                 </div>
@@ -69,9 +72,9 @@
                     ?>
                     
                     @if($inventory > 0)
-                        <button  id="{{$product_slug->id}}" class="primary-btn add_mul_product">ADD TO CARD <?php echo $inventory ?> </button>
+                        <button  id="{{$product_slug->id}}" class="primary-btn  add_mul_product">ADD TO CARD </button>
                     @else
-                        <button  data-toggle="modal" data-target="#notification_add_cart" class="primary-btn">ADD TO CARD </button>
+                        <button  data-toggle="modal" data-target="#notification_add_cart" class="primary-btn ">ADD TO CARD </button>
                     @endif
 
                     <!-- Modal notification_add_cart -->
@@ -92,8 +95,16 @@
                     </div>
                     </div>
 
+                    <form method="POST" action="{{route('home.wish_list')}}">
+                                        <input type="hidden" name="product_id" value="{{$product_slug->id}}">
+                                        <button type="submit" style="border:none;background-color: transparent">
+                                            <!-- <a href="javascript:void(0);"><i class="fa fa-heart"></i></a> -->
+                                        <a href="javascript:void(0);" class="heart-icon"><span class="icon_heart_alt"></span></a>
 
-                    <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
+                                        </button>
+                                        @csrf
+                                    </form>
+                    <!-- <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a> -->
                     <ul>
                         <li><b>Availability</b> <span><?php echo ($product_slug->warehouse->import_quantity - $product_slug->export_quantity)>0 ? "In Stock" : "Out In Stock" ?></span></li>
                         <li><b>Quanlity</b> <span> {{ ($product_slug->warehouse->import_quantity - $product_slug->export_quantity)}}</span></li>
@@ -131,9 +142,11 @@
                                     <div style="height: 80px">
                                         <h6>{{$comment->User->name}}</h6>
                                         <p>{{$comment->content}} <span class="float-right">
-                                       @if(Auth::user()->id && Auth::user()->id===$comment->user_id)
-                                                    <a class="badge badge-danger" href="{{route('delete.comment',$comment->id)}}">Xóa</a>
-                                        @endif
+                                            @if(Auth::user())
+                                                @if(Auth::user()->id && Auth::user()->id===$comment->user_id)
+                                                            <a class="badge badge-danger" href="{{route('delete.comment',$comment->id)}}">Xóa</a>
+                                                @endif
+                                            @endif
                                     </div>
                                     <hr class="">
                                     @if($comment->reply!="")
@@ -210,7 +223,7 @@
                     </div>
                     <div class="product__item__text">
                         <h6><a href="{{route('home.product',$product->slug)}}">{{$product->name}}</a></h6>
-                        <h5>${{$product->price_unit}}</h5>
+                        <h5>{{($product->price_promotion) ? number_format($product->price_promotion) : number_format($product->price_unit)}}vnđ</h5>
                     </div>
                 </div>
             </div>

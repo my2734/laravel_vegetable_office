@@ -77,7 +77,7 @@
                     </tbody>
                 </table>
                 <div class="float-right">
-                    {{$blogs->links()}}
+                    {{$blogs->links('vendor.pagination.custom')}}
                 </div>
             </div>
         </div>

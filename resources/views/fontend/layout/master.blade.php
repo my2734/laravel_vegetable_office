@@ -10,6 +10,7 @@
         <title>Ogani | Template</title>
         <!-- Google Font -->
         <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+        <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
         <!-- Css Styles -->
         <link rel="stylesheet" href="{{asset('fontend/css/bootstrap.min.css')}}" type="text/css">
         <link rel="stylesheet" href="{{asset('fontend/css/font-awesome.min.css')}}" type="text/css">
@@ -28,15 +29,19 @@
             color: #1c1c1c;
             font-size: 15px;
             }
+
+            .header-menu-item-active{
+                color: #7fad39 !important;
+            }
         </style>
     </head>
-    <body>
+    <body style="user-select: none;">
         <!-- Page Preloder -->
         <div id="preloder">
             <div class="loader"></div>
         </div>
         <!-- Header Section Begin -->
-        <header class="header">
+        <header class="header" style="user-select: none;">
             <div class="header__top">
                 <div class="container">
                     <div class="row">
@@ -113,12 +118,32 @@
                         </div>
                     </div>
                     <div class="col-lg-6">
-                        <nav class="header__menu">
+                        <nav class="header__menu" style="user-select: none;">
+                            <?php 
+                                $class_home_active = "";
+                                $class_shop_active = "";
+                                $class_blog_active = "";
+                                $class_contact_active = "";
+                                if(isset($home_active) && $home_active){
+                                    $class_home_active = "header-menu-item-active";
+                                }    
+                                if(isset($shop_active) && $shop_active){
+                                    $class_shop_active = "header-menu-item-active";
+                                }
+
+                                if(isset($blog_active) && $blog_active){
+                                    $class_blog_active = "header-menu-item-active";
+                                }
+
+                                if(isset($contact_active) && $contact_active){
+                                    $class_contact_active = "header-menu-item-active";
+                                }
+                            ?>
                             <ul>
-                                <li><a href="{{route('home.index')}}">@lang('lang.home')</a></li>
-                                <li><a href="{{route('home.all_product')}}">@lang('lang.shop')</a></li>
-                                <li><a href="{{route('home.blog')}}">@lang('lang.blog')</a></li>
-                                <li><a href="{{route('home.contact')}}">@lang('lang.contact')</a></li>
+                                <li><a class="{{$class_home_active}}" href="{{route('home.index')}}">@lang('lang.home')</a></li>
+                                <li><a class="{{$class_shop_active}}" href="{{route('home.all_product')}}">@lang('lang.shop')</a></li>
+                                <li><a class="{{$class_blog_active}}" href="{{route('home.blog')}}">@lang('lang.blog')</a></li>
+                                <li><a class="{{$class_contact_active}}" href="{{route('home.contact')}}">@lang('lang.contact')</a></li>
                             </ul>
                         </nav>
                     </div>
@@ -130,7 +155,7 @@
                                 <li>
                                     <a href="{{route('cart.show_cart')}}"><i class="fa fa-shopping-bag"></i> <span id="qty_cart">{{Cart::count()}}</span></a></li>
                             </ul>
-                            <div class="header__cart__price">item: <span class="cart_total_price">${{Cart::total()}}</span></div>
+                            <div class="header__cart__price">item: <span class="cart_total_price">{{Cart::total()}}vnđ</span></div>
                         </div>
                     </div>
                 </div>
@@ -162,7 +187,7 @@
                                 <i class="fa fa-bars"></i>
                                 <span>@lang('lang.all_category')</span>
                             </div>
-                            <ul>
+                            <ul style="user-select: none;">
                                 @foreach($categories as $category)
                                 <li><a href="{{route('home.category',$category->slug)}}">{{$category->name}}</a></li>
                                 @endforeach
@@ -290,6 +315,7 @@
         </footer>
         <!-- Footer Section End -->
         <!-- Js Plugins -->
+        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
         <script src="{{asset('fontend/js/jquery-3.3.1.min.js')}}"></script>
         <script src="{{asset('fontend/js/bootstrap.min.js')}}"></script>
         <script src="{{asset('fontend/js/jquery.nice-select.min.js')}}"></script>
@@ -454,13 +480,15 @@
             $('.update_cart').change(function(){
                 var rowId = $(this).attr('id');
                 var qty = $(this).val();
-            
-                $.get({
+                if(qty>0){
+                    $(this).attr('statusError',false);
+                    $('.error_quantity'+rowId).html('')
+                    $.get({
                     url:"{{route('cart.update_cart')}}",
                     data: {rowId:rowId,qty:qty},
                     success: function(data){
                         $('#qty_cart').html(data['total_count']);
-                        $('#price_product'+data['rowId']).html("$"+data['price_pro']);
+                        $('#price_product'+data['rowId']).html(data['price_pro']+"vnđ");
                         $('.cart_total_price').html("$"+data['total_cart']);
                         // $('.alert_shopping_cart').html(`<div class="alert alert-success alert-dismissible fade show" role="alert">
                         //     <strong>Cập nhật giỏ hàng thành công</strong>
@@ -486,6 +514,13 @@
             
                     }
                 });
+                }else{
+                    $('.error_quantity'+rowId).html('Số lượng lớn hơn 0')
+                    $('#price_product'+rowId).html("0vnđ");
+                    $(this).attr('statusError',true);
+                }
+            
+                
             });
             
             
@@ -516,15 +551,7 @@
             $(document).ready(function(){
                
 
-                $('.header__menu ul li').click(function(){
-                    var list_nav_header = $('.header__menu ul li');
-                    for(var nav of list_nav_header){
-                        if(nav.hasClass('active')){
-                            nav.removeClass('active');
-                        }
-                    }
-                    $(this).addClass('active');
-                });
+             
             
                 $('.btn_delete_wish_list').click(function(){
                     const wish_list_id = $(this).attr('id');
@@ -533,7 +560,8 @@
                         data: {wish_list_id:wish_list_id},
                         success: function(data){
                             data = JSON.parse(data);
-                            $('.row_wish_list'+data).remove();
+                            $('.row_wish_list'+data.id_product).remove();
+                            $('#qty_wish_list').html(data.quantity_product_wish_list)
                         }
                     });
                 });
@@ -565,8 +593,13 @@
                         $('.autocomplete').hide();
                     }
                 });
-               
+              
             });
+
+            $('.btn-search-blog').click(function(e){
+                e.preventDefault();
+                console.log("hello ca nha yeu")
+            })
             
         </script>
         <script>
@@ -582,6 +615,26 @@
             // });
             
             
+            var socket = io('http://127.0.0.1:3000', { transports: ['websocket'] });
+            
+            $('.btn_send_email').click(function(e){
+                const today = new Date();
+                const name = $('#name').val();
+                const avatar = $('#avatar').val();
+                const date = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
+                const time = today.toLocaleTimeString('en-US', { hour12: false });
+                const data = {
+                    "name": name,
+                    "avatar": avatar,
+                    "date": date,
+                    "time": time,
+                    "topic": "gmail",
+                    "link": "https://mail.google.com/mail/u/2/#inbox",
+                }
+                socket.emit('sendMail',data)
+                // const location = window.location;
+                // console.log(location.href)
+            })
         </script>
     </body>
 </html>
