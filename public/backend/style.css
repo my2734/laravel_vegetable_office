@@ -8,9 +8,7 @@
 .cursor_pointer{
   cursor: pointer;
 }
-
 /* CHAT MESSAGE BOX */
-
 #screen-message .card {
   background: #fff;
   transition: .5s;
