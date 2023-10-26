@@ -102,7 +102,16 @@
                     </div>
                     <div class="col-lg-12 text-center">
                         <textarea name="content" placeholder="Your message"></textarea>
-                        <button type="submit" class="site-btn">SEND MESSAGE</button>
+                        @if($user_id)
+                        <input type="hidden" id="name" value="<?php echo $name ?>">
+                        <input type="hidden" id="avatar" value={{$avatar}}>
+                        <input type="hidden" id="link" value="">
+                        <button type="submit" class="site-btn btn_send_email">SEND MESSAGE</button>
+                        @else
+                        <a href="{{route('login')}}">
+                            <span class="site-btn">SEND MESSAGE</span>
+                        </a>
+                        @endif
                     </div>
                 </div>
                 @csrf

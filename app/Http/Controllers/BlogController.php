@@ -22,15 +22,16 @@ class BlogController extends Controller
         // echo json_encode(Blog::count());
         // die();
         // return response()->json($blogs);
-        $news = News::with('User')->with('User_Info')->get();
+        $news = News::with('User')->with('User_Info')->where('status',0)->orderBy('created_at','DESC')->take(6)->get();
         $total_news = News::where('status',0)->count();
+        
         return view('admin.blog.index',compact('blogs','news','total_news'));
     }
 
     public function create(){
         $category_of_blogs = CategoryOfBlog::get();
         $tagses = Tags::get();
-        $news = News::with('User')->with('User_Info')->get();
+        $news = News::with('User')->with('User_Info')->where('status',0)->orderBy('created_at','DESC')->take(6)->get();
         $total_news = News::where('status',0)->count();
         return view('admin.blog.create',compact('category_of_blogs','tagses','news','total_news'));
     }
@@ -101,7 +102,7 @@ class BlogController extends Controller
         //     echo "Ton tai";
         // }
         // return response()->json($blog_edit);
-        $news = News::with('User')->with('User_Info')->get();
+        $news = News::with('User')->with('User_Info')->where('status',0)->orderBy('created_at','DESC')->take(6)->get();
         $total_news = News::where('status',0)->count();
         return view('admin.blog.create',compact('category_of_blogs','tagses','blog_edit','tags_of_blog','news','total_news'));
     }

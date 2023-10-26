@@ -8,7 +8,7 @@
     <div class="col-md-12 col-sm-12  ">
         <div class="x_panel">
             <div class="x_title">
-                <div class="row">
+                {{-- <div class="row">
                     <div class="col-3">
                         
                     </div>
@@ -29,7 +29,7 @@
                             </li>
                         </ul> -->
                     </div>
-                </div>
+                </div> --}}
                 
                 <div class="clearfix"></div>
             </div>

@@ -30,6 +30,11 @@
                                 <input type="text" placeholder="Search...">
                                 <button type="submit"><span class="icon_search"></span></button>
                             </form>
+                            {{-- <form>
+                                <input type="text" placeholder="Search...">
+                                <span class="icon_search btn-search-blog"></span>
+                                <button type></button>
+                            </form> --}}
                         </div>
                         <div class="blog__sidebar__item">
                             <h4>Categories</h4>
@@ -135,7 +140,7 @@
                         <div class="blog__item__text">
                             <ul>
                                 <li><i class="fa fa-calendar-o"></i> {{$blog->updated_at}}</li>
-                                <li><i class="fa fa-comment-o"></i> 5</li>
+                                {{-- <li><i class="fa fa-comment-o"></i> 5</li> --}}
                             </ul>
                             <h5><a href="{{route('home.blog_detail',$blog->slug)}}">{{$blog->title}}</a></h5>
                             <p class="limit_text">{{$blog->detail_header}}</p>

@@ -14,14 +14,14 @@ class CategoryOfBlogController extends Controller
     public function index(){
         $products = Product::with('product_image','category')->orderBy('updated_at','DESC')->get();
         $category_of_blogs = CategoryOfBlog::orderBy('updated_at','DESC')->get();
-        $news = News::with('User')->with('User_Info')->get();
+        $news = News::with('User')->with('User_Info')->where('status',0)->orderBy('created_at','DESC')->take(6)->get();
         $total_news = News::where('status',0)->count();
         return view('admin.category_of_blog.index',compact('category_of_blogs','news','total_news'));
     }
 
     public function create(){
         $products = Product::with('product_image','category')->orderBy('updated_at','DESC')->get();
-        $news = News::with('User')->with('User_Info')->get();
+        $news = News::with('User')->with('User_Info')->where('status',0)->orderBy('created_at','DESC')->take(6)->get();
         $total_news = News::where('status',0)->count();
         return view('admin.category_of_blog.create',compact('news','total_news'));
     }

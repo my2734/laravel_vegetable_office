@@ -75,7 +75,7 @@
                             <div class="blog__item__text">
                                 <ul>
                                     <li><i class="fa fa-calendar-o"></i> {{$blog->updated_at}}</li>
-                                    <li><i class="fa fa-comment-o"></i> 5</li>
+                                    {{-- <li><i class="fa fa-comment-o"></i> 5</li> --}}
                                 </ul>
                                 <h5><a href="#">{{$blog->title}}</a></h5>
                                 <p class="limit_text">{{$blog->detail_header}} </p>
@@ -84,7 +84,7 @@
                         </div>
                     </div>
                     @endforeach
-                    {{$blogs->links()}}
+                    {{$blogs->links('vendor.pagination.custom')}}
                 </div>
             </div>
         </div>

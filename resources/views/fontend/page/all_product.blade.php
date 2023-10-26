@@ -50,7 +50,7 @@
                                             <input type="text" class="ml-5" style="font-size: 11px;" name="maxamount" id="maxamount">
                                         </div>
                                     </div>
-                                    <input type="submit" value="Lọc" class="btn btn-primary mt-4">
+                                    <input type="submit" value="Lọc" class="btn btn-sm primary-btn  mt-4">
                                 </div>
                                 @csrf
                             <form>    
@@ -65,9 +65,19 @@
                                 @if(!isset($search_key) && !isset($min))
                                 <div class="filter__sort">
                                     <!-- <span>Sort By</span> -->
-                                    
-                                    <a href="{{route('sort_low_to_high_all_product')}}" class="btn btn-default"><i class="fa fa-sort-amount-asc" aria-hidden="true"></i>Thấp đến cao</a>
-                                    <a href="{{route('sort_high_to_low_all_product')}}" class="btn btn-default"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i>Cao đến thấp</a>
+                                    <?php
+                                        $class_btn_low_to_high = "";
+                                        if(isset($low_to_high) && $low_to_high==1){
+                                            $class_btn_low_to_high = "active_btn_sort";
+                                        }
+
+                                        $class_btn_high_to_low = "";
+                                        if(isset($high_to_low) && $high_to_low==1){
+                                            $class_btn_high_to_low = "active_btn_sort";
+                                        }
+                                    ?>
+                                    <a href="{{route('sort_low_to_high_all_product')}}" class="btn btn-default custom-btn-default {{$class_btn_low_to_high}}"><i class="fa fa-sort-amount-asc" aria-hidden="true"></i>Thấp đến cao</a>
+                                    <a href="{{route('sort_high_to_low_all_product')}}" class="btn btn-default custom-btn-default {{$class_btn_high_to_low}}"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i>Cao đến thấp</a>
                                     <!-- <select>
                                         <option value="0"><a href="facebook.com">Mặc định</a></option>
                                         <option value="0"><a>Giá: Từ thấp đến cao</a></option>
@@ -81,7 +91,7 @@
                                     @if(isset($search_key))
                                     <h3><span style="font-weight: 700">Kết quả tìm kiếm "{{$search_key}}"</span></h3>
                                     @elseif(isset($min))
-                                    <h3><span style="font-weight: 700">Kết quả lọc từ {{$min}}đ - {{$max}}đ</span></h3>
+                                    <h3><span style="font-weight: 700">Kết quả lọc từ {{number_format($min)}}vnđ - {{number_format($max)}}vnđ</span></h3>
                                     @elseif(isset($low_to_high))
                                     <h3><span style="font-weight: 700">Kết quả sắp xếp từ thấp đến cao</span></h3>
                                     @elseif(isset($high_to_low))
@@ -95,6 +105,9 @@
                         </div>
                     </div>
                     <div class="row">
+                        @if(count($products)<=0)
+                            <h4 class="font-weight-bold">Không tìm thấy kết quả</h4>
+                        @else
                         @foreach($products as $key => $product)
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
@@ -106,7 +119,15 @@
                                                     ?>
                                                 </p>
                                     <ul class="product__item__pic__hover">
-                                        <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                        <li> 
+                                        <form method="POST" action="{{route('home.wish_list')}}">
+                                            <input type="hidden" name="product_id" value="{{$product->id}}">
+                                            <button type="submit" style="border:none;background-color: transparent">
+                                                <a href="javascript:void(0);"><i class="fa fa-heart"></i></a>
+                                            </button>
+                                            @csrf
+                                        </form>
+                                    </li>
                                         <li><a href="{{route('home.product',$product->slug)}}"><i class="fa fa-retweet"></i></a></li>
                                         <li><a href="javascript:void(0);" id="{{$product->id}}" class="add_one_cart"  ><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
@@ -129,8 +150,10 @@
                             </div>
                         </div>
                         @endforeach
+                        @endif
                     </div>
-                    {{$products->links()}}
+                    {{-- {{$products->links()}} --}}
+                    {{$products->links('vendor.pagination.custom')}}
                     <div class="product__discount mt-5">
                         <div class="section-title product__discount__title">
                             <h2>Sale Off</h2>
@@ -152,13 +175,21 @@
                                                 </p>
                                                 </div>
                                                 <div class='col'>
-                                                    <div class="product__discount__percent">Sale</div>
+                                                    <div class="product__discount__percent font-weight-bold">Sale</div>
                                                 </div>
                                             
                                                 
                                            </div>
                                             <ul class="product__item__pic__hover">
-                                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                               <li> 
+                                                    <form method="POST" action="{{route('home.wish_list')}}">
+                                                        <input type="hidden" name="product_id" value="{{$product->id}}">
+                                                        <button type="submit" style="border:none;background-color: transparent">
+                                                            <a href="javascript:void(0);"><i class="fa fa-heart"></i></a>
+                                                        </button>
+                                                        @csrf
+                                                    </form>
+                                                </li>
                                                 <li><a href="{{route('home.product',$product->slug)}}"><i class="fa fa-retweet"></i></a></li>
                                                 <li><a href="javascript:void(0);" id="{{$product->id}}" class="add_one_cart"  ><i class="fa fa-shopping-cart"></i></a></li>
 

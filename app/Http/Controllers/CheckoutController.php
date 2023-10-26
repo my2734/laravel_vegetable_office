@@ -37,7 +37,15 @@ class CheckoutController extends Controller
             $count_wish_list = Wish_List::where('user_id',Auth::user()->id)->count();
         }
 
-        return view('fontend.page.checkout',compact('categories','carts','sub_total','user_buy','count_wish_list'));
+        $status_checkout = true;
+        foreach($carts as $cart){
+           if($cart->qty <= 0) $status_checkout = false;
+        }
+        if(!$status_checkout){
+            return redirect()->back();
+        }else{
+            return view('fontend.page.checkout',compact('categories','carts','sub_total','user_buy','count_wish_list'));
+        }
     }
 
     public function payment_vnpay(){
@@ -217,9 +225,10 @@ class CheckoutController extends Controller
         $order->created_at = Carbon::now();
         $order->updated_at = Carbon::now();
         $order->save();
+        
         // Insert tbl_order_detail
-
         $carts = Cart::content();
+        Cart::destroy();
         $total = 0;
         $quantity_of_cart = 0;
 
@@ -243,7 +252,12 @@ class CheckoutController extends Controller
             $warehouse_item->export_quantity = $warehouse_item->export_quantity+$order_detail->pro_quantity;
             $warehouse_item->save();
 
+            //update total tbl_order
+            $order_update = Order::find($order->id);
+            $order_update->total = $total;
+            $order_update->save();
         }
+        // $cart = [];
 
         //add Statistic
         $order_date =  Carbon::now()->toDateString();    
@@ -267,31 +281,29 @@ class CheckoutController extends Controller
             $statistic->total_order=1;
             $statistic->save();
         }
-
-        
-       
-      
         //Gui mail 
         $name = 'Chúc mừng bạn đã đặt hàng thành công';
         $user = User::find($order->user_id);
-
+        // Cart::destroy();
+        // return json_encode(Cart::content());
 
         Mail::send('emails.order',compact('name'),function($email) use ($user) {
             $email->subject("Xác nhận đơn hàng");
             $email->to($user->email,$user->user_name);
         });
-        Cart::destroy();
-        $total =  $total * 100;
+       
+        $total =  $total;
         if(isset($request->method_payment) && $request->method_payment=='vnpay'){
+            
             $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-            $vnp_Returnurl = "http://127.0.0.1:8001/checkout/lich-su-mua-hang";
-            $vnp_TmnCode = "URHY337Q";//Mã website tại VNPAY 
-            $vnp_HashSecret = "ZWJHOFQYTBYRPFLFZXIPCGSYPKINECAE"; //Chuỗi bí mật
+            $vnp_Returnurl = "http://127.0.0.1:8000/checkout/lich-su-mua-hang";
+            $vnp_TmnCode = "6NAJWGAF";//Mã website tại VNPAY 
+            $vnp_HashSecret = "AUJHLJDASCAOFCGVTKRQCJJAASBUMMTK"; //Chuỗi bí mật
     
             $vnp_TxnRef = $order->id;; //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
             $vnp_OrderInfo = 'Thanh toan demo';
             $vnp_OrderType = 'billpayment';
-            $vnp_Amount = $total;
+            $vnp_Amount = $total *100;
             $vnp_Locale = 'vn';
             $vnp_BankCode = 'NCB';
             $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
@@ -428,7 +440,7 @@ class CheckoutController extends Controller
         $news->created_at =  Carbon::now();
         $news->save();
        
-       
+        
         return redirect()->route('checkout.lich_su_mua_hang')->with('order_success','Đặt hàng thành công, Vui lòng kiểm tra lại Email!');
 
         // echo "hello";
@@ -452,6 +464,8 @@ class CheckoutController extends Controller
         if(Auth::id()){
             $count_wish_list = Wish_List::where('user_id',Auth::user()->id)->count();
         }
+        // echo json_encode($orders);
+        // die();
         return view('fontend.page.lich_su_mua_hang',compact('categories','orders','count_wish_list'));
     }
 
@@ -467,11 +481,14 @@ class CheckoutController extends Controller
          }
         $order_id = $request->order_id;
         $order = Order::find($order_id);
-        $order->status = 2;
+        $order->status = 5;
         $order->save();
     }
 
     public function detroy_order(Request $request,$id){
+        // echo json_encode($id);
+        // die();
+
         if(Auth::id()){
             $user = User::find(Auth::id());
             $user_info = User_Info::where('email', $user->email)->first();
@@ -490,6 +507,8 @@ class CheckoutController extends Controller
         $order->status = -1;
         $order->reason = $request->reason;
         $order->save();
+        // echo json_encode($order);
+        // die();
         return redirect()->back()->with('message_success','Hủy đơn hàng thành công');
     }
 
@@ -512,6 +531,18 @@ class CheckoutController extends Controller
         if(Auth::id()){
             $count_wish_list = Wish_List::where('user_id',Auth::user()->id)->count();
         }
-        return view('fontend.page.lich_su_mua_hang',compact('categories','orders','count_wish_list'))->with("message","Hello ca nha yeu");
+        $title_page = "";
+
+        if($status == 0){
+            $title_page = "Danh sách đơn hàng chờ xác nhận";
+        }else if($status == 1){
+            $title_page = "Danh sách đơn hàng đang giao";
+        }else if($status == 2){
+            $title_page = "Danh sách đơn hàng đã nhận";
+        }else if($status == -1){
+            $title_page = "Danh sách đơn hàng đã hủy";
+        }
+        
+        return view('fontend.page.lich_su_mua_hang',compact('categories','orders','count_wish_list','title_page'))->with("message","Hello ca nha yeu");
     }
 }

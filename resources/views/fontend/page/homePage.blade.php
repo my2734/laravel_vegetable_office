@@ -69,7 +69,7 @@
     <!-- Categories Section End -->
     <!-- Featured Section Begin -->
 
-    <section class="featured spad">
+    <section class="featured spad" style="user-select: none;">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
@@ -245,7 +245,7 @@
                         <div class="blog__item__text">
                             <ul>
                                 <li><i class="fa fa-calendar-o"></i> {{$blog->updated_at}}</li>
-                                <li><i class="fa fa-comment-o"></i>5</li>
+                                {{-- <li><i class="fa fa-comment-o"></i>5</li> --}}
                             </ul>
                             <h5><a href="{{route('home.blog_detail',$blog->slug)}}">{{$blog->title}}</a></h5>
                             <p class="limit_text">{{$blog->detail_header}}</p>

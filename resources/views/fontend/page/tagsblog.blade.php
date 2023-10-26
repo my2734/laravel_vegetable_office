@@ -84,7 +84,7 @@
                                 <div class="blog__item__text">
                                     <ul>
                                         <li><i class="fa fa-calendar-o"></i> {{$blog->updated_at}}</li>
-                                        <li><i class="fa fa-comment-o"></i> 5</li>
+                                        {{-- <li><i class="fa fa-comment-o"></i> 5</li> --}}
                                     </ul>
                                     <h5><a href="{{route('home.blog_detail',$blog->slug)}}">{{$blog->title}}</a></h5>
                                     <p class="limit_text">{{$blog->detail_header}} </p>
@@ -94,14 +94,22 @@
                         </div>  
                         @endif
                     @endforeach
-                    <div class="col-lg-12">
+                    {{-- <div class="col-lg-12">
                         <div class="product__pagination blog__pagination">
                             <a href="#">1</a>
                             <a href="#">2</a>
                             <a href="#">3</a>
                             <a href="#"><i class="fa fa-long-arrow-right"></i></a>
                         </div>
-                    </div>
+                    </div> --}}
+
+                    {{-- {{$blog_about_tags->link('vendor.pagination.custom')}} --}}
+                    {{-- @if(count($blog_about_tags)>=4)
+                        {{$blog_about_tags->link()}}
+                    
+                    @endif --}}
+
+                    {{-- {{$blog_about_tags->link()}} --}}
                 </div>
             </div>
         </div>
