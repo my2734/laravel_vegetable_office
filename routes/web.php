@@ -23,6 +23,9 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\AdminChatController;
 use Illuminate\Routing\Router;
+use App\Http\Controllers\ShipController;
+use App\Http\Controllers\ShipOrderController;
+use App\Http\Controllers\ShipperController;
 
 /*
 |--------------------------------------------------------------------------
