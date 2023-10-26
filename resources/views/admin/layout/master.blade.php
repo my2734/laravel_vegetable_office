@@ -32,6 +32,8 @@
         <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
         <!-- Moris Chart -->
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     </head>
     <body class="nav-md">
         <div class="container body">
@@ -138,18 +140,38 @@
         <!-- Moris Chart -->
         <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
-        <script src="http://127.0.0.1:3000/socket.io/socket.io.js"></script>
+        {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/pusher/8.3.0/pusher.min.js" integrity="sha512-tXL5mrkSoP49uQf2jO0LbvzMyFgki//znmq0wYXGq94gVF6TU0QlrSbwGuPpKTeN1mIjReeqKZ4/NJPjHN1d2Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> --}}
+        {{-- <script src="https://js.pusher.com/4.4/pusher.min.js"></script> --}}
+        {{-- <script src="https://js.pusher.com/7.2/pusher.min.js"></script> --}}
+        <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
         <script>
-            $( function() {
-              $( "#datepicker3" ).datepicker({
-                dateFormat :"yy-mm-dd"
+            $(document).ready(function(){
+              Pusher.logToConsole = true;
+              // console.log(Pusher)
+              var pusher = new Pusher('9b486b695b2b9d9f825b', {
+                cluster: 'ap1'
               });
-            } );
-            $( function() {
-              $( "#datepicker4" ).datepicker({
-                dateFormat :"yy-mm-dd"
+              
+              var channel = pusher.subscribe('chat-with-admin');
+
+              channel.bind('chat-with-admin-event', function(data) {
+                console.log(data)               
               });
-            } );
+
+            
+            
+              $( function() {
+                $( "#datepicker3" ).datepicker({
+                  dateFormat :"yy-mm-dd"
+                });
+              } );
+              $( function() {
+                $( "#datepicker4" ).datepicker({
+                  dateFormat :"yy-mm-dd"
+                });
+              } );
+            })
         </script>
         <script>
             $('.btn_change_status').click(function(){
@@ -179,7 +201,6 @@
                   {period: "2022-10-24", order: 20, sales: "34000000", profit: "20000000", quantity: 33},
                   {period: "2022-10-25", order: 12, sales: "36000000", profit: "18000000", quantity: 22},
                   {period: "2022-10-26", order: 5, sales: "33000000", profit: "19000000", quantity: 14}
-                  // {}
                             ],
                 xkey: 'period',
                 ykeys: ['order', 'sales','profit','quantity'],
@@ -585,12 +606,24 @@
                   success: function(data){
                     data = JSON.parse(data);
                     $('.td_role_manager_human'+data['id']).html(data['role']);
-                    $('#message_change_role_manager_human_success').html(`<div class="alert alert-success alert-dismissible fade show" role="alert">
-                  <strong>Chúc mừng bạn đã cập nhật phân quyền thành công!</strong>
-                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                  </button>
-                  </div>`)
+                  //   $('#message_change_role_manager_human_success').html(`<div class="alert alert-success alert-dismissible fade show" role="alert">
+                  // <strong>Chúc mừng bạn đã cập nhật phân quyền thành công!</strong>
+                  // <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  //     <span aria-hidden="true">&times;</span>
+                  // </button>
+                  // </div>`)
+                  Toastify({
+                    text: "Chúc mừng bạn đã cập nhật phân quyền thành công!",
+                    duration: 3000,
+                    newWindow: true,
+                    close: true,
+                    gravity: "top", // `top` or `bottom`
+                    position: "right", // `left`, `center` or `right`
+                    stopOnFocus: true, // Prevents dismissing of toast on hover
+                    style: {
+                        background: "#A7D397",
+                    },
+                }).showToast();
                   }
                 })
             

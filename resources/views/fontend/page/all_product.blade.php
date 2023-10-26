@@ -119,7 +119,8 @@
                                                     ?>
                                                 </p>
                                     <ul class="product__item__pic__hover">
-                                        <li> 
+                                        <li>
+                                            
                                         <form method="POST" action="{{route('home.wish_list')}}">
                                             <input type="hidden" name="product_id" value="{{$product->id}}">
                                             <button type="submit" style="border:none;background-color: transparent">
@@ -127,7 +128,7 @@
                                             </button>
                                             @csrf
                                         </form>
-                                    </li>
+                                        </li>
                                         <li><a href="{{route('home.product',$product->slug)}}"><i class="fa fa-retweet"></i></a></li>
                                         <li><a href="javascript:void(0);" id="{{$product->id}}" class="add_one_cart"  ><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
@@ -181,7 +182,8 @@
                                                 
                                            </div>
                                             <ul class="product__item__pic__hover">
-                                               <li> 
+                                                <li>
+                                                    
                                                     <form method="POST" action="{{route('home.wish_list')}}">
                                                         <input type="hidden" name="product_id" value="{{$product->id}}">
                                                         <button type="submit" style="border:none;background-color: transparent">

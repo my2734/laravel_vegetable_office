@@ -110,7 +110,8 @@
                                     ?>
                                 </p>
                                     <ul class="product__item__pic__hover">
-                                        <li> 
+                                        <li>
+                                            
                                             <form method="POST" action="{{route('home.wish_list')}}">
                                                 <input type="hidden" name="product_id" value="{{$product->id}}">
                                                 <button type="submit" style="border:none;background-color: transparent">
@@ -171,7 +172,8 @@
                                                 
                                            </div>
                                             <ul class="product__item__pic__hover">
-                                               <li> 
+                                                <li>
+                                                    
                                                     <form method="POST" action="{{route('home.wish_list')}}">
                                                         <input type="hidden" name="product_id" value="{{$product->id}}">
                                                         <button type="submit" style="border:none;background-color: transparent">

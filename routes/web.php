@@ -20,11 +20,12 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\DataInputOutputController;
 use App\Http\Controllers\WarehouseController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\ChatController;
+use App\Http\Controllers\AdminChatController;
+use Illuminate\Routing\Router;
 use App\Http\Controllers\ShipController;
 use App\Http\Controllers\ShipOrderController;
 use App\Http\Controllers\ShipperController;
-
-use Illuminate\Routing\Router;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,11 +62,26 @@ Route::get('/admin-logout', [AdminLoginController::class, 'logout'])->name('admi
 //     route::get('/', [AdminController::class,'index'])->name('admin.index');
 // });
 
-//Admin
-Route::prefix('admin')->middleware('auth_admin')->group(function () {
-   
 
-    Route::get('/', [AdminController::class, 'index'])->name('admin.index');
+// CHAT BETWEEN CLIENT AND ADMIN
+Route::get('/admin-chat',[ChatController::class,'adminIndex'])->name('adminChat.index');
+Route::post('/admin-chat',[ChatController::class,'adminSubmit'])->name('adminChat.submit');
+
+
+Route::get('/client-chat',[ChatController::class,'clientIndex'])->name('clientChat.index');
+Route::post('/client-chat',[ChatController::class,'clientSubmit'])->name('clientChat.submit');
+
+
+// Route::get('/client-chat-send',[ChatController::class,'clientSubmitDemo'])->name('clientChat.submitdemo');
+
+//Admin
+Route::prefix('admin')->middleware('auth_admin')->group(function(){
+    Route::get('/',[AdminController::class,'index'])->name('admin.index');
+
+    //message
+    Route::get('/message', [AdminChatController::class,'index'])->name('admin.chat.index');
+
+   
     //thong-ke
 
     Route::get('/thongke_start_end', [AdminController::class, 'thongke_start_end'])->name('admin.thongke_start_end');

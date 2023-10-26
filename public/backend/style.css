@@ -267,4 +267,9 @@
       height: 480px;
       overflow-x: auto
   }
+
+  #screen-message .chat-app .chat-history {
+      height: calc(100vh - 350px);
+      overflow-x: auto
+  }
 }

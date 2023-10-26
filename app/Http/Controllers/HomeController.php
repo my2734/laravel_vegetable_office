@@ -434,25 +434,29 @@ class HomeController extends Controller
         return json_encode($data);
     }
 
-    public function search_ajax(Request $request)
-    {
+    public function search_ajax(Request $request){
+        $domain = request()->getHost();
         $key = $request->key;
         $list_product = Product::where('status', 1)->where('name', 'LIKE', "%{$key}%")->take(10)->get();
         // return json_encode($list_product[0]->image);
         $html = '<ul style="display: block;">';
-        foreach ($list_product as $product) {
-            // $html.='<li><a href="http://127.0.0.1:8000/san-pham/'.$product->slug.'">'.$product->name.'</a></li>';
-            $html .= '<li style="display:block;" class="mt-3">
-                    <a href="http://127.0.0.1:8000/san-pham/' . $product->slug . '"><img height="50" width="50" class="float-left mr-3" src="http://127.0.0.1:8000/Uploads/' . $product->image . '" alt=""></a>
+        foreach($list_product as $product){
+            $product_slug = $product->slug;
+            // $html.='<li><a href="http://127.0.0.1:8001/san-pham/'.$product->slug.'">'.$product->name.'</a></li>';
+            $html.='<li style="display:block;" class="mt-3">
+                    <a href="http://'.$domain.'/san-pham/'.$product_slug.'" ><img height="50" width="50" class="float-left mr-3" src="http://'.$domain.'/Uploads/'.$product->image.'" alt=""></a>
                     <span >
-                        <a href="http://127.0.0.1:8000/san-pham/' . $product->slug . '" class="">' . $product->name . '</a><br>
-                        <span class="info_search_item">' . $product->created_at . '</span>
+                        <a  href="http://'.$domain.'/san-pham/'.$product_slug.'" class="">'.$product->name.'</a><br>
+                        <span class="info_search_item">'.$product->created_at.'</span>
                     </span>
                 </li>';
         }
-        $html .= '</ul>';
+        $html.='</ul>';
 
-        echo $html;
+        // echo json_encode($request);
+       
+        
+    echo $html;
     }
 
     public function search_product(Request $request)
