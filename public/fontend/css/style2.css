@@ -160,3 +160,70 @@ button {
    color: #989292;
    line-height: 0px;
 }
+
+
+.autocomplete ul {
+   list-style: none;
+   margin: 10px;
+}
+
+.autocomplete li a {
+   font-size: 14px;
+   color: #000 !important;
+   /* background-color: red; */
+
+
+}
+
+.info_search_item {
+   font-size: 10px;
+   font-style: italic;
+   display: block;
+   /* or inline-block */
+}
+
+.custom-primary-btn {
+   padding: 10px;
+   font-size: 12px;
+}
+
+.custom-primary-btn:hover {
+   color: #fff;
+}
+
+.custom-primary-btn-cancel{
+   background-color: #588157;
+   color: #000;
+}
+
+.custom-primary-btn-cancel:hover{
+   background-color: #588157;
+   color: #000;
+}
+
+.primary-btn{
+   border: none;
+}
+/* pagination */
+.custom_pagination{
+   list-style: none;
+   /* display: inline-flex; */
+}
+
+.page-active{
+   background-color: #7FAD39;
+   color: #fff !important;
+}
+
+.custom_margin-right_pagination{
+   margin-right: 5px !important;
+}
+
+.custom-btn-default{
+   box-shadow: none;
+}
+
+.active_btn_sort{
+   background-color: #7fad39;
+   color: #fff;
+}
