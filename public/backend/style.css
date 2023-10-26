@@ -8,7 +8,12 @@
 .cursor_pointer{
   cursor: pointer;
 }
+
+
+
 /* CHAT MESSAGE BOX */
+
+
 #screen-message .card {
   background: #fff;
   transition: .5s;
@@ -260,11 +265,6 @@
 @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 1) {
  #screen-message  .chat-app .chat-list {
       height: 480px;
-      overflow-x: auto
-  }
-
-  #screen-message .chat-app .chat-history {
-      height: calc(100vh - 350px);
       overflow-x: auto
   }
 }
