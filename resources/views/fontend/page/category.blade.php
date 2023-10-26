@@ -89,7 +89,16 @@
                             <div class="product__item">
                                 <div class="product__item__pic set-bg" data-setbg="{{asset('Uploads/'.$product->image)}}">
                                     <ul class="product__item__pic__hover">
-                                        <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                        <li>
+                                            
+                                            <form method="POST" action="{{route('home.wish_list')}}">
+                                                <input type="hidden" name="product_id" value="{{$product->id}}">
+                                                <button type="submit" style="border:none;background-color: transparent">
+                                                    <a href="javascript:void(0);"><i class="fa fa-heart"></i></a>
+                                                </button>
+                                                @csrf
+                                            </form>
+                                        </li>
                                         <li><a href="{{route('home.product',$product->slug)}}"><i class="fa fa-retweet"></i></a></li>
                                         <li><a href="javascript:void(0);" id="{{$product->id}}" class="add_one_cart"  ><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
@@ -127,7 +136,16 @@
                                             data-setbg="{{asset('Uploads/'.$product->image)}}">
                                             <div class="product__discount__percent">Sale</div>
                                             <ul class="product__item__pic__hover">
-                                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                                <li>
+                                                    
+                                                    <form method="POST" action="{{route('home.wish_list')}}">
+                                                        <input type="hidden" name="product_id" value="{{$product->id}}">
+                                                        <button type="submit" style="border:none;background-color: transparent">
+                                                            <a href="javascript:void(0);"><i class="fa fa-heart"></i></a>
+                                                        </button>
+                                                        @csrf
+                                                    </form>
+                                                </li>
                                                 <li><a href="{{route('home.product',$product->slug)}}"><i class="fa fa-retweet"></i></a></li>
                                                 <li><a href="javascript:void(0);" id="{{$product->id}}" class="add_one_cart"  ><i class="fa fa-shopping-cart"></i></a></li>
 

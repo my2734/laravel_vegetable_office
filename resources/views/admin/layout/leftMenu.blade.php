@@ -7,6 +7,8 @@
         <li><a href="{{route('product.index')}}"><i class="fa fa-table"></i> Product</a></li>
         <li><a href="{{route('category.index')}}"><i class="fa fa-list-alt"></i> Category </a> </li>
         <li><a href="{{route('warehouse.index')}}"><i class="fa fa-truck" aria-hidden="true"></i>Warehouse</a> </li>
+        <li><a href="{{route('admin.chat.index')}}"><i class="fa fa-weixin" aria-hidden="true"></i> Messager </a></li>
+
         <!-- <li><a><i class="fa fa-edit"></i>Dữ liệu nhập xuất <span class="fa fa-chevron-down"></span></a>
           <ul class="nav child_menu" style="">
             <li><a href="{{route('datainputoutput.input_index')}}">Dữ liệu nhập hàng</a></li>

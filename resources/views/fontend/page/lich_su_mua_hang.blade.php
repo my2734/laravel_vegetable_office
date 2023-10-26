@@ -78,18 +78,21 @@
                                     </td>
                                     <td>{{$order->created_at}}</td>
                                     <td>
-                                        @if($order->status==0) Chờ xác nhận <br><button data-toggle="modal" data-target="#delete_order" class="btn btn-sm btn-danger text-white">Hủy đơn hàng</button>
-                                        @elseif($order->status==1) <button id="{{$order->id}}" class="btn btn-sm btn-primary receive_order">Nhận hàng</button>
+                                        @if($order->status==0) 
+                                           <p> Chờ xác nhận</p> <br>
+                                            <button data-toggle="modal" data-target="#delete_order<?php echo $order->id ?>" class="btn btn-sm btn-danger text-white">Hủy đơn hàng</button>
+                                        @elseif($order->status==1) 
+                                            <button id="{{$order->id}}" class="btn btn-sm btn-primary receive_order">Nhận hàng</button>
                                         @elseif($order->status == 2) Đã nhận hàng
                                         @else Đã hủy
-                                        <br>
-                                        <h5>Lí do:</h5>
-                                        <p>{{ $order->reason }}</p>
+                                            <br>
+                                            <h5>Lí do:</h5>
+                                            <p>{{ $order->reason }}</p>
                                         @endif
 
 
                                         <!-- Modal -->
-                                        <div class="modal fade" id="delete_order" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal fade" id="delete_order<?php echo $order->id ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
                                                     <form action="{{route('checkout.detroy_order',$order->id)}}" method="POST">
