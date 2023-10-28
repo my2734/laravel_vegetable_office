@@ -29,9 +29,8 @@
             color: #1c1c1c;
             font-size: 15px;
             }
-
             .header-menu-item-active{
-                color: #7fad39 !important;
+            color: #7fad39 !important;
             }
         </style>
     </head>
@@ -130,15 +129,15 @@
                                 if(isset($shop_active) && $shop_active){
                                     $class_shop_active = "header-menu-item-active";
                                 }
-
+                                
                                 if(isset($blog_active) && $blog_active){
                                     $class_blog_active = "header-menu-item-active";
                                 }
-
+                                
                                 if(isset($contact_active) && $contact_active){
                                     $class_contact_active = "header-menu-item-active";
                                 }
-                            ?>
+                                ?>
                             <ul>
                                 <li><a class="{{$class_home_active}}" href="{{route('home.index')}}">@lang('lang.home')</a></li>
                                 <li><a class="{{$class_shop_active}}" href="{{route('home.all_product')}}">@lang('lang.shop')</a></li>
@@ -151,9 +150,11 @@
                         <div class="header__cart">
                             <ul>
                                 <li>
-                                    <a href="{{route('home.get_wish_list')}}"><i class="fa fa-heart"></i> <span>{{isset($count_wish_list)?$count_wish_list:0}}</span></a></li>
+                                    <a href="{{route('home.get_wish_list')}}"><i class="fa fa-heart"></i> <span>{{isset($count_wish_list)?$count_wish_list:0}}</span></a>
+                                </li>
                                 <li>
-                                    <a href="{{route('cart.show_cart')}}"><i class="fa fa-shopping-bag"></i> <span id="qty_cart">{{Cart::count()}}</span></a></li>
+                                    <a href="{{route('cart.show_cart')}}"><i class="fa fa-shopping-bag"></i> <span id="qty_cart">{{Cart::count()}}</span></a>
+                                </li>
                             </ul>
                             <div class="header__cart__price">item: <span class="cart_total_price">{{Cart::total()}}vnđ</span></div>
                         </div>
@@ -268,33 +269,24 @@
                         </div>
                     </div>
                 </div>
-                <input type="checkbox" isCheck="false" id="check"> 
-                <label class="chat-btn" for="check"> 
+                <div id="coverBoxMessage">
+                    <input type="checkbox" isCheck="false" id="check"> 
+                    <label style="position: fixed" class="chat-btn" for="check"> 
                     <i class="fa fa-commenting-o comment"></i> 
                     <i style="color: white" class="fa fa-close close"></i> 
-                </label> 
-                <div id="wrapperMessage" class="wrapper">
-                    <div class="header-custom">
-                        <h6 style="color: white">Let's Chat - Online</h6>
-                    </div>
-
-                    <div class="chat-form"> 
-                        <div id="message-content" style="height: 200px; overflow-y: scroll;">
-                            {{-- <div>
-                                <label for="">User</label>
-                                <p>Shop oi</p>
-                                <p class="span_time">2:18</p>
-                            </div>
-                            <div class="d-flex flex-column align-items-end">
-                                <label for="">Admin</label>
-                                <p>Shop nghe</p>
-                                <p class="span_time">2:18</p>
-                            </div> --}}
+                    </label> 
+                    <div id="wrapperMessage" style="position: fixed; z-index: 1000" class="wrapper">
+                        <div class="header-custom">
+                            <h6 style="color: white">Let's Chat - Online</h6>
                         </div>
-                        <div class="d-flex">
-                            <input id="message" type="text" class="form-control mr-3" placeholder=""> 
-                            <button id="btn-send-client" class="btn btn-success">Send</button> 
-                        </div> 
+                        <div class="chat-form">
+                            <div id="message-content" user_id="" style="height: 200px; overflow-y: scroll; padding-right: 16px;">
+                            </div>
+                            <div class="d-flex">
+                                <input id="message" type="text" class="form-control mr-3" placeholder=""> 
+                                <button id="btn-send-client" class="btn btn-success">Send</button> 
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
@@ -325,9 +317,42 @@
         <script src="{{asset('fontend/js/owl.carousel.min.js')}}"></script>
         <script src="{{asset('fontend/js/main.js')}}"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+        <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
         <script>
             $(document).ready(function(){
+                // var moment = require('moment');
 
+                console.log("TEST",moment().format('MMMM Do YYYY, h:mm:ss a'))
+                function scrollChat(){
+                    const chatMessageBox = document.querySelector("#message-content")
+            
+                    if(chatMessageBox) {
+                        chatMessageBox.scrollTop =  chatMessageBox.scrollHeight
+                    }
+            
+                }
+                Pusher.logToConsole = true;
+                var pusher = new Pusher('9b486b695b2b9d9f825b', {
+                    cluster: 'ap1'
+                });
+                
+                var channel = pusher.subscribe('chat-with-client');
+            
+                channel.bind('chat-with-client-event', function(data) {
+                    const user_id = $('#message-content').attr('user_id')
+                    if(user_id == data['user_id']){
+                        $('#message-content').append(`
+                                    <div class="d-flex flex-column align-items-end">
+                                        <label for="">Admin</label>
+                                        <p>${data['message']}</p>
+                                        <p class="span_time">${data['time']}</p>
+                                    </div>
+                        `)
+                        scrollChat()
+                    }
+                });
+            
                 $('#check').click(function(){
                     console.log($(this).attr('isCheck'))
                     if($(this).attr('isCheck') === 'false'){
@@ -337,36 +362,30 @@
                         $('#check').attr('isCheck', 'false') //close
                         $('#wrapperMessage').css("display", "none");
                     }
-
+            
                 })
-                function scrollChat(){
-                    const chatMessageBox = document.querySelector("#message-content")
-
-                    if(chatMessageBox) {
-                        chatMessageBox.scrollTop =  chatMessageBox.scrollHeight
-                    }
-
-                }
-
+                
+            
                 $.get({
                     url: "{{route('clientChat.index')}}",
                     method: "GET",
                     success: function(data){
                         const listMessage = JSON.parse(data)
-                        // console.log(data)
+                        // console.log(listMessage[0]['user_id'])
+                        $('#message-content').attr('user_id', listMessage[0]['user_id'])
                         var html = '';
                         listMessage.forEach((messageItem)=>{
                             if(messageItem['role']=='client'){
-                                html = html + '<div><label for="">User</label><p>'+messageItem['message']+'</p><p class="span_time">'+messageItem['time']+'</p></div>'
+                                html = html + '<div><label for="">'+messageItem['user_name']+'</label><p>'+messageItem['message']+'</p><p class="span_time">'+moment(messageItem['time']).format("h:mm:ss a")+'</p></div>'
                             }else{
-                                html = html + '<div class="d-flex flex-column align-items-end"><label for="">Admin</label><p>'+messageItem['message']+'</p><p class="span_time">'+messageItem['time']+'</p></div>'
+                                html = html + '<div class="d-flex flex-column align-items-end"><label for="">Admin</label><p>'+messageItem['message']+'</p><p class="span_time">'+moment(messageItem['time']).format("h:mm:ss a")+'</p></div>'
                             }
                         })
                         $('#message-content').html(html)
                         scrollChat()
                     }
                 })
-
+            
                 $('#btn-send-client').click(function(e){
                     e.preventDefault();
                     var formComment = new FormData();
@@ -392,22 +411,22 @@
                             console.log(response)
                             $('#message-content').append(`
                                 <div>
-                                    <label for="">User</label>
+                                    <label for="">${response['user_name']}</label>
                                     <p>${response['message']}</p>
                                     <p class="span_time">${response['time']}</p>
                                 </div>
                             `)
                             scrollChat()
-
+            
                         }, error: function () {
                             alert("Có lỗi xảy ra");
                         },
                     });
-
+            
                 })
             })
             $('.add_one_cart').click(function(){
-
+            
                
                 var id_product = $(this).attr('id');
                 var qty = 1;
@@ -498,7 +517,7 @@
                         // </div>`);
                         $('.btn_sub_total_shopping_cart').html("$"+data['total_cart']);
                         $('.btn_total_shopping_cart').html("$"+data['total_cart']);
-
+            
                         Toastify({
                             text: "Update to cart success",
                             duration: 3000,
@@ -550,7 +569,7 @@
         <script>
             $(document).ready(function(){
                
-
+            
              
             
                 $('.btn_delete_wish_list').click(function(){
@@ -595,7 +614,7 @@
                 });
               
             });
-
+            
             $('.btn-search-blog').click(function(e){
                 e.preventDefault();
                 console.log("hello ca nha yeu")
@@ -603,37 +622,46 @@
             
         </script>
         <script>
-            // $('.btn_loc').click(function(){
-            //     const min_string = $('#minamount').val();
-            //     const min_array = min_string.split('$');
-            //     const min = min_array[1];
+            $(document).ready(function(){
+                let isSize = false
+                let isType = false
+                let arr_type_allow = ['gif','png','jpg','jpeg','webp']
+                $('.custom-file-input').change(function(){
+                    if($(this)[0].files[0].size < 5242880){
+                        isSize = true
+                    }
+                    const ext = $(this).val().split('.').pop().toLowerCase();
             
-            //     const max_string = $('#maxamount').val();
-            //     const max_array = min_string.split('$');
-            //     const max = min_array[1];
-               
-            // });
+                    if(arr_type_allow.includes(ext)){
+                        isType = true
+                    }
+                })
             
-            
-            var socket = io('http://127.0.0.1:3000', { transports: ['websocket'] });
-            
-            $('.btn_send_email').click(function(e){
-                const today = new Date();
-                const name = $('#name').val();
-                const avatar = $('#avatar').val();
-                const date = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
-                const time = today.toLocaleTimeString('en-US', { hour12: false });
-                const data = {
-                    "name": name,
-                    "avatar": avatar,
-                    "date": date,
-                    "time": time,
-                    "topic": "gmail",
-                    "link": "https://mail.google.com/mail/u/2/#inbox",
+                $('.submit-form-profile').click(function(e){
+                    console.log(isType)
+                    if(!isType){
+                        e.preventDefault()
+                        displayError('Please choose type image')
+                    }else if (!isSize) {
+                        e.preventDefault()
+                        displayError('Limit size image 5kb')
+                    }
+                })
+
+                function displayError(message){
+                    Toastify({
+                        text: message,
+                        duration: 3000,
+                        newWindow: true,
+                        close: true,
+                        gravity: "top", // `top` or `bottom`
+                        position: "right", // `left`, `center` or `right`
+                        stopOnFocus: true, // Prevents dismissing of toast on hover
+                        style: {
+                            background: "#C70039",
+                        },
+                    }).showToast();
                 }
-                socket.emit('sendMail',data)
-                // const location = window.location;
-                // console.log(location.href)
             })
         </script>
     </body>

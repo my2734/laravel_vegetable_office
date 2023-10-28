@@ -80,6 +80,8 @@ Route::prefix('admin')->middleware('auth_admin')->group(function(){
 
     //message
     Route::get('/message', [AdminChatController::class,'index'])->name('admin.chat.index');
+    Route::get('/message/{id}', [AdminChatController::class,'detail'])->name('admin.chat.detail');
+    Route::post('/message-admin', [AdminChatController::class,'post_message'])->name('admin.chat.post');
 
    
     //thong-ke

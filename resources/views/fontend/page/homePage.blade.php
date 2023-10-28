@@ -130,7 +130,8 @@
                                     <span>(Hết hàng)</span>
                                 @endif
                             </h6>
-                            <h5>{{number_format($product->price_unit)}}vnđ</h5>
+                            {{-- <h5>{{number_format($product->price_unit)}}vnđ</h5> --}}
+                            <h5>{{$product->price_promotion != 0 ? number_format($product->price_promotion) : number_format($product->price_unit)}}vnđ</h5>
                         </div>
                     </div>    
                 </div>
@@ -183,7 +184,8 @@
                                                 <span>(Hết hàng)</span>
                                             @endif
                                         </h6>
-                                        <span>{{number_format($product->price_unit)}}vnđ</span>
+                                        {{-- <span>{{number_format($product->price_unit)}}vnđ</span> --}}
+                                        <h5>{{$product->price_promotion != 0 ? number_format($product->price_promotion) : number_format($product->price_unit)}}vnđ</h5>
                                     </div>
                                 </a>
                                 @endforeach
@@ -210,7 +212,8 @@
                                         ?>
                                             <h6>{{$product->name}} @if($inventory <= 0)<span>(Hết hàng)</span>@endif
                                             </h6>
-                                            <span>{{number_format($product->price_unit)}}vnđ</span>
+                                            {{-- <span>{{number_format($product->price_unit)}}vnđ</span> --}}
+                                            <h5>{{$product->price_promotion != 0 ? number_format($product->price_promotion) : number_format($product->price_unit)}}vnđ</h5>
                                         </div>
                                     </a>
                                 @endforeach
