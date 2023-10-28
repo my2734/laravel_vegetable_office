@@ -16,16 +16,22 @@ class Chat implements ShouldBroadcast
 
     public $role;
     public $user_id;
+    public $user_name;
     public $message;
     public $time;
+    public $user_detail;
+    public $domain;
 
 
-    public function __construct($role, $user_id, $message, $time)
+    public function __construct($role, $user_id, $user_name, $message, $time,$user_detail, $domain)
     {
         $this->role = $role;
         $this->user_id = $user_id;
+        $this->user_name = $user_name;
         $this->message = $message;
         $this->time = $time;
+        $this->user_detail = $user_detail;
+        $this->domain = $domain;
     }
 
     public function broadcastOn()

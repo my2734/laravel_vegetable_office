@@ -95,7 +95,7 @@
                     <br>
                 </div>
                 <div class=" text-center">
-                    <button type="submit" class="btn text-white" style="background-color: #7fad39">Update</button>
+                    <button type="submit" class="btn text-white submit-form-profile" style="background-color: #7fad39">Update</button>
                 </div>
             </div>
         </div>

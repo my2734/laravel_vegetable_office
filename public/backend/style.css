@@ -135,7 +135,7 @@
 
 #screen-message  .chat .chat-history .message {
   color: #444;
-  padding: 18px 20px;
+  padding: 6px 10px;
   line-height: 26px;
   font-size: 16px;
   border-radius: 7px;
@@ -163,7 +163,7 @@
 
 #screen-message  .chat .chat-history .my-message:after {
   bottom: 100%;
-  left: 30px;
+  left: 18px;
   border: solid transparent;
   content: " ";
   height: 0;
@@ -182,7 +182,7 @@
 
 #screen-message  .chat .chat-history .other-message:after {
   border-bottom-color: #e8f1f3;
-  left: 93%
+  left: 75%
 }
 
 #screen-message  .chat .chat-message {

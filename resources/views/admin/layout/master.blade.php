@@ -6,6 +6,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}"/>
         <link rel="icon" href="{{asset('backend/images/favicon.ico')}}" type="image/ico" />
         <title>Gentelella Alela! | </title>
         <!-- Bootstrap -->
@@ -140,24 +141,88 @@
         <!-- Moris Chart -->
         <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
-        {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/pusher/8.3.0/pusher.min.js" integrity="sha512-tXL5mrkSoP49uQf2jO0LbvzMyFgki//znmq0wYXGq94gVF6TU0QlrSbwGuPpKTeN1mIjReeqKZ4/NJPjHN1d2Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> --}}
-        {{-- <script src="https://js.pusher.com/4.4/pusher.min.js"></script> --}}
-        {{-- <script src="https://js.pusher.com/7.2/pusher.min.js"></script> --}}
+        
         <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
         <script>
             $(document).ready(function(){
+              // $('.custom-message-time').html()
+
               Pusher.logToConsole = true;
-              // console.log(Pusher)
               var pusher = new Pusher('9b486b695b2b9d9f825b', {
                 cluster: 'ap1'
               });
               
               var channel = pusher.subscribe('chat-with-admin');
 
+              function scrollChat(){
+                    const chatMessageBox = document.querySelector(".chat-history")
+            
+                    if(chatMessageBox) {
+                        chatMessageBox.scrollTop =  chatMessageBox.scrollHeight
+                    }
+            
+                }
+                scrollChat()
+
               channel.bind('chat-with-admin-event', function(data) {
-                console.log(data)               
+                console.log(data)    
+                const user_id = $('#contentMessage').attr('user_id')
+                console.log(user_id)
+                if(user_id == data['user_id']){
+                  //receive message
+                  $('#contentMessage').append(`
+                      <li class="clearfix">
+                          <div class="message-data">
+                              <img style="width: 40px; height: 40px;" src="http://${data['domain']}/Uploads/${data['user_detail']['user__info']['avatar']}" alt="avatar">
+                              <span class="message-data-time">${data['time']}</span>
+                          </div>
+                          <div class="message my-message mb-2">${data['message']}</div>
+                      </li>
+                              
+                  `)    
+                  scrollChat()
+                }
               });
+
+              $('.button-send-admin').click(function(){
+                const message = $('#message_admin').val();
+                $('#message_admin').val('')
+                const user_id = $('#contentMessage').attr('user_id')
+                var formComment = new FormData();
+                formComment.append('message', message);
+                formComment.append('user_id', user_id);
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    contentType: false,
+                    processData: false,
+                    url:"{{route('admin.chat.post')}}",
+                    type: 'POST',
+                    dataType: 'json',
+                    data: formComment,
+                    success: function (response) {
+                      console.log(response)
+                      $('#contentMessage').append(`
+                      <li class="clearfix">
+                          <div class="message-data text-right">
+                              <span class="message-data-time">${response['time']}</span>
+                          </div>
+                          <div class="message other-message float-right">${response['message']}</div>
+                      </li>
+                              
+                  `)   
+                  scrollChat()
+                             
+                    }, error: function () {
+                        alert("Có lỗi xảy ra");
+                    },
+                });
+              })
 
             
             
@@ -333,61 +398,61 @@
         </script>
         <script>
             $(document).ready(function(){
-              var socket = io('http://127.0.0.1:3000', { transports: ['websocket'] });
-              socket.on('sendMail-to-client',(data)=>{
-                let quantity =  $('#total_news').text()*1 + 1;
+              // var socket = io('http://127.0.0.1:3000', { transports: ['websocket'] });
+              // socket.on('sendMail-to-client',(data)=>{
+              //   let quantity =  $('#total_news').text()*1 + 1;
 
-                $('#total_news').text(quantity)
-                console.log(quantity)
-                console.log($('#total_news').text())
-                if(data.topic == "gmail"){
-                  $('#allAlert').before(`
-                  <li style="background-color: #CACFD2 !important;" else="" class="nav-item row_news22">
-                      <a id="22" class="change_status_news" href=${data.link}>
-                          <span class="image">
-                          <img src="http://laravel_vegetable_office.local/Uploads/${data.avatar}" alt="">
-                          </span>
-                          <span>
-                              <span class="font-weight-bold">${data.name}</span>
-                              <span class="time">
-                                  <p>${data.date} ${data.time}</p>
-                              </span>
-                              <!-- <button class="ml-auto btn btn-sm btn-primary"><i class="fa fa-share" aria-hidden="true"></i></button> -->
-                          </span>
-                          <span class="message mt-2">
-                          </span>
-                      </a>
-                      <p><a id="22" class="change_status_news" href=${data.link}>
-                          ${data.name} đã gửi Email cho bạn. Vui lòng kiểm tra lại Email.
-                          </a><a href=${data.link}><i class="fa fa-share" aria-hidden="true"></i></a>
-                      </p>
-                  </li>
-                  `)
-                }else if(data.topic == "order"){
-                  $('#allAlert').before(`
-                  <li style="background-color: #CACFD2 !important;" else="" class="nav-item row_news22">
-                      <a id="22" class="change_status_news" href=${data.link}>
-                          <span class="image">
-                          <img src="http://laravel_vegetable_office.local/Uploads/${data.avatar}" alt="">
-                          </span>
-                          <span>
-                              <span class="font-weight-bold">${data.name}</span>
-                              <span class="time">
-                                  <p>${data.date} ${data.time}</p>
-                              </span>
-                              <!-- <button class="ml-auto btn btn-sm btn-primary"><i class="fa fa-share" aria-hidden="true"></i></button> -->
-                          </span>
-                          <span class="message mt-2">
-                          </span>
-                      </a>
-                      <p><a id="22" class="change_status_news" href=${data.link}>
-                          ${data.name} đã đặt một đơn hàng.
-                          </a><a href=${data.link}><i class="fa fa-share" aria-hidden="true"></i></a>
-                      </p>
-                  </li>
-                  `)
-                }
-              })
+              //   $('#total_news').text(quantity)
+              //   console.log(quantity)
+              //   console.log($('#total_news').text())
+              //   if(data.topic == "gmail"){
+              //     $('#allAlert').before(`
+              //     <li style="background-color: #CACFD2 !important;" else="" class="nav-item row_news22">
+              //         <a id="22" class="change_status_news" href=${data.link}>
+              //             <span class="image">
+              //             <img src="http://laravel_vegetable_office.local/Uploads/${data.avatar}" alt="">
+              //             </span>
+              //             <span>
+              //                 <span class="font-weight-bold">${data.name}</span>
+              //                 <span class="time">
+              //                     <p>${data.date} ${data.time}</p>
+              //                 </span>
+              //                 <!-- <button class="ml-auto btn btn-sm btn-primary"><i class="fa fa-share" aria-hidden="true"></i></button> -->
+              //             </span>
+              //             <span class="message mt-2">
+              //             </span>
+              //         </a>
+              //         <p><a id="22" class="change_status_news" href=${data.link}>
+              //             ${data.name} đã gửi Email cho bạn. Vui lòng kiểm tra lại Email.
+              //             </a><a href=${data.link}><i class="fa fa-share" aria-hidden="true"></i></a>
+              //         </p>
+              //     </li>
+              //     `)
+              //   }else if(data.topic == "order"){
+              //     $('#allAlert').before(`
+              //     <li style="background-color: #CACFD2 !important;" else="" class="nav-item row_news22">
+              //         <a id="22" class="change_status_news" href=${data.link}>
+              //             <span class="image">
+              //             <img src="http://laravel_vegetable_office.local/Uploads/${data.avatar}" alt="">
+              //             </span>
+              //             <span>
+              //                 <span class="font-weight-bold">${data.name}</span>
+              //                 <span class="time">
+              //                     <p>${data.date} ${data.time}</p>
+              //                 </span>
+              //                 <!-- <button class="ml-auto btn btn-sm btn-primary"><i class="fa fa-share" aria-hidden="true"></i></button> -->
+              //             </span>
+              //             <span class="message mt-2">
+              //             </span>
+              //         </a>
+              //         <p><a id="22" class="change_status_news" href=${data.link}>
+              //             ${data.name} đã đặt một đơn hàng.
+              //             </a><a href=${data.link}><i class="fa fa-share" aria-hidden="true"></i></a>
+              //         </p>
+              //     </li>
+              //     `)
+              //   }
+              // })
 
 
               $('.change_status_category').click(function(){
