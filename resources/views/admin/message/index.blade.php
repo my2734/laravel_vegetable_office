@@ -113,7 +113,15 @@
                         </div>
                     </div>
                     @else
-                    <h1>Hello ca Admin</h1>
+                   <div>
+                        <div class="row justify-content-center flex-column align-items-center my-5">
+                            <h1 class="">Welcome Admin</h1>
+                            <div class="welcome-message-picture">
+                                <img src="{{asset('backend/images/img.jpg')}}">
+                            </div>
+                            <button class="welcome-message-button">Start a conversation</button>
+                        </div>
+                   </div>
                     @endif
                 </div>
             </div>

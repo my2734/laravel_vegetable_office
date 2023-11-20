@@ -40,9 +40,7 @@
                     </div>
                     <div class="col-md-6 col-sm-6 form-group">
                         <input type="text" class="form-control" value="{{isset($product_edit) ? $product_edit->price_promotion : old('price_promotion') }}" name="price_promotion" id="inputSuccess2" placeholder="Giá khuyến mãi">
-                        
                     </div>
-                    
                     <!-- <div class="col-md-6 col-sm-6 form-group">
                         <input type="text" class="form-control" value="{{isset($product_edit) ? $product_edit->quantity : old('quantity') }}" name="quantity" id="inputSuccess2" placeholder="Số lượng">
                         @if($errors->has('quantity'))
@@ -59,7 +57,6 @@
                             <?php  } ?> value="{{$category->id}}">{{$category->name}}</option>
                             @endforeach
                         </select>
-                        
                     </div>
                     <div class="col-md-12 col-sm-12 form-group">
                         <div class="custom-file">
@@ -90,18 +87,17 @@
                         </div>
                     </div>
                     <div class="ln_solid"></div>
-                    <div class="form-group row">
-                        <div class="col-md-9 col-sm-9  offset-md-3">
-                            <a href="{{route('product.index')}}"><button type="button" class="btn btn-primary">Cancel</button></a>
-                            <button class="btn btn-primary" type="reset">Reset</button>
+                    <div class="form-group row justify-content-center">
+                        <div class="">
+                            <a href="{{route('product.index')}}"><button type="button" class="primary-btn custom-primary-btn p-2 text-white">Cancel</button></a>
+                            <button class="primary-btn custom-primary-btn p-2 text-white" type="reset">Reset</button>
                             @if(isset($product_edit))
-                            <button type="submit" class="btn btn-danger">Update</button>
+                            <button type="submit" class="primary-btn custom-primary-btn p-2 text-white btn-submit-store-form">Update</button>
                             @else
-                            <button type="submit" class="btn btn-success">Submit</button>
+                            <button type="submit" class="primary-btn custom-primary-btn p-2 text-white btn-submit-store-form">Submit</button>
                             @endif
                         </div>
                     </div>
-                    
                     @csrf
                 </form>
             </div>

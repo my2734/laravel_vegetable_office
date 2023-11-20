@@ -74,7 +74,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="section-title">
-                        <h2>Featured Product</h2>
+                        <h2>@lang('lang.popular_product')</h2>
                         <div class="alert_add_pro_home_page">
 
                         </div>
@@ -114,7 +114,13 @@
                                     </form>
                                 </li>
                                 <li><a href="{{route('home.product',$product->slug)}}"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="javascript:void(0);" id="{{$product->id}}" class="add_one_cart"  ><i class="fa fa-shopping-cart"></i></a></li>
+                                @php 
+                                    $inventory = $product->warehouse->import_quantity - $product->warehouse->export_quantity;
+                                @endphp
+                                 @php 
+                                    $inventory = $product->warehouse->import_quantity - $product->warehouse->export_quantity;
+                                @endphp
+                                <li><a href="javascript:void(0);" inventory="{{$inventory}}" id="{{$product->id}}" class="add_one_cart"  ><i class="fa fa-shopping-cart"></i></a></li>
                             </ul>
                         </div>
                         <div class="featured__item__text">
@@ -127,7 +133,7 @@
                             ?>
                             <h6><a class="font-weight-bold" href="{{route('home.product',$product->slug)}}">{{$product->name}}</a>
                                 @if($inventory <= 0)
-                                    <span>(Hết hàng)</span>
+                                    <span>(@lang('lang.out_of_stock'))</span>
                                 @endif
                             </h6>
                             {{-- <h5>{{number_format($product->price_unit)}}vnđ</h5> --}}
@@ -166,7 +172,7 @@
             <div class="row">
                 <div class="col-lg-6 col-md-6">
                     <div class="latest-product__text">
-                        <h4>Latest Products</h4>
+                        <h4>@lang('lang.laster_product')</h4>
                         <div class="latest-product__slider owl-carousel">
                             {{-- san pham moi dang --}}
                             <div class="latest-prdouct__slider__item">
@@ -181,7 +187,7 @@
                                         ?>
                                         <h6>{{$product->name}}
                                             @if($inventory <= 0)
-                                                <span>(Hết hàng)</span>
+                                                <span>(@lang('lang.out_of_stock'))</span>
                                             @endif
                                         </h6>
                                         {{-- <span>{{number_format($product->price_unit)}}vnđ</span> --}}
@@ -197,7 +203,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6">
                     <div class="latest-product__text">
-                        <h4>Top Rated Products</h4>
+                        <h4>@lang('lang.top_rated_product')</h4>
                         <div class="latest-product__slider owl-carousel">
                             {{-- san pham ban chay --}}
                             <div class="latest-prdouct__slider__item">
@@ -210,7 +216,7 @@
                                         <?php 
                                             $inventory = $product->warehouse->import_quantity - $product->warehouse->export_quantity;
                                         ?>
-                                            <h6>{{$product->name}} @if($inventory <= 0)<span>(Hết hàng)</span>@endif
+                                            <h6>{{$product->name}} @if($inventory <= 0)<span>(@lang('lang.out_of_stock'))</span>@endif
                                             </h6>
                                             {{-- <span>{{number_format($product->price_unit)}}vnđ</span> --}}
                                             <h5>{{$product->price_promotion != 0 ? number_format($product->price_promotion) : number_format($product->price_unit)}}vnđ</h5>
@@ -233,7 +239,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="section-title from-blog__title">
-                        <h2>From The Blog</h2>
+                        <h2>@lang('lang.from_the_blog')</h2>
                     </div>
                 </div>
             </div>

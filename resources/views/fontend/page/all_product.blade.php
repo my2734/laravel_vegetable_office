@@ -26,7 +26,7 @@
                 <div class="col-lg-3 col-md-5">
                     <div class="sidebar">
                         <div class="sidebar__item">
-                            <h4>Department</h4>
+                            <h4>@lang('lang.department')</h4>
                             <ul>
                                 @foreach($categories as $category)
                                 <li><a href="{{route('home.category',$category->slug)}}">{{$category->name}}</a></li>
@@ -35,7 +35,7 @@
                         </div>
                         <!-- Loc -->
                         <div class="sidebar__item">
-                            <h4>Price</h4>
+                            <h4>@lang('lang.price')</h4>
                             <form method="POST" action="{{route('home.filter_product')}}">
                                 <div class="price-range-wrap">
                                     <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
@@ -76,28 +76,24 @@
                                             $class_btn_high_to_low = "active_btn_sort";
                                         }
                                     ?>
-                                    <a href="{{route('sort_low_to_high_all_product')}}" class="btn btn-default custom-btn-default {{$class_btn_low_to_high}}"><i class="fa fa-sort-amount-asc" aria-hidden="true"></i>Thấp đến cao</a>
-                                    <a href="{{route('sort_high_to_low_all_product')}}" class="btn btn-default custom-btn-default {{$class_btn_high_to_low}}"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i>Cao đến thấp</a>
-                                    <!-- <select>
-                                        <option value="0"><a href="facebook.com">Mặc định</a></option>
-                                        <option value="0"><a>Giá: Từ thấp đến cao</a></option>
-                                        <option value="0"><a>Giá: Từ cao đến thấp</a></option>
-                                    </select> -->
+                                    <a href="{{route('sort_low_to_high_all_product')}}" class="btn btn-default custom-btn-default {{$class_btn_low_to_high}}"><i class="fa fa-sort-amount-asc" aria-hidden="true"></i>@lang('lang.low_to_high')</a>
+                                    <a href="{{route('sort_high_to_low_all_product')}}" class="btn btn-default custom-btn-default {{$class_btn_high_to_low}}"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i>@lang('lang.high_to_low')</a>
+
                                 </div>
                                 @endif
                             </div>
                             <div class="col-lg-7 col-md-7">
                                 <div class="filter__found">
                                     @if(isset($search_key))
-                                    <h3><span style="font-weight: 700">Kết quả tìm kiếm "{{$search_key}}"</span></h3>
+                                    <h3><span style="font-weight: 700">@lang('lang.search_result') "{{$search_key}}"</span></h3>
                                     @elseif(isset($min))
-                                    <h3><span style="font-weight: 700">Kết quả lọc từ {{number_format($min)}}vnđ - {{number_format($max)}}vnđ</span></h3>
+                                    <h3><span style="font-weight: 700">@lang('lang.filter_result') {{number_format($min)}}vnđ - {{number_format($max)}}vnđ</span></h3>
                                     @elseif(isset($low_to_high))
-                                    <h3><span style="font-weight: 700">Kết quả sắp xếp từ thấp đến cao</span></h3>
+                                    <h3><span style="font-weight: 700"></span>@lang('lang.result_sort_low_to_high')</h3>
                                     @elseif(isset($high_to_low))
-                                    <h3><span style="font-weight: 700">Kết quả sắp xếp từ cao đến thấp</span></h3>
+                                    <h3><span style="font-weight: 700">@lang('lang.result_sort_high_to_low')</span></h3>
                                     @else            
-                                    <h3><span style="font-weight: 700">Tất cả sản phẩm</span></h3>
+                                    <h3><span style="font-weight: 700">@lang('lang.all_product')</span></h3>
                                     @endif
                                 </div>
                             </div>
@@ -106,7 +102,7 @@
                     </div>
                     <div class="row">
                         @if(count($products)<=0)
-                            <h4 class="font-weight-bold">Không tìm thấy kết quả</h4>
+                            <h4 class="font-weight-bold">@lang('lang.not_found')</h4>
                         @else
                         @foreach($products as $key => $product)
                         <div class="col-lg-4 col-md-6 col-sm-6">
@@ -130,7 +126,10 @@
                                         </form>
                                         </li>
                                         <li><a href="{{route('home.product',$product->slug)}}"><i class="fa fa-retweet"></i></a></li>
-                                        <li><a href="javascript:void(0);" id="{{$product->id}}" class="add_one_cart"  ><i class="fa fa-shopping-cart"></i></a></li>
+                                        @php 
+                                        $inventory = $product->warehouse->import_quantity - $product->warehouse->export_quantity;
+                                    @endphp
+                                    <li><a href="javascript:void(0);" inventory="{{$inventory}}" id="{{$product->id}}" class="add_one_cart"  ><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
@@ -143,7 +142,7 @@
                                     ?>
                                     <h6><a class="font-weight-bold" href="{{route('home.product',$product->slug)}}">{{$product->name}}</a>
                                         @if($inventory <=0 )
-                                            <span>(Hết hàng)</span>
+                                            <span>(@lang('lang.out_of_stock'))</span>
                                         @endif
                                     </h6>
                                     <h5>{{$product->price_promotion != 0 ? number_format($product->price_promotion) : number_format($product->price_unit)}}vnđ</h5>
@@ -154,7 +153,10 @@
                         @endif
                     </div>
                     {{-- {{$products->links()}} --}}
+                    @if(!isset($min))
                     {{$products->links('vendor.pagination.custom')}}
+                    @endif
+                    {{-- {{$products->links('vendor.pagination.custom')}} --}}
                     <div class="product__discount mt-5">
                         <div class="section-title product__discount__title">
                             <h2>Sale Off</h2>
@@ -193,7 +195,10 @@
                                                     </form>
                                                 </li>
                                                 <li><a href="{{route('home.product',$product->slug)}}"><i class="fa fa-retweet"></i></a></li>
-                                                <li><a href="javascript:void(0);" id="{{$product->id}}" class="add_one_cart"  ><i class="fa fa-shopping-cart"></i></a></li>
+                                                @php 
+                                                $inventory = $product->warehouse->import_quantity - $product->warehouse->export_quantity;
+                                            @endphp
+                                            <li><a href="javascript:void(0);" inventory="{{$inventory}}" id="{{$product->id}}" class="add_one_cart"  ><i class="fa fa-shopping-cart"></i></a></li>
 
                                             </ul>
                                         </div>
@@ -219,7 +224,6 @@
                             </div>
                         </div>
                     </div>
-                   
                 </div>
             </div>
         </div>

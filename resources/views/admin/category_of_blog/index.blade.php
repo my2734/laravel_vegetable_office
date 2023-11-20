@@ -9,7 +9,7 @@
             <div class="x_title">
                 <h2>Category Of Blog List </h2>
                 <ul class="nav navbar-right panel_toolbox">
-                    <li><a class="text-white" href="{{route('category_of_blog.create')}}"><button class="btn btn-primary ml-3 btn-sm">Create New <i class="fa fa-plus"></i></a></button>
+                    <li><a class="text-white" href="{{route('category_of_blog.create')}}"><button class="primary-btn custom-primary-btn p-2 text-white ml-3">Create New <i class="fa fa-plus"></i></a></button>
                     </li>
                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                     </li>
@@ -33,12 +33,12 @@
                             <td>{{$category_of_blog->name}}</td>
                             <td><span id="{{$category_of_blog->id}}" class="cursor_pointer badge change_status_categoryofblog{{$category_of_blog->id}} change_status_categoryofblog {{$category_of_blog->status==1?'badge-danger':'badge-secondary'}}">{{$category_of_blog->status==1?"Hiển thị":"Không hiển thị"}}<span></td>
                             <td>
-                                <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete_category_ofblog"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                                <a href="{{route('category_of_blog.edit',$category_of_blog->id)}}" class="btn btn-warning btn-sm"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                                <button class="primary-btn custom-primary-btn p-2 text-white" data-toggle="modal" data-target="#delete_category_ofblog{{$category_of_blog->id}}"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                                <a href="{{route('category_of_blog.edit',$category_of_blog->id)}}" class="primary-btn custom-primary-btn p-2 text-white"><i class="fa fa-pencil" aria-hidden="true"></i></a>
                                 
                             
                                 <!-- Modal -->
-                                <div class="modal fade" id="delete_category_ofblog" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="delete_category_ofblog{{$category_of_blog->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -48,8 +48,8 @@
                                                 </button>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Không</button>
-                                                <a href="{{route('category_of_blog.delete',$category_of_blog->id)}}" class="btn btn-danger text-white">Chắc chắn</a>
+                                                <button type="button" class="sub-btn custom-primary-btn p-2" data-dismiss="modal">Không</button>
+                                                <a href="{{route('category_of_blog.delete',$category_of_blog->id)}}" class="primary-btn custom-primary-btn p-2 text-white">Chắc chắn</a>
                                                 
                                             </div>
                                         </div>

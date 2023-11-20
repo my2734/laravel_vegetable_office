@@ -917,11 +917,14 @@
   display: block; }
 
 .profile_pic {
-  width: 35%;
+  width: 70px;
+  height: 70px;
   float: left; }
 
 .img-circle.profile_img {
-  width: 70%;
+  width: 80%;
+  height: 80%;
+  object-fit: cover;
   background: #fff;
   margin-left: 15%;
   z-index: 1000;

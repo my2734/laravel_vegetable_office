@@ -27,7 +27,7 @@ class HomeController extends Controller
     {
         if (Auth::id()) {
             $user = User::find(Auth::id());
-            $user_info = User_Info::where('email', $user->email)->first();
+            $user_info = User_Info::where('user_id', Auth::id())->first();
             if (!$user_info->user_id) {
                 $user_info->user_id = Auth::id();
                 $user_info->save();
@@ -60,7 +60,7 @@ class HomeController extends Controller
     {
         if (Auth::id()) {
             $user = User::find(Auth::id());
-            $user_info = User_Info::where('email', $user->email)->first();
+            $user_info = User_Info::where('user_id', Auth::id())->first();
             if (!$user_info->user_id) {
                 $user_info->user_id = Auth::id();
                 $user_info->save();
@@ -87,7 +87,7 @@ class HomeController extends Controller
 
         if (Auth::id()) {
             $user = User::find(Auth::id());
-            $user_info = User_Info::where('email', $user->email)->first();
+            $user_info = User_Info::where('user_id', Auth::id())->first();
             if (!$user_info->user_id) {
                 $user_info->user_id = Auth::id();
                 $user_info->save();
@@ -123,7 +123,7 @@ class HomeController extends Controller
     {
         if (Auth::id()) {
             $user = User::find(Auth::id());
-            $user_info = User_Info::where('email', $user->email)->first();
+            $user_info = User_Info::where('user_id', Auth::id())->first();
             if (!$user_info->user_id) {
                 $user_info->user_id = Auth::id();
                 $user_info->save();
@@ -147,7 +147,7 @@ class HomeController extends Controller
     {
         if (Auth::id()) {
             $user = User::find(Auth::id());
-            $user_info = User_Info::where('email', $user->email)->first();
+            $user_info = User_Info::where('user_id', Auth::id())->first();
             if (!$user_info->user_id) {
                 $user_info->user_id = Auth::id();
                 $user_info->save();
@@ -170,7 +170,7 @@ class HomeController extends Controller
     {
         if (Auth::id()) {
             $user = User::find(Auth::id());
-            $user_info = User_Info::where('email', $user->email)->first();
+            $user_info = User_Info::where('user_id', Auth::id())->first();
             if (!$user_info->user_id) {
                 $user_info->user_id = Auth::id();
                 $user_info->save();
@@ -193,7 +193,7 @@ class HomeController extends Controller
     {
         if (Auth::id()) {
             $user = User::find(Auth::id());
-            $user_info = User_Info::where('email', $user->email)->first();
+            $user_info = User_Info::where('user_id', Auth::id())->first();
             if (!$user_info->user_id) {
                 $user_info->user_id = Auth::id();
                 $user_info->save();
@@ -222,7 +222,7 @@ class HomeController extends Controller
     {
         if (Auth::id()) {
             $user = User::find(Auth::id());
-            $user_info = User_Info::where('email', $user->email)->first();
+            $user_info = User_Info::where('user_id', Auth::id())->first();
             if (!$user_info->user_id) {
                 $user_info->user_id = Auth::id();
                 $user_info->save();
@@ -259,7 +259,7 @@ class HomeController extends Controller
 
         if (Auth::id()) {
             $user = User::find(Auth::id());
-            $user_info = User_Info::where('email', $user->email)->first();
+            $user_info = User_Info::where('user_id', Auth::id())->first();
             if (!$user_info->user_id) {
                 $user_info->user_id = Auth::id();
                 $user_info->save();
@@ -281,12 +281,13 @@ class HomeController extends Controller
     {
         $request->validate([
             'name'          => 'required',
-            'email'         => 'required',
+            'email'         => 'required|email',
             'content'       => 'required'
         ], [
-            'name.required'     => 'Vui lòng nhập tên danh mục',
-            'email.required'    => 'Vui lòng nhập email của bạn',
-            'content'           => 'Vui lòng nhâp nội dung email'
+            'name.required'     => 'Vui lòng nhập tên',
+            'email.required'    => 'Vui lòng nhập email',
+            'email.email'    => 'Vui lòng nhập đúng định dạng',
+            'content.required'           => 'Vui lòng nhâp nội dung email'
         ]);
         $user_name = $request->name;
         $user_email = $request->email;
@@ -311,13 +312,17 @@ class HomeController extends Controller
     {
         if (Auth::id()) {
             $user = User::find(Auth::id());
-            $user_info = User_Info::where('email', $user->email)->first();
+            $user_info = User_Info::where('user_id', Auth::id())->first();
+            // echo json_encode($user_info);
+            // die();
             if (!$user_info->user_id) {
                 $user_info->user_id = Auth::id();
                 $user_info->save();
             }
             Auth::user()->avatar = $user_info->avatar;
         }
+
+
         $categories = Category::where('status', 1)->get();
         $user_id = Auth::id();
         $user_edit = User_info::where('user_id', $user_id)->first();
@@ -362,17 +367,8 @@ class HomeController extends Controller
             $file->move($path, $new_name);
             $user->avatar = $new_name;
             Auth::user()->avatar = $user->avatar;
-
-            // echo $new_name;
         }
-
-
-
-
-
         $user->save();
-
-
         return redirect()->back()->with('message_success', 'Cập nhật thông cá nhân tin thành công');
     }
 
@@ -396,7 +392,7 @@ class HomeController extends Controller
     {
         if (Auth::id()) {
             $user = User::find(Auth::id());
-            $user_info = User_Info::where('email', $user->email)->first();
+            $user_info = User_Info::where('user_id', Auth::id())->first();
             if (!$user_info->user_id) {
                 $user_info->user_id = Auth::id();
                 $user_info->save();
@@ -418,6 +414,9 @@ class HomeController extends Controller
         if (Auth::id()) {
             $count_wish_list = Wish_List::where('user_id', Auth::user()->id)->count();
         }
+
+        // echo json_encode($wish_list);
+        // die();
         return view('fontend.page.wishlist', compact('categories', 'wish_list', 'count_wish_list'));
     }
 
@@ -463,7 +462,7 @@ class HomeController extends Controller
     {
         if (Auth::id()) {
             $user = User::find(Auth::id());
-            $user_info = User_Info::where('email', $user->email)->first();
+            $user_info = User_Info::where('user_id', Auth::id())->first();
             if (!$user_info->user_id) {
                 $user_info->user_id = Auth::id();
                 $user_info->save();
@@ -487,9 +486,10 @@ class HomeController extends Controller
 
     public function filter_product(Request $request)
     {
+        
         if (Auth::id()) {
             $user = User::find(Auth::id());
-            $user_info = User_Info::where('email', $user->email)->first();
+            $user_info = User_Info::where('user_id', Auth::id())->first();
             if (!$user_info->user_id) {
                 $user_info->user_id = Auth::id();
                 $user_info->save();
@@ -504,6 +504,7 @@ class HomeController extends Controller
         $max_array = explode('đ', $max_string);
         $max = $max_array[0];
         $products = Product::where('status', 1)->whereBetween('price_unit', [$min, $max])->with('warehouse')->paginate(9);
+        
         $filter_page = 1;
         $categories = Category::where('status', 1)->get();
         $product_sales = Product::with('comment', 'warehouse')->where('price_promotion', '>', 0)->get();
@@ -521,7 +522,7 @@ class HomeController extends Controller
     {
         if (Auth::id()) {
             $user = User::find(Auth::id());
-            $user_info = User_Info::where('email', $user->email)->first();
+            $user_info = User_Info::where('user_id', Auth::id())->first();
             if (!$user_info->user_id) {
                 $user_info->user_id = Auth::id();
                 $user_info->save();
@@ -556,7 +557,7 @@ class HomeController extends Controller
     {
         if (Auth::id()) {
             $user = User::find(Auth::id());
-            $user_info = User_Info::where('email', $user->email)->first();
+            $user_info = User_Info::where('user_id', Auth::id())->first();
             if (!$user_info->user_id) {
                 $user_info->user_id = Auth::id();
                 $user_info->save();
@@ -581,7 +582,7 @@ class HomeController extends Controller
     {
         if (Auth::id()) {
             $user = User::find(Auth::id());
-            $user_info = User_Info::where('email', $user->email)->first();
+            $user_info = User_Info::where('user_id', Auth::id())->first();
             if (!$user_info->user_id) {
                 $user_info->user_id = Auth::id();
                 $user_info->save();
@@ -606,7 +607,7 @@ class HomeController extends Controller
     {
         if (Auth::id()) {
             $user = User::find(Auth::id());
-            $user_info = User_Info::where('email', $user->email)->first();
+            $user_info = User_Info::where('user_id', Auth::id())->first();
             if (!$user_info->user_id) {
                 $user_info->user_id = Auth::id();
                 $user_info->save();
@@ -635,7 +636,7 @@ class HomeController extends Controller
     {
         if (Auth::id()) {
             $user = User::find(Auth::id());
-            $user_info = User_Info::where('email', $user->email)->first();
+            $user_info = User_Info::where('user_id', Auth::id())->first();
             if (!$user_info->user_id) {
                 $user_info->user_id = Auth::id();
                 $user_info->save();

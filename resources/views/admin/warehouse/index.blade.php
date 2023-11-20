@@ -10,24 +10,20 @@
             <div class="x_title">
                 <div class="row">
                     <div class="col-3">
-                        <h2>Product List</h2>
                     </div>
                     <div class="col-6">
                         <form method="POST" action="{{route('warehouse.search_product')}}">
-                            <div class="input-group">
+                            <div class="input-group d-flex align-items-center">
                                 <input type="text" name="search_key" class="form-control" placeholder="Search for...">
                                 <span class="input-group-btn">
-                                <button type="submit" class="btn btn-primary ml-1" type="button">Search</button>
+                                <button type="submit" class="primary-btn custom-primary-btn p-2 text-white ml-1 m-0" type="button">Search</button>
                                 </span>
                             </div>
                             @csrf
                         </form>    
                     </div>
                     <div class="col-3">
-                        <!-- <ul class="nav navbar-right panel_toolbox">
-                            <li><a class="text-white" href="{{route('product.create')}}"><button class="btn btn-primary ml-3 btn-sm">Create New <i class="fa fa-plus"></i></a></button>
-                            </li>
-                        </ul> -->
+                      
                     </div>
                 </div>
                 

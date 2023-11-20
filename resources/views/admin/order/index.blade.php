@@ -49,6 +49,7 @@
                         <th class="text-center">Thông tin sản phẩm</th>
                         <th class="text-center">Địa chỉ giao hàng</th>
                         <th class="text-center">Ngày đặt hàng</th>
+                        <th class="text-center">Phương thức thanh toán</th>
                         <th class="text-center">Tình trạng đơn hàng</th>
                     </tr>
                 </thead>
@@ -101,6 +102,7 @@
                             </div>
                         </td>
                         <td>{{$order->created_at}}</td>
+                        <td>{{$order->payment_type == 1 ? "Đã thanh toán online" : "Nhận khi thanh toán"}}</td>
                         <td>
                             @if($order->status==0) <button id="{{$order->id}}" class="primary-btn custom-primary-btn btn_change_status">Xác nhận</button>
                             @elseif($order->status == -1)

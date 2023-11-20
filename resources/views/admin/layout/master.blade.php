@@ -7,7 +7,8 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}"/>
-        <link rel="icon" href="{{asset('backend/images/favicon.ico')}}" type="image/ico" />
+        {{-- <link rel="icon" href="{{asset('backend/images/favicon.ico')}}" type="image/ico" /> --}}
+        <link rel="icon" type="image/x-icon"href="{{asset('backend/images/images.png')}}">
         <title>Gentelella Alela! | </title>
         <!-- Bootstrap -->
         <link href="{{asset('backend/vendors/bootstrap/dist/css/bootstrap.min.css')}}" rel="stylesheet">
@@ -90,7 +91,7 @@
                 <!-- footer content -->
                 <footer>
                     <div class="pull-right">
-                        Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+                        {{-- Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a> --}}
                     </div>
                     <div class="clearfix"></div>
                 </footer>
@@ -236,6 +237,50 @@
                   dateFormat :"yy-mm-dd"
                 });
               } );
+
+              //upload image
+              let isSize = false
+              let isType = false
+              let arr_type_allow = ['gif','png','jpg','jpeg','webp']
+              let isUpdateImage = false;
+              $('input[type="file"]').change(function(){
+                isUpdateImage = true
+                if($(this)[0].files[0].size < 5242880){
+                  isSize = true
+                }
+                const ext = $(this).val().split('.').pop().toLowerCase();
+        
+                if(arr_type_allow.includes(ext)){
+                    isType = true
+                }
+              })
+              //validate form product
+              $('.btn-submit-store-form').click(function(e){
+                if(isUpdateImage){
+                  if(!isType){
+                    e.preventDefault()
+                    displayError('Please choose type image')
+                  }else if(!isType){
+                    e.preventDefault()
+                    displayError('Limit size image 5kb')
+                  }
+                }
+              })
+
+              function displayError(message){
+                    Toastify({
+                        text: message,
+                        duration: 3000,
+                        newWindow: true,
+                        close: true,
+                        gravity: "top", // `top` or `bottom`
+                        position: "right", // `left`, `center` or `right`
+                        stopOnFocus: true, // Prevents dismissing of toast on hover
+                        style: {
+                            background: "#C70039",
+                        },
+                    }).showToast();
+                }
             })
         </script>
         <script>

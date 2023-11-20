@@ -82,10 +82,8 @@ class CategoryController extends Controller
         $products = Product::with('product_image','category')->orderBy('updated_at','DESC')->get();
         $request->validate([
             'name'  => 'required',
-            'images' => 'required'
         ],[
             'name.required' => 'Vui lòng nhập tên danh mục',
-            'images.required' => 'Vui lòng nhập ảnh danh mục'
         ]);
         $category = Category::find($id);
         $category->name = $request->name;

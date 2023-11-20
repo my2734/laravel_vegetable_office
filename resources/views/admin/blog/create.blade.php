@@ -76,11 +76,11 @@
                     </div>
                     
                     <div class="ln_solid"></div>
-                    <div class="form-group row">
-                        <div class="col-md-9 col-sm-9  offset-md-3">
-                            <a href="{{route('blog.index')}}"><button type="button" class="btn btn-primary">Cancel</button></a>
-                            <button class="btn btn-primary" type="reset">Reset</button>
-                            <button type="submit" class="btn btn-success">{{isset($blog_edit)?"Update":"Submit"}}</button>
+                    <div class="form-group row justify-content-center">
+                        <div class="">
+                            <a href="{{route('blog.index')}}"><button type="button" class="primary-btn custom-primary-btn p-2 text-white">Cancel</button></a>
+                            <button class="primary-btn custom-primary-btn p-2 text-white" type="reset">Reset</button>
+                            <button type="submit" class="primary-btn custom-primary-btn p-2 text-white btn-submit-store-form">{{isset($blog_edit)?"Update":"Submit"}}</button>
                         </div>
                     </div>
                     

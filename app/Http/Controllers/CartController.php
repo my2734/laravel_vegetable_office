@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\Blog;
 use App\Models\CategoryOfBlog;
 use App\Models\Tags;
+use App\Models\Warehouse;
 use Auth;
 use App\Models\User;
 use App\Models\User_Info;
@@ -37,16 +38,12 @@ class CartController extends Controller
         return response()->json($data);
     }
 
-    // public function add_cart(Request $request){
-    //     return response()->json($request);
-    // }
-
     public function show_cart()
     {
         //        return response()->json(Cart::tax());
         if (Auth::id()) {
             $user = User::find(Auth::id());
-            $user_info = User_Info::where('email', $user->email)->first();
+           $user_info = User_Info::where('user_id', Auth::id())->first();
             if (!$user_info->user_id) {
                 $user_info->user_id = Auth::id();
                 $user_info->save();
@@ -65,7 +62,7 @@ class CartController extends Controller
 
         if(Auth::id()){
             $user = User::find(Auth::id());
-            $user_info = User_Info::where('email', $user->email)->first();
+           $user_info = User_Info::where('user_id', Auth::id())->first();
             if (!$user_info->user_id) {
                 $user_info->user_id = Auth::id();
                 $user_info->save();
@@ -91,12 +88,39 @@ class CartController extends Controller
         $data = array();
         $rowId = $request->rowId;
         $qty = $request->qty;
-        Cart::update($rowId, $qty);
-        $cart = Cart::get($rowId);
-        $data['rowId'] = $rowId;
-        $data['total_count'] = Cart::count();
-        $data['price_pro'] = number_format($cart->price * $cart->qty);
-        $data['total_cart'] = Cart::total();
-        return response()->json($data);
+
+        //find quantity product 
+        $cart_old = Cart::get($rowId);
+        $warehouse = Warehouse::where('product_id', $cart_old->id)->first();
+        $max_qty = (int)$warehouse->import_quantity - (int)$warehouse->export_quantity;
+
+        if($qty > $max_qty){
+            $res = [
+                'status' => 401,
+                'message' => 'Over quantity limit product',
+            ];
+            return response()->json($res);
+        }else{
+            Cart::update($rowId, $qty);
+            $cart = Cart::get($rowId);
+            $data['status'] = 200;
+            $data['rowId'] = $rowId;
+            $data['total_count'] = Cart::count();
+            $data['price_pro'] = number_format($cart->price * $cart->qty);
+            $data['total_cart'] = Cart::total();
+            return response()->json($data);
+        }
+
     }
+
+    function check_quantity(Request $request){
+        $id_product = $request->id_product;
+        $qty = $request->qty;
+        // echo json_encode(Cart::content());
+
+        // $qty_new = $qty + 
+        // $data['id_product'] = $id_product;
+        // $data['qty'] = $qty;
+        // echo json_encode($data);
+    }   
 }

@@ -33,21 +33,21 @@
                 <div class="col-lg-3 col-md-3 col-sm-6 text-center">
                     <div class="contact__widget">
                         <span class="icon_phone"></span>
-                        <h4>Phone</h4>
+                        <h4>@lang('lang.Phone')</h4>
                         <p>+01-3-8888-6868</p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-6 text-center">
                     <div class="contact__widget">
                         <span class="icon_pin_alt"></span>
-                        <h4>Address</h4>
+                        <h4>@lang('lang.address')</h4>
                         <p>Đ. 3/2, Xuân Khánh, Ninh Kiều, Cần Thơ</p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-6 text-center">
                     <div class="contact__widget">
                         <span class="icon_clock_alt"></span>
-                        <h4>Open time</h4>
+                        <h4>@lang('lang.open_time')</h4>
                         <p>10:00 am to 23:00 pm</p>
                     </div>
                 </div>
@@ -88,28 +88,35 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="contact__form__title">
-                        <h2>Leave Message</h2>
+                        <h2>@lang('lang.leave_message')</h2>
                     </div>
                 </div>
             </div>
             <form method="POST" action="{{route('home.post_mail_contact')}}">
                 <div class="row">
                     <div class="col-lg-6 col-md-6">
-                        <input type="text" name="name" placeholder="Your name">
+                        <span class="text-danger">
+                            @error('name')
+                            {{$message}}
+                            @enderror
+                        </span>
+                        <input type="text" value="{{old('name')}}" name="name" placeholder="Your name">
                     </div>
                     <div class="col-lg-6 col-md-6">
-                        <input type="text" name="email" placeholder="Your Email">
+                        <span class="text-danger"> @error('email') {{$message}}  @enderror</span>
+                        <input type="text" name="email" value="{{old('email')}}"  placeholder="Your Email">
                     </div>
+                    <span class="text-danger text-left">@error('content') {{$message}}  @enderror</span>
                     <div class="col-lg-12 text-center">
-                        <textarea name="content" placeholder="Your message"></textarea>
+                        <textarea name="content" placeholder="Your message">{{old('content')}}</textarea>
                         @if($user_id)
                         <input type="hidden" id="name" value="<?php echo $name ?>">
                         <input type="hidden" id="avatar" value={{$avatar}}>
                         <input type="hidden" id="link" value="">
-                        <button type="submit" class="site-btn btn_send_email">SEND MESSAGE</button>
+                        <button type="submit" class="site-btn btn_send_email">@lang('lang.send_message')</button>
                         @else
                         <a href="{{route('login')}}">
-                            <span class="site-btn">SEND MESSAGE</span>
+                            <span class="site-btn">@lang('lang.send_message')</span>
                         </a>
                         @endif
                     </div>

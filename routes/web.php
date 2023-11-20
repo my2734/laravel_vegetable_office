@@ -285,6 +285,7 @@ Route::prefix('/gio-hang')->group(function () {
     Route::get('/delete_one_cart/{rowId}', [CartController::class, 'delete_one_cart'])->name('cart.delete_one_cart');
     // ajax
     Route::get('/update_cart', [CartController::class, 'update_cart'])->name('cart.update_cart'); //cap nhat input trang gio hang
+    Route::get('/check-quantity', [CartController::class, 'check_quantity'])->name('cart.check_quantity'); //cap nhat input trang gio hang
 
 });
 
