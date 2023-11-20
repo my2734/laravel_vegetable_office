@@ -30,25 +30,7 @@
                                
                             </div>
                             @csrf
-                        </form>  
-                        {{-- <div class="autocomplete" style="position:absolute; z-index: 10000;width: 400px;background-color: white">
-                            <ul style="display: block;">
-                                <!-- <li style="display:block;" class="mt-3">
-                                    <img height="50" width="50" class="float-left mr-3" src="http://127.0.0.1:8000/Uploads/product-details-226.jpg" alt="">
-                                    <span >
-                                        <a class="">Hello ca nha yeu</a><br>
-                                        <span class="info_search_item">2022-09-21 22:23:40</span>
-                                    </span>
-                                </li>
-                                <li style="display:block;" class="mt-3">
-                                    <img height="50" width="50" class="float-left mr-3" src="http://127.0.0.1:8000/Uploads/product-details-226.jpg" alt="">
-                                    <span >
-                                        <a class="">Hello ca nha yeu</a><br>
-                                        <span class="info_search_item">2022-09-21 22:23:40</span>
-                                    </span>
-                                </li> -->
-                            </ul>
-                        </div>   --}}
+                        </form> 
                     </div>
                     <div class="col-3">
                         <ul class="nav navbar-right panel_toolbox">
@@ -87,7 +69,7 @@
                             <td>{{number_format($product->price_unit)}} vnđ</td>
                             <td>{{number_format($product->price_promotion)}} vnđ</td>
                             <td><span id="{{$product->id}}" class="cursor_pointer change_status_product{{$product->id}} change_status_product badge {{($product->status==1?'badge-danger':'badge-secondary')}}">{{($product->status==1)?"Hiển thị":"Không hiển thị"}}</span>
-                            <td><button data-toggle="modal" data-target="#import_product" class="primary-btn custom-primary-btn">Import</button></td>
+                            <td><button data-toggle="modal" data-target="#import_product{{$product->id}}" class="primary-btn custom-primary-btn">Import</button></td>
                             <td width="200px">
                                 @foreach($product->product_image as $pro_image)
                                     <img height="50px;" width="50px;" class="mt-1" src="{{asset('Uploads/'.$pro_image->image)}}" alt="">
@@ -96,30 +78,30 @@
                             <td>{{$product->category->name}}</td>
                             <td>{{$product->top_rate==1 ? "Bán chạy" : "Bình thường"}}</td>
                             <td width="100">
-                                <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete_product"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                                <a href="{{route('product.edit',$product->id)}}" class="btn btn-warning btn-sm"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                                <button class="primary-btn custom-primary-btn p-2" data-toggle="modal" data-target="#delete_product{{$product->id}}"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                                <a href="{{route('product.edit',$product->id)}}" class="primary-btn custom-primary-btn p-2 text-white"><i class="fa fa-pencil" aria-hidden="true"></i></a>
 
                                 
                                 <!-- Modal -->
-                                <div class="modal fade" id="delete_product" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="delete_product{{$product->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="exampleModalLabel">Bạn chắn chắc muốn sản phẩm này</h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
+                                                    <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Không</button>
-                                                <a href="{{route('product.delete',$product->id)}}" class="btn btn-danger text-white">Chắc chắn</a>
+                                                <button type="button" class="sub-btn custom-primary-btn p-2  mb-0" data-dismiss="modal">Không</button>
+                                                <a href="{{route('product.delete',$product->id)}}" class="primary-btn custom-primary-btn p-2 text-white mb-0">Chắc chắn</a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
                                 <!-- Modal import product -->
-                                <div class="modal fade" id="import_product" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="import_product{{$product->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">

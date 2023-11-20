@@ -24,7 +24,7 @@
                 <div class="col-lg-3 col-md-5">
                     <div class="sidebar">
                         <div class="sidebar__item">
-                            <h4>Department</h4>
+                            <h4>@lang('lang.department')</h4>
                             <ul>
                                 @foreach($categories as $category)
                                 <li><a href="{{route('home.category',$category->slug)}}">{{$category->name}}</a></li>
@@ -82,13 +82,13 @@
                             <div class="col-lg-7 col-md-7">
                                 <div class="filter__found">
                                 @if(isset($min))
-                                <h5><span style="font-weight: 700">Kết quả lọc từ {{number_format($min)}}vnđ - {{number_format($max)}}vnđ</span></h5> 
+                                <h5><span style="font-weight: 700">@lang('lang.filter_result') {{number_format($min)}}vnđ - {{number_format($max)}}vnđ</span></h5> 
                                 @elseif(isset($low_to_high))
-                                <h3><span style="font-weight: 700">Kết quả sắp xếp từ thấp đến cao</span></h3>
+                                <h3><span style="font-weight: 700">@lang('lang.result_sort_low_to_high')</span></h3>
                                 @elseif(isset($high_to_low))
-                                <h3><span style="font-weight: 700">Kết quả sắp xếp từ cao đến thấp</span></h3>
+                                <h3><span style="font-weight: 700">@lang('lang.result_sort_high_to_low')</span></h3>
                                 @else
-                                <h5><span style="font-weight: 700">Sản phẩm của {{$category_slug->name}}</span></h5>
+                                <h5><span style="font-weight: 700">@lang('lang.search_result') {{$category_slug->name}}</span></h5>
                                 @endif
                                 </div>
                             </div>
@@ -97,7 +97,7 @@
                     </div>
                     <div class="row">
                         @if(count($products)<=0)
-                            <h3 class="font-weight-bold">Không tìm thấy kết quả</h3>
+                            <h3 class="font-weight-bold">@lang('lang.not_found')</h3>
                         @else
                         @foreach($products as $key => $product)
                         <div class="col-lg-4 col-md-6 col-sm-6">
@@ -121,7 +121,10 @@
                                             </form>
                                         </li>
                                         <li><a href="{{route('home.product',$product->slug)}}"><i class="fa fa-retweet"></i></a></li>
-                                        <li><a href="javascript:void(0);" id="{{$product->id}}" class="add_one_cart"  ><i class="fa fa-shopping-cart"></i></a></li>
+                                        @php 
+                                        $inventory = $product->warehouse->import_quantity - $product->warehouse->export_quantity;
+                                    @endphp
+                                    <li><a href="javascript:void(0);" inventory="{{$inventory}}" id="{{$product->id}}" class="add_one_cart"  ><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
@@ -134,7 +137,7 @@
                                     ?>
                                     <h6><a class="font-weight-bold" href="{{route('home.product',$product->slug)}}">{{$product->name}}</a>
                                         @if($inventory <=0)
-                                            <span>(Hết hàng)</span>
+                                            <span>(@lang('lang.out_of_stock'))</span>
                                         @endif
                                     </h6>
                                     {{-- <h5>{{number_format($product->price_unit)}}vnđ</h5> --}}
@@ -148,7 +151,7 @@
                     {{$products->links('vendor.pagination.custom')}}
                     <div class="product__discount mt-5">
                         <div class="section-title product__discount__title">
-                            <h2>Sale Off</h2>
+                            <h2>@lang('lang.sale_off')</h2>
                         </div>
                         <div class="row">
                             <div class="product__discount__slider owl-carousel">
@@ -184,7 +187,10 @@
                                                     </form>
                                                 </li>
                                                 <li><a href="{{route('home.product',$product->slug)}}"><i class="fa fa-retweet"></i></a></li>
-                                                <li><a href="javascript:void(0);" id="{{$product->id}}" class="add_one_cart"  ><i class="fa fa-shopping-cart"></i></a></li>
+                                                @php 
+                                                $inventory = $product->warehouse->import_quantity - $product->warehouse->export_quantity;
+                                            @endphp
+                                            <li><a href="javascript:void(0);" inventory="{{$inventory}}" id="{{$product->id}}" class="add_one_cart"  ><i class="fa fa-shopping-cart"></i></a></li>
 
                                             </ul>
                                         </div>
@@ -198,7 +204,7 @@
                                             ?>
                                             <h6><a class="font-weight-bold" href="{{route('home.product',$product->slug)}}">{{$product->name}}</a>
                                             @if($inventory <= 0)
-                                                <span>(Hết hàng)</span>
+                                                <span>(@lang('lang.out_of_stock'))</span>
                                             @endif
                                             </h6>
                                             {{-- <h5>{{number_format($product->price_unit)}}vnđ</h5> --}}

@@ -30,16 +30,16 @@
                         </form>
                     </div>
                     <div class="blog__sidebar__item">
-                        <h4>Categories</h4>
+                        <h4>@lang('lang.categories')</h4>
                         <ul>
-                            <li><a href="{{route('home.blog')}}">All</a></li>
+                            <li><a href="{{route('home.blog')}}">@lang('lang.all')</a></li>
                             @foreach($category_of_blogs as $category_of_blog)
                             <li><a href="{{route('home.category_of_blog',$category_of_blog->slug)}}">{{$category_of_blog->name}} ({{$blogs->where('cat_id',$category_of_blog->id)->count()}})</a></li>
                            @endforeach
                         </ul>
                     </div>
                     <div class="blog__sidebar__item">
-                        <h4>Recent News</h4>
+                        <h4>@lang('lang.recent_news')</h4>
                         <div class="blog__sidebar__recent">
                             @foreach($blogs->take(3) as $blog)
                             <a href="{{route('home.blog_detail',$blog->slug)}}" class="blog__sidebar__recent__item">
@@ -55,7 +55,7 @@
                         </div>
                     </div>
                     <div class="blog__sidebar__item">
-                        <h4>Search By</h4>
+                        <h4>@lang('lang.search_by')</h4>
                         <div class="blog__sidebar__item__tags">
                             @foreach($tagses as $tags)
                             <a href="{{route('home.tags',$tags->slug)}}">{{$tags->name}}</a>

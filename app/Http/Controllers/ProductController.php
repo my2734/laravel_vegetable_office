@@ -183,7 +183,6 @@ class ProductController extends Controller
     }
 
     public function post_comment(Request $request){
-//        return response()->json($request->input());
         $request->validate([
             'content' => 'required'
         ],[

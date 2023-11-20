@@ -7,6 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <meta name="csrf-token" content="{{ csrf_token() }}"/>
+        <link rel="icon" type="image/x-icon"href="{{asset('fontend/img/favicon.png')}}">
         <title>Ogani | Template</title>
         <!-- Google Font -->
         <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
@@ -64,7 +65,6 @@
                                 </div>
                                 <div class="header__top__right__language">
                                     <a href="{{route('home.get_user_info')}}">
-                                        <!-- <h1>{{ Auth::user()->avatar }}</h1> -->
                                         @if(!Auth::user()->avatar)
                                         <div class="cover_img_avatar">
                                             <img src="https://i.pinimg.com/280x280_RS/2e/45/66/2e4566fd829bcf9eb11ccdb5f252b02f.jpg">
@@ -109,6 +109,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="container">
                 <div class="row">
                     <div class="col-lg-3">
@@ -275,7 +276,7 @@
                     <i class="fa fa-commenting-o comment"></i> 
                     <i style="color: white" class="fa fa-close close"></i> 
                     </label> 
-                    <div id="wrapperMessage" style="position: fixed; z-index: 1000" class="wrapper">
+                    <div id="wrapperMessage" style="position: fixed; z-index: 1000; display: none" class="wrapper">
                         <div class="header-custom">
                             <h6 style="color: white">Let's Chat - Online</h6>
                         </div>
@@ -293,11 +294,11 @@
                     <div class="col-lg-12">
                         <div class="footer__copyright">
                             <div class="footer__copyright__text">
-                                <p>
+                                {{-- <p>
                                     <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                                     Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
                                     <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                                </p>
+                                </p> --}}
                             </div>
                             <div class="footer__copyright__payment"><img src="{{asset('fontend/img/payment-item.png')}}" alt=""></div>
                         </div>
@@ -352,6 +353,8 @@
                         scrollChat()
                     }
                 });
+
+                // $('#wrapperMessage').css("display", "none");
             
                 $('#check').click(function(){
                     console.log($(this).attr('isCheck'))
@@ -365,135 +368,177 @@
             
                 })
                 
-            
-                $.get({
-                    url: "{{route('clientChat.index')}}",
-                    method: "GET",
-                    success: function(data){
-                        const listMessage = JSON.parse(data)
-                        // console.log(listMessage[0]['user_id'])
-                        $('#message-content').attr('user_id', listMessage[0]['user_id'])
-                        var html = '';
-                        listMessage.forEach((messageItem)=>{
-                            if(messageItem['role']=='client'){
-                                html = html + '<div><label for="">'+messageItem['user_name']+'</label><p>'+messageItem['message']+'</p><p class="span_time">'+moment(messageItem['time']).format("h:mm:ss a")+'</p></div>'
-                            }else{
-                                html = html + '<div class="d-flex flex-column align-items-end"><label for="">Admin</label><p>'+messageItem['message']+'</p><p class="span_time">'+moment(messageItem['time']).format("h:mm:ss a")+'</p></div>'
+                const user_id = '<?php echo "hello" ?>'
+                if(user_id){
+                    $.get({
+                        url: "{{route('clientChat.index')}}",
+                        method: "GET",
+                        success: function(data){
+                            if(data['status'] == 'success'){
+                                const listMessage = data['chat_logs']
+                                $('#message-content').attr('user_id', listMessage[0]['user_id'])
+                                var html = '';
+                                listMessage.forEach((messageItem)=>{
+                                    if(messageItem['role']=='client'){
+                                        html = html + '<div><label for="">'+messageItem['user_name']+'</label><p>'+messageItem['message']+'</p><p class="span_time">'+moment(messageItem['time']).format("h:mm:ss a")+'</p></div>'
+                                    }else{
+                                        html = html + '<div class="d-flex flex-column align-items-end"><label for="">Admin</label><p>'+messageItem['message']+'</p><p class="span_time">'+moment(messageItem['time']).format("h:mm:ss a")+'</p></div>'
+                                    }
+                                })
+                                $('#message-content').html(html)
+                                scrollChat()
                             }
-                        })
-                        $('#message-content').html(html)
-                        scrollChat()
-                    }
-                })
+                        }
+                    })
+                }
             
                 $('#btn-send-client').click(function(e){
-                    e.preventDefault();
-                    var formComment = new FormData();
-                    var message = $('#message').val();
-                    $('#message').val('');
-                    formComment.append('message', message);
-                    $.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
-                    });
-                    $.ajax({
-                        contentType: false,
-                        processData: false,
-                        url:"{{route('clientChat.submit')}}",
-                        type: 'POST',
-                        dataType: 'json',
-                        data: formComment,
-                        success: function (response) {
-                            // console.log(response)
-                            // $('<li class="sent"><img src="http://emilcarlsson.se/assets/mikeross.png" alt="" /><p>' + response.message + '</p></li>').appendTo($('.messages ul'));
-                            // $('.message-input input').val(null);
-                            console.log(response)
-                            $('#message-content').append(`
-                                <div>
-                                    <label for="">${response['user_name']}</label>
-                                    <p>${response['message']}</p>
-                                    <p class="span_time">${response['time']}</p>
-                                </div>
-                            `)
-                            scrollChat()
-            
-                        }, error: function () {
-                            alert("Có lỗi xảy ra");
-                        },
-                    });
+                    console.log($('#btn-send-client').val())
+                    if($('#message').val() !=  ""){
+                        e.preventDefault();
+                        var formComment = new FormData();
+                        var message = $('#message').val();
+                        $('#message').val('');
+                        formComment.append('message', message);
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+                        $.ajax({
+                            contentType: false,
+                            processData: false,
+                            url:"{{route('clientChat.submit')}}",
+                            type: 'POST',
+                            dataType: 'json',
+                            data: formComment,
+                            success: function (response) {
+                                if(response.status == "success"){
+                                    $('#message-content').append(`
+                                        <div>
+                                            <label for="">${response['user_name']}</label>
+                                            <p>${response['message']}</p>
+                                            <p class="span_time">${response['time']}</p>
+                                        </div>
+                                    `)
+                                    scrollChat()
+                                }else{
+                                    displayError('Please login')
+                                }
+                
+                            }, error: function () {
+                                alert("Có lỗi xảy ra");
+                            },
+                        });
+                    }else{
+                        displayError('Message empty')
+                    }
             
                 })
             })
-            $('.add_one_cart').click(function(){
-            
-               
-                var id_product = $(this).attr('id');
-                var qty = 1;
-                // alert(id_product+" "+ qty);
-                $.ajax({
-                    url: "{{route('cart.add_one_cart')}}",
+
+            $('.qty_mul_pro').keyup(function(){
+                const id_product = $(this).attr('id')
+                const qty = $(this).val()
+                $.get({
+                    url: "{{route('cart.check_quantity')}}",
                     method: "GET",
                     data: {id_product:id_product,qty: qty},
                     success: function(data){
-                       $('#qty_cart').html(data['cart_qty']);
-                       $('.cart_total_price').html("$"+data['cart_total']);
-                    //    $('.alert_add_pro_home_page').html(`<div class="alert alert-success alert-dismissible fade show" role="alert">
-                    //         <strong>Thêm vào giỏ hàng thành công</strong>
-                    //         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    //             <span aria-hidden="true">&times;</span>
-                    //         </button>
-                    //     </div>`);
-                    Toastify({
-                    text: "Add to cart success",
-                    duration: 3000,
-                    newWindow: true,
-                    close: true,
-                    gravity: "top", // `top` or `bottom`
-                    position: "right", // `left`, `center` or `right`
-                    stopOnFocus: true, // Prevents dismissing of toast on hover
-                    style: {
-                        background: "#A7D397",
-                    },
-                }).showToast();
-                       
-            
+                        console.log(data);
                     }
-                });
+                })
+            })
+
+            $('.add_one_cart').click(function(){
+               const inventory = $(this).attr('inventory')
+               console.log(inventory)
+               if(inventory <= 0){  
+                displayError('The quantity of products is insufficient')
+               }else{
+                   var id_product = $(this).attr('id');
+                   var qty = 1;
+                   // alert(id_product+" "+ qty);
+                   $.ajax({
+                       url: "{{route('cart.add_one_cart')}}",
+                       method: "GET",
+                       data: {id_product:id_product,qty: qty},
+                       success: function(data){
+                          $('#qty_cart').html(data['cart_qty']);
+                          $('.cart_total_price').html(data['cart_total']+"vnđ");
+                       Toastify({
+                       text: "Add to cart success",
+                       duration: 3000,
+                       newWindow: true,
+                       close: true,
+                       gravity: "top", // `top` or `bottom`
+                       position: "right", // `left`, `center` or `right`
+                       stopOnFocus: true, // Prevents dismissing of toast on hover
+                       style: {
+                           background: "#A7D397",
+                       },
+                   }).showToast();
+                          
+               
+                       }
+                   });
+               }
             });
+
+            function displayError(message){
+                    Toastify({
+                        text: message,
+                        duration: 3000,
+                        newWindow: true,
+                        close: true,
+                        gravity: "top", // `top` or `bottom`
+                        position: "right", // `left`, `center` or `right`
+                        stopOnFocus: true, // Prevents dismissing of toast on hover
+                        style: {
+                            background: "#C70039",
+                        },
+                    }).showToast();
+                }
             
             $('.add_mul_product').click(function(){
                 var id_product = $(this).attr('id');
                 var qty = $('.qty_mul_pro').val();
-                // alert(id_product+"-"+qty);
-                $.get({
-                    url: "{{route('cart.add_one_cart')}}",
-                    data: {id_product:id_product,qty: qty},
-                    success: function(data){
-                    //     $('.message_alert_add_cart').html(`<div class="alert alert-success alert-dismissible fade show" role="alert">
-                    //     <strong>Thêm vào giỏ hành thành công</strong>
-                    //     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    //         <span aria-hidden="true">&times;</span>
-                    //     </button>
-                    // </div>`)
-                    
-                        $('#qty_cart').html(data['cart_qty']);
-                        $('.cart_total_price').html("$"+data['cart_total']);
-                        $('.qty_mul_pro').val(1)
-                        Toastify({
-                            text: "Add to cart success",
-                            duration: 3000,
-                            newWindow: true,
-                            close: true,
-                            gravity: "top", // `top` or `bottom`
-                            position: "right", // `left`, `center` or `right`
-                            stopOnFocus: true, // Prevents dismissing of toast on hover
-                            style: {
-                                background: "#A7D397",
-                            },
-                        }).showToast();
-                    }
-                });
+                // console.log(qty)
+                const max_qty = $('.quantity_product').text()
+                // console.log(max_qty)
+                let isAddToCart = true
+                if(parseInt(qty) > parseInt(max_qty)){
+                    displayError('Over quantity limit product')
+                    isAddToCart = false
+                }else if(qty <= 0){
+                    displayError('Product quantity must be positive')
+                    isAddToCart = false;
+                }
+
+                if(isAddToCart){
+                    $.get({
+                        url: "{{route('cart.add_one_cart')}}",
+                        data: {id_product:id_product,qty: qty},
+                        success: function(data){
+                            $('#qty_cart').html(data['cart_qty']);
+                            $('.cart_total_price').html(data['cart_total']+"vnđ");
+                            $('.qty_mul_pro').val(1)
+                            Toastify({
+                                text: "Add to cart success",
+                                duration: 3000,
+                                newWindow: true,
+                                close: true,
+                                gravity: "top", // `top` or `bottom`
+                                position: "right", // `left`, `center` or `right`
+                                stopOnFocus: true, // Prevents dismissing of toast on hover
+                                style: {
+                                    background: "#A7D397",
+                                },
+                            }).showToast();
+                        }
+                    });
+                }
+
             });
             
             $('.update_cart').change(function(){
@@ -506,30 +551,28 @@
                     url:"{{route('cart.update_cart')}}",
                     data: {rowId:rowId,qty:qty},
                     success: function(data){
-                        $('#qty_cart').html(data['total_count']);
-                        $('#price_product'+data['rowId']).html(data['price_pro']+"vnđ");
-                        $('.cart_total_price').html("$"+data['total_cart']);
-                        // $('.alert_shopping_cart').html(`<div class="alert alert-success alert-dismissible fade show" role="alert">
-                        //     <strong>Cập nhật giỏ hàng thành công</strong>
-                        //     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        //         <span aria-hidden="true">&times;</span>
-                        //     </button>
-                        // </div>`);
-                        $('.btn_sub_total_shopping_cart').html("$"+data['total_cart']);
-                        $('.btn_total_shopping_cart').html("$"+data['total_cart']);
-            
-                        Toastify({
-                            text: "Update to cart success",
-                            duration: 3000,
-                            newWindow: true,
-                            close: true,
-                            gravity: "top", // `top` or `bottom`
-                            position: "right", // `left`, `center` or `right`
-                            stopOnFocus: true, // Prevents dismissing of toast on hover
-                            style: {
-                                background: "#A7D397",
-                            },
-                        }).showToast();
+                        if(data['status'] == 200){
+                            $('#qty_cart').html(data['total_count']);
+                            $('#price_product'+data['rowId']).html(data['price_pro']+"vnđ");
+                            $('.cart_total_price').html(data['total_cart']+"vnđ");
+                            $('.btn_sub_total_shopping_cart').html(data['total_cart']+"vnđ");
+                            $('.btn_total_shopping_cart').html(data['total_cart']+"vnđ");
+                
+                            Toastify({
+                                text: "Update to cart success",
+                                duration: 3000,
+                                newWindow: true,
+                                close: true,
+                                gravity: "top", // `top` or `bottom`
+                                position: "right", // `left`, `center` or `right`
+                                stopOnFocus: true, // Prevents dismissing of toast on hover
+                                style: {
+                                    background: "#A7D397",
+                                },
+                            }).showToast();
+                        }else{
+                            displayError(data['message'])
+                        }
             
                     }
                 });
@@ -626,7 +669,10 @@
                 let isSize = false
                 let isType = false
                 let arr_type_allow = ['gif','png','jpg','jpeg','webp']
+                let isUpdateImage = false
                 $('.custom-file-input').change(function(){
+                    isUpdateImage = true
+
                     if($(this)[0].files[0].size < 5242880){
                         isSize = true
                     }
@@ -638,14 +684,17 @@
                 })
             
                 $('.submit-form-profile').click(function(e){
-                    console.log(isType)
-                    if(!isType){
-                        e.preventDefault()
-                        displayError('Please choose type image')
-                    }else if (!isSize) {
-                        e.preventDefault()
-                        displayError('Limit size image 5kb')
+
+                    if(isUpdateImage){
+                        if(!isType){
+                            e.preventDefault()
+                            displayError('Please choose type image')
+                        }else if (!isSize) {
+                            e.preventDefault()
+                            displayError('Limit size image 5kb')
+                        }
                     }
+
                 })
 
                 function displayError(message){

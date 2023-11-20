@@ -20,7 +20,7 @@ class CheckoutController extends Controller
     public function checkout_show(){
         if(Auth::id()){
             $user = User::find(Auth::id());
-            $user_info = User_Info::where('email', $user->email)->first();
+            $user_info = User_Info::where('user_id', Auth::id())->first();
              if(!$user_info->user_id){
                  $user_info->user_id = Auth::id();
                  $user_info->save();
@@ -224,6 +224,10 @@ class CheckoutController extends Controller
         $order->order_note = $request->order_note;
         $order->created_at = Carbon::now();
         $order->updated_at = Carbon::now();
+        echo $request->method_payment;
+        if($request->method_payment != 'offline'){
+            $order->payment_type = 1;
+        }
         $order->save();
         
         // Insert tbl_order_detail
@@ -292,11 +296,13 @@ class CheckoutController extends Controller
             $email->to($user->email,$user->user_name);
         });
        
+
+
         $total =  $total;
         if(isset($request->method_payment) && $request->method_payment=='vnpay'){
             
             $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-            $vnp_Returnurl = "http://127.0.0.1:8000/checkout/lich-su-mua-hang";
+            $vnp_Returnurl = "http://laravel_vegetable_office.local/checkout/lich-su-mua-hang";
             $vnp_TmnCode = "6NAJWGAF";//Mã website tại VNPAY 
             $vnp_HashSecret = "AUJHLJDASCAOFCGVTKRQCJJAASBUMMTK"; //Chuỗi bí mật
     
@@ -449,7 +455,7 @@ class CheckoutController extends Controller
     public function lich_su_mua_hang(){
         if(Auth::id()){
             $user = User::find(Auth::id());
-            $user_info = User_Info::where('email', $user->email)->first();
+            $user_info = User_Info::where('user_id', Auth::id())->first();
              if(!$user_info->user_id){
                  $user_info->user_id = Auth::id();
                  $user_info->save();
@@ -472,7 +478,7 @@ class CheckoutController extends Controller
     public function receive_order(Request $request){
         if(Auth::id()){
             $user = User::find(Auth::id());
-            $user_info = User_Info::where('email', $user->email)->first();
+            $user_info = User_Info::where('user_id', Auth::id())->first();
              if(!$user_info->user_id){
                  $user_info->user_id = Auth::id();
                  $user_info->save();
@@ -491,7 +497,7 @@ class CheckoutController extends Controller
 
         if(Auth::id()){
             $user = User::find(Auth::id());
-            $user_info = User_Info::where('email', $user->email)->first();
+            $user_info = User_Info::where('user_id', Auth::id())->first();
              if(!$user_info->user_id){
                  $user_info->user_id = Auth::id();
                  $user_info->save();
@@ -516,7 +522,7 @@ class CheckoutController extends Controller
     
         if(Auth::id()){
             $user = User::find(Auth::id());
-            $user_info = User_Info::where('email', $user->email)->first();
+            $user_info = User_Info::where('user_id', Auth::id())->first();
              if(!$user_info->user_id){
                  $user_info->user_id = Auth::id();
                  $user_info->save();

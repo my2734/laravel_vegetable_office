@@ -6,10 +6,10 @@
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="breadcrumb__text">
-                    <h2>Thông tin cá nhân</h2>
+                    <h2>@lang('lang.profile')</h2>
                     <div class="breadcrumb__option">
-                        <a href="{{route('home.index')}}">Trang chủ</a>
-                        <span>Thông tin cá nhân</span>
+                        <a href="{{route('home.index')}}">@lang('lang.home')</a>
+                        <span>@lang('lang.profile')</span>
                     </div>
                 </div>
             </div>
@@ -34,31 +34,31 @@
         
         <div class="col-lg-8 col-md-6">
         <div class="checkout__input">
-                <p>User name<span>*</span></p>
+                <p>@lang('lang.username')<span>*</span></p>
                 <input style="color: #333 !important" name="name" value="{{isset($user_edit->name)?$user_edit->name:''}}" type="text">
             </div>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="checkout__input">
-                        <p>Full Name<span>*</span></p>
+                        <p>@lang('lang.full_name')<span>*</span></p>
                         <input style="color: #333 !important" name="full_name" value="{{isset($user_edit->full_name)?$user_edit->full_name:''}}" type="text">
                     </div>
                 </div>
             </div>
             <div class="checkout__input">
-                <p>Quốc gia<span>*</span></p>
+                <p>@lang('lang.country')<span>*</span></p>
                 <input style="color: #333 !important" name="country" value="{{isset($user_edit->country)?$user_edit->country:''}}" type="text">
             </div>
             <div class="checkout__input">
-                <p>Tỉnh/Thành phố<span>*</span></p>
+                <p>@lang('lang.city')<span>*</span></p>
                 <input style="color: #333 !important" name="conscious" value="{{isset($user_edit->conscious)?$user_edit->conscious:''}}" type="text">
             </div>
             <div class="checkout__input">
-                <p>Quận/Huyện<span>*</span></p>
+                <p>@lang('lang.district')<span>*</span></p>
                 <input style="color: #333 !important" name="district" type="text" value="{{isset($user_edit->district)?$user_edit->district:''}}" name="district">
             </div>
             <div class="checkout__input">
-                <p>Xã/Thị xã<span>*</span></p>
+                <p>@lang('lang.commune')<span>*</span></p>
                 <input style="color: #333 !important" name="commune" type="text" value="{{isset($user_edit->commune)?$user_edit->commune:''}}" name="district">
             </div>
             <div class="row">
@@ -70,13 +70,13 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="checkout__input">
-                        <p>Số điện thoại<span>*</span></p>
+                        <p>@lang('lang.phone')<span>*</span></p>
                         <input style="color: #333 !important" name="phone" value="{{isset($user_edit->phone)?$user_edit->phone:''}}" type="text">
                     </div>
                 </div>
             </div>
             <div class="checkout__input">
-                <p>Địa chỉ chi tiết<span>*</span></p>
+                <p>@lang('lang.address_detail')<span>*</span></p>
                 <textarea style="color: #333 !important" name="address_detail" value="{{isset($user_edit->full_name)?$user_edit->full_name:''}}" rows="4" class="form-control">{{ isset($user_edit->address_detail)?$user_edit->address_detail:"" }}</textarea>
             </div>
         </div>
@@ -90,12 +90,12 @@
                 <div class="input-group my-4">
                     <div class="custom-file">
                         <input type="file" name="avatar" class="custom-file-input" id="exampleInputFile">
-                        <label class="custom-file-label" for="exampleInputFile">Chọn ảnh</label>
+                        <label class="custom-file-label" for="exampleInputFile">@lang('lang.choose_image')</label>
                     </div>
                     <br>
                 </div>
                 <div class=" text-center">
-                    <button type="submit" class="btn text-white submit-form-profile" style="background-color: #7fad39">Update</button>
+                    <button type="submit" class="btn text-white submit-form-profile" style="background-color: #7fad39">@lang('lang.update')</button>
                 </div>
             </div>
         </div>

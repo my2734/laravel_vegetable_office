@@ -25,14 +25,15 @@ class ChatController extends Controller
                         $chat_logs[] = $chat_item;
                     }
                 }
-                $chat_logs = json_encode($chat_logs);
-            } else {
-                $chat_logs = null;
-            }
-            echo $chat_logs;
+                
+                $data['status'] = "success";
+                $data['chat_logs'] = $chat_logs;
+            } 
         } else {
-            echo json_encode([]);
+            $data['status'] = "error";
         }
+
+        return response()->json($data);
     }
 
     // function clientSubmitDemo()
@@ -65,10 +66,6 @@ class ChatController extends Controller
     function clientSubmit(Request $request)
     {
         if (Auth::id()) {
-            // Redis::del('chat_log_'.Auth::id());
-            // Redis::del('list_user');
-            // $data['user_detail'] = User::with('User_Info')->find(Auth::id());
-            // $data['domain'] = request()->getHost();
             $user = User::find(Auth::id());
             $data = [
                 'role'      => 'client',
@@ -77,7 +74,8 @@ class ChatController extends Controller
                 'message'   => $request->message,
                 'time'      => Carbon::now(),
                 'user_detail' => User::with('User_Info')->find(Auth::id()),
-                'domain'    => request()->getHost()
+                'domain'    => request()->getHost(),
+                'status'    => 'success'
             ];
             $auth_id = (string)Auth::id();
             if (Redis::exists('chat_log_' . $auth_id)) {
@@ -103,7 +101,7 @@ class ChatController extends Controller
             event(new Chat($data['role'], $data['user_id'], $data['user_name'], $data['message'], $data['time'], $data['user_detail'], $data['domain']));
             
         } else {
-            return "Chua dang nhap. Vui long dang nhap";
+            $data['status'] = "error";
         }
 
         return response()->json($data);

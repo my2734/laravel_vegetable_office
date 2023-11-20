@@ -9,7 +9,7 @@
             <div class="x_title">
                 <h2>Blog List </h2>
                 <ul class="nav navbar-right panel_toolbox">
-                    <li><a class="text-white" href="{{route('blog.create')}}"><button class="btn btn-primary ml-3 btn-sm">Create New <i class="fa fa-plus"></i></a></button>
+                    <li><a class="text-white" href="{{route('blog.create')}}"><button class="primary-btn custom-primary-btn p-2 text-white ml-3">Create New <i class="fa fa-plus"></i></a></button>
                     </li>
                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                     </li>
@@ -50,11 +50,11 @@
                                 <img height="50px;" src="{{asset('Uploads/'.$blog->image)}}" alt="">
                             </td>
                             <td>
-                                <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete_category">Delete</button>
-                                <a href="{{route('blog.edit',$blog->id)}}" class="btn btn-warning btn-sm">Edit</a>
+                                <button class="primary-btn custom-primary-btn p-2 text-white" data-toggle="modal" data-target="#delete_category{{$blog->id}}">Delete</button>
+                                <a href="{{route('blog.edit',$blog->id)}}" class="primary-btn custom-primary-btn p-2 text-white">Edit</a>
                             
                                 <!-- Modal -->
-                                <div class="modal fade" id="delete_category" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="delete_category{{$blog->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -64,8 +64,8 @@
                                                 </button>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Không</button>
-                                                <a href="{{route('blog.delete',$blog->id)}}" class="btn btn-danger text-white">Chắc chắn</a>
+                                                <button type="button" class="sub-btn custom-primary-btn p-2" data-dismiss="modal">Không</button>
+                                                <a href="{{route('blog.delete',$blog->id)}}" class="primary-btn custom-primary-btn p-2 text-white">Chắc chắn</a>
                                             </div>
                                         </div>
                                     </div>

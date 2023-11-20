@@ -9,7 +9,7 @@
                     <div class="blog__details__hero__text">
                         <h2>{{$blog_detail->title}}</h2>
                         <ul>
-                            <li>By Admin</li>
+                            <li>@lang('lang.by_admin')</li>
                             <li>{{$blog_detail->created_at}}</li>
                             <!-- <li>8 Comments</li> -->
                         </ul>
@@ -37,7 +37,7 @@
                             </form> --}}
                         </div>
                         <div class="blog__sidebar__item">
-                            <h4>Categories</h4>
+                            <h4>@lang('lang.categories')</h4>
                             <ul>
                                 <li><a href="#">@lang('lang.all')</a></li>
                                 @foreach($category_of_blogs as $category_of_blog)
@@ -46,7 +46,7 @@
                             </ul>
                         </div>
                         <div class="blog__sidebar__item">
-                            <h4>Recent News</h4>
+                            <h4>@lang('lang.recent_news')</h4>
                             <div class="blog__sidebar__recent">
                                 @foreach($blogs->take(3) as $blog)
                                 <a href="{{route('home.blog_detail',$blog->slug)}}" class="blog__sidebar__recent__item">
@@ -62,7 +62,7 @@
                             </div>
                         </div>
                         <div class="blog__sidebar__item">
-                            <h4>Search By</h4>
+                            <h4>@lang('lang.search_by')</h4>
                             <div class="blog__sidebar__item__tags">
                                 @foreach($tagses as $tags)
                                 <a href="{{route('home.tags',$tags->slug)}}">{{$tags->name}}</a>

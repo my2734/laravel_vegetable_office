@@ -23,14 +23,14 @@
     <div class="container">
         <div class="checkout__form">
             <a href="{{route('checkout.lich_su_mua_hang')}}" class="float-right btn text-white" style="background: #7fad39;">Lịch sử đơn hàng<i class="fa fa-history ml-2" aria-hidden="true"></i></a>
-            <h4>Thanh toán</h4>
+            <h4>@lang('lang.payment')</h4>
             <form action="{{route('check.add_order')}}" method="POST">
                 <div class="row" >
                     <div class="col-lg-8 col-md-6">
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="checkout__input">
-                                    <p>Full Name<span>*</span></p>
+                                    <p>@lang('lang.full_name')<span>*</span></p>
                                     <input style="color: #333 !important" name="full_name" value="{{isset($user_buy->full_name)?$user_buy->full_name:old('full_name')}}" type="text">
                                     @if($errors->has('first_name'))
                                         <span class="text-danger">{{$errors->first('first_name')}}</span>
@@ -39,21 +39,21 @@
                             </div>
                         </div>
                         <div class="checkout__input">
-                            <p>Quốc gia<span>*</span></p>
+                            <p>@lang('lang.country')<span>*</span></p>
                             <input style="color: #333 !important" name="country" value="{{isset($user_buy->country)?$user_buy->country:old('country')}}" type="text">
                             @if($errors->has('country'))
                                 <span class="text-danger">{{$errors->first('country')}}</span>
                             @endif
                         </div>
                         <div class="checkout__input">
-                            <p>Tỉnh/Thành phố<span>*</span></p>
+                            <p>@lang('lang.city')<span>*</span></p>
                             <input style="color: #333 !important" name="conscious" value="{{isset($user_buy->conscious)?$user_buy->conscious:old('conscious')}}" type="text">
                             @if($errors->has('conscious'))
                                 <span class="text-danger">{{$errors->first('conscious')}}</span>
                             @endif
                         </div>
                         <div class="checkout__input">
-                            <p>Quận/Huyện<span>*</span></p>
+                            <p>@lang('lang.district')<span>*</span></p>
                             <input style="color: #333 !important" type="text" value="{{isset($user_buy->district)?$user_buy->district:old('district')}}" name="district">
                             @if($errors->has('district'))
                                 <span class="text-danger">{{$errors->first('district')}}</span>
@@ -72,7 +72,7 @@
                             </div>
                             <div class="col-lg-6">
                                 <div class="checkout__input">
-                                    <p>Số điện thoại<span>*</span></p>
+                                    <p>@lang('lang.phone')<span>*</span></p>
                                     <input style="color: #333 !important" name="phone" value="{{isset($user_buy->phone)?$user_buy->phone:old('phone')}}" type="text">
                                     @if($errors->has('phone'))
                                         <span class="text-danger">{{$errors->first('phone')}}</span>
@@ -81,11 +81,11 @@
                             </div>
                         </div>
                         <div class="checkout__input">
-                            <p>Ghi chú</p>
+                            <p>@lang('lang.note')</p>
                             <input name="order_note" type="text">
                         </div>
                         <div class="checkout__input">
-                            <p>Địa chỉ chi tiết<span>*</span></p>
+                            <p>@lang('lang.address_detail')<span>*</span></p>
                             <textarea style="color: #333 !important" name="address_detail" rows="4" class="form-control">{{isset($user_buy->address_detail)?$user_buy->address_detail:old('address_detail')}}</textarea>
                             @if($errors->has('address_detail'))
                                 <span class="text-danger">{{$errors->first('address_detail')}}</span>
@@ -113,18 +113,18 @@
                             <div class="form-group">
                                 <div class="form-check">
                                     <input class="form-check-input" value="offline" type="radio" name="method_payment" checked>
-                                    <label class="form-check-label">Thanh toán khi nhận hàng</label>
+                                    <label class="form-check-label">@lang('lang.ship_cod')</label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" value="vnpay" type="radio" name="method_payment">
-                                    <label class="form-check-label">Thanh toán VNPay</label>
+                                    <label class="form-check-label">@lang('lang.payment_vnpay')</label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" value="momo" type="radio" name="method_payment" >
-                                    <label class="form-check-label">Thanh toán MOMO</label>
+                                    <label class="form-check-label">@lang('lang.payment_momo')</label>
                                 </div>
                             </div>
-                            <button type="submit" name="redirect" class="site-btn">PLACE ORDER</button>
+                            <button type="submit" name="redirect" class="site-btn">@lang('lang.place_order')</button>
                         </div>
                     </div>
                 </div>

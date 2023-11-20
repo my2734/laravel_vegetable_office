@@ -8,7 +8,7 @@
         <div class="x_title">
             <h2>Category List </h2>
             <ul class="nav navbar-right panel_toolbox">
-                <li><a class="text-white" href="{{route('category.create')}}"><button class="btn btn-primary ml-3 btn-sm">Create New <i class="fa fa-plus"></i></a></button>
+                <li><a class="text-white" href="{{route('category.create')}}"><button class="primary-btn custom-primary-btn p-2 text-white ml-3">Create New <i class="fa fa-plus"></i></a></button>
                 </li>
                 <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                 </li>
@@ -38,10 +38,10 @@
                         </td>
                         <td><span id="{{$cat->id}}" class="cursor_pointer change_status_category{{$cat->id}} change_status_category badge {{($cat->status==1?'badge-danger':'badge-secondary')}}">{{($cat->status==1)?"Hiển thị":"Không hiển thị"}}</span></td>
                         <td>
-                            <button class="btn btn_delete_category btn-danger btn-sm" data-toggle="modal" data-target="#delete_category"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                            <a href="{{route('category.edit',$cat->id)}}" class="btn btn-warning btn-sm"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                            <button class="btn_delete_category primary-btn custom-primary-btn p-2 text-white" data-toggle="modal" data-target="#delete_category{{$cat->id}}"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                            <a href="{{route('category.edit',$cat->id)}}" class="primary-btn custom-primary-btn p-2 text-white"><i class="fa fa-pencil" aria-hidden="true"></i></a>
                             <!-- Modal -->
-                            <div class="modal fade" id="delete_category" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="delete_category{{$cat->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -51,8 +51,8 @@
                                             </button>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Không</button>
-                                            <a href="{{route('category.delete',$cat->id)}}" class="btn btn-danger text-white">Chắc chắn</a>
+                                            <button type="button" class="sub-btn custom-primary-btn p-2" data-dismiss="modal">Không</button>
+                                            <a href="{{route('category.delete',$cat->id)}}" class="primary-btn custom-primary-btn p-2 text-white">Chắc chắn</a>
                                         </div>
                                     </div>
                                 </div>
