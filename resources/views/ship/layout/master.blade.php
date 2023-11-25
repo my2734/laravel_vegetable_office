@@ -1,17 +1,3 @@
-<!--
-=========================================================
-* Paper Dashboard 2 - v2.0.1
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/paper-dashboard-2
-* Copyright 2020 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
--->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -63,7 +49,7 @@ Coded by www.creative-tim.com
         const id_order = $(this).attr('id-order');
         if(!$(this).hasClass('btn_disable')){
           $.ajax({
-            'url' : "{{route('ship.change_status_order',4)}}",
+            'url' : "{{route('ship.change_status_order',3)}}",
             'type' : 'POST',
             'data': {
               'id_order': id_order,
@@ -71,7 +57,7 @@ Coded by www.creative-tim.com
             },
             'success' : function(data) {  
                 if(data == "success"){
-                  $('#image_progress_bar').attr('src','{{asset("Uploads/progress_bar2.jpg")}}')
+                  $('#image_progress_bar').attr('src','{{asset("Uploads/progress_bar2.png")}}')
                   $('#btnShipReceive').addClass('btn_disable')
                 }
             },

@@ -15,8 +15,10 @@
             <div class="col-7 col-md-8">
               <div class="numbers">
                 <p class="card-category">Capacity</p>
-                <p class="card-title">150GB</p><p>
-              </p></div>
+                <p class="card-title">150GB</p>
+                <p>
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -41,8 +43,10 @@
             <div class="col-7 col-md-8">
               <div class="numbers">
                 <p class="card-category">Revenue</p>
-                <p class="card-title">$ 1,345</p><p>
-              </p></div>
+                <p class="card-title">$ 1,345</p>
+                <p>
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -67,8 +71,10 @@
             <div class="col-7 col-md-8">
               <div class="numbers">
                 <p class="card-category">Errors</p>
-                <p class="card-title">23</p><p>
-              </p></div>
+                <p class="card-title">23</p>
+                <p>
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -93,8 +99,10 @@
             <div class="col-7 col-md-8">
               <div class="numbers">
                 <p class="card-category">Followers</p>
-                <p class="card-title">+45K</p><p>
-              </p></div>
+                <p class="card-title">+45K</p>
+                <p>
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -115,7 +123,15 @@
           <h5 class="card-title">Users Behavior</h5>
           <p class="card-category">24 Hours performance</p>
         </div>
-        <div class="card-body "><div class="chartjs-size-monitor" style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+        <div class="card-body ">
+          <div class="chartjs-size-monitor" style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;">
+            <div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
+              <div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div>
+            </div>
+            <div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
+              <div style="position:absolute;width:200%;height:200%;left:0; top:0"></div>
+            </div>
+          </div>
           <canvas id="chartHours" width="1740" height="434" style="display: block; height: 217px; width: 870px;" class="chartjs-render-monitor"></canvas>
         </div>
         <div class="card-footer ">
@@ -134,7 +150,15 @@
           <h5 class="card-title">Email Statistics</h5>
           <p class="card-category">Last Campaign Performance</p>
         </div>
-        <div class="card-body "><div class="chartjs-size-monitor" style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+        <div class="card-body ">
+          <div class="chartjs-size-monitor" style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;">
+            <div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
+              <div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div>
+            </div>
+            <div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
+              <div style="position:absolute;width:200%;height:200%;left:0; top:0"></div>
+            </div>
+          </div>
           <canvas id="chartEmail" style="display: block; height: 125px; width: 250px;" width="500" height="250" class="chartjs-render-monitor"></canvas>
         </div>
         <div class="card-footer ">
@@ -157,8 +181,16 @@
           <h5 class="card-title">NASDAQ: AAPL</h5>
           <p class="card-category">Line Chart with Points</p>
         </div>
-        <div class="card-body"><div class="chartjs-size-monitor" style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+        <div class="card-body">
+          <div class="chartjs-size-monitor" style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;">
+            <div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
+              <div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div>
+            </div>
+            <div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
+              <div style="position:absolute;width:200%;height:200%;left:0; top:0"></div>
+            </div>
+          </div>
           <canvas id="speedChart" width="1120" height="280" style="display: block; height: 140px; width: 560px;" class="chartjs-render-monitor"></canvas>
         </div>
 
-@endsection
+        @endsection

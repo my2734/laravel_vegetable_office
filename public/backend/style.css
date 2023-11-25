@@ -446,3 +446,7 @@
   background: transparent;
   box-shadow: 1px 3px 7px #333;
 }
+
+.custom-item-language{
+  cursor: pointer;
+}

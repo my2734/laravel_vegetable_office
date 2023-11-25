@@ -293,3 +293,176 @@ body {
   cursor: text !important;
   background: #ddd !important;
 }
+
+
+
+.blog__pagination {
+  padding-top: 5px;
+  position: relative;
+}
+
+.blog__pagination:before {
+  position: absolute;
+  left: 0;
+  top: -29px;
+  height: 1px;
+  width: 100%;
+  background: #000000;
+  opacity: 0.1;
+  content: "";
+}
+
+
+.product__pagination a,
+.blog__pagination a {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #b2b2b2;
+  font-size: 14px;
+  color: #b2b2b2;
+  font-weight: 700;
+  line-height: 28px;
+  text-align: center;
+  margin-right: 16px;
+  -webkit-transition: all, 0.3s;
+  -moz-transition: all, 0.3s;
+  -ms-transition: all, 0.3s;
+  -o-transition: all, 0.3s;
+  transition: all, 0.3s;
+}
+
+
+.custom_margin-right_pagination {
+  margin-right: 5px !important;
+}
+
+.page-active {
+  background-color: #7FAD39;
+  color: #fff !important;
+}
+
+.product__pagination a,
+.blog__pagination a {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #b2b2b2;
+  font-size: 14px;
+  color: #b2b2b2;
+  font-weight: 700;
+  line-height: 28px;
+  text-align: center;
+  margin-right: 16px;
+  -webkit-transition: all, 0.3s;
+  -moz-transition: all, 0.3s;
+  -ms-transition: all, 0.3s;
+  -o-transition: all, 0.3s;
+  transition: all, 0.3s;
+}
+
+.custom_margin-right_pagination {
+  margin-right: 5px !important;
+}
+
+.primary-btn {
+  display: inline-block;
+  font-size: 14px;
+  padding: 10px 28px 10px;
+  color: #ffffff;
+  text-transform: uppercase;
+  font-weight: 500;
+  background: #7fad39;
+  letter-spacing: 2px;
+  border: none;
+}
+
+.sub-btn {
+  display: inline-block;
+  font-size: 14px;
+  padding: 10px 28px 10px;
+  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: 2px;
+  border: none;
+}
+
+/* 
+.primary-btn {
+  border: none;
+} */
+.custom-primary-btn {
+  padding: 5px;
+  font-size: 10px;
+  outline: none !important;
+  border: none;
+  box-shadow: none;
+}
+
+
+.icon i {
+  font-size: 38px;
+}
+
+.custom-primary-btn-sort {
+  background-color: #2A3F54;
+  text-transform: capitalize;
+  padding-left: 8px;
+  padding-right: 8px;
+  outline: none !important;
+  border: none;
+  box-shadow: none;
+}
+
+.custom-primary-btn-sort-active {
+  background-color: #457b9d;
+}
+
+
+.btn-order-active {
+  background-color: #365507;
+}
+
+
+.profile_pic {
+  width: 70px;
+  height: 70px;
+  float: left;
+}
+
+.img-circle.profile_img {
+  width: 80%;
+  height: 80%;
+  object-fit: cover;
+  background: #fff;
+  margin-left: 15%;
+  z-index: 1000;
+  position: inherit;
+  margin-top: 20px;
+  border: 1px solid rgba(52, 73, 94, 0.44);
+  padding: 4px;
+}
+
+
+/* Message */
+.welcome-message-picture{
+  height: 200px;
+  width: 200px;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.welcome-message-picture img{
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+}
+
+.welcome-message-button{
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  font-size: 16px;
+  background: transparent;
+  box-shadow: 1px 3px 7px #333;
+}

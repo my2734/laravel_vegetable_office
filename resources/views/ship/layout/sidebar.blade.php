@@ -1,13 +1,13 @@
 
 <div class="sidebar" data-color="white" data-active-color="danger">
     <div class="logo">
-      <a href="{{route('ship.profile',0)}}" class="simple-text logo-mini">
+      <a href="{{route('ship.order.index')}}" class="simple-text logo-mini">
         <div class="logo-image-small">
           <img src="{{asset('ship/assets/img/shipper-1.jpg')}}">
         </div>
         <!-- <p>CT</p> -->
       </a>
-      <a href="{{route('ship.profile')}}" class="simple-text logo-normal">
+      <a href="{{route('ship.order.index')}}" class="simple-text logo-normal">
         Giao hàng
         <!-- <div class="logo-image-big">
           <img src="../assets/img/logo-big.png">

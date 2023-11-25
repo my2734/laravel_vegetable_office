@@ -98,8 +98,8 @@
                     </form>
                     <!-- <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a> -->
                     <ul>
-                        <li><b>@lang('lang.availability')</b> <span><?php echo ($product_slug->warehouse->import_quantity - $product_slug->export_quantity)>0 ? "In Stock" : "Out In Stock" ?></span></li>
-                        <li><b>@lang('lang.quanlity')</b> <span class="quantity_product">{{($product_slug->warehouse->import_quantity - $product_slug->export_quantity)}}</span></li>
+                        <li><b>@lang('lang.availability')</b> <span><?php echo ($product_slug->warehouse->import_quantity - $product_slug->warehouse->export_quantity)>0 ? "In Stock" : "Out In Stock" ?></span></li>
+                        <li><b>@lang('lang.quanlity')</b> <span class="quantity_product">{{($product_slug->warehouse->import_quantity - $product_slug->warehouse->export_quantity)}}</span></li>
                         <li><b>@lang('lang.Shipping')</b> <span>01 . <samp>@lang('lang.free_pick_today')</samp></span></li>
                         <li><b>@lang('lang.weight')</b> <span>0.5 kg</span></li>
                         <li>

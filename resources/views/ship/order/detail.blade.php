@@ -2,28 +2,26 @@
 @section('content')
 <div class="content">
     <div class="container">
-        <div>{{$order->status}}</div>
         <div class="row">
             <div class="col d-flex justify-content-center">
                 <?php
-                    if(isset($order) && $order->status == 1){
-                    ?>
-                        <img id="image_progress_bar" height="120" src="{{asset('Uploads/progress_bar0.jpg')}}" alt="">
-                    <?php
-                    }else if(isset($order) && ($order->status == 2 || $order->status == 3 )){ ?>
-                        <img id="image_progress_bar" height="120" src="{{asset('Uploads/progress_bar1.jpg')}}" alt="">
-                    
-                    <?php
-                    }else if(isset($order) && $order->status == 4){ ?>
-                        <img id="image_progress_bar" height="120" src="{{asset('Uploads/progress_bar2.jpg')}}" alt="">
-                    <?php 
-                    }else if(isset($order) && $order->status == -1){ ?>
-                        <img id="image_progress_bar" height="120" src="{{asset('Uploads/progress_bar_1.jpg')}}" alt="">
-                    <?php 
-                    }else{ ?>
-                        <img class="image_progress_bar"  height="120" src="{{asset('Uploads/progress_bar3.jpg')}}" alt="">
-                    <?php
-                    } 
+                if (isset($order) && $order->status == 1) {
+                ?>
+                    <img id="image_progress_bar" height="120" src="{{asset('Uploads/progress_bar0.png')}}" alt="">
+                <?php
+                } else if (isset($order) && ($order->status == 2)) { ?>
+                    <img id="image_progress_bar" height="120" src="{{asset('Uploads/progress_bar1.png')}}" alt="">
+                <?php
+                } else if (isset($order) && $order->status == 4) { ?>
+                    <img id="image_progress_bar" height="120" src="{{asset('Uploads/progress_bar3.png')}}" alt="">
+                <?php
+                } else if (isset($order) && $order->status == -1) { ?>
+                    <img id="image_progress_bar" height="120" src="{{asset('Uploads/progress_bar_1.png')}}" alt="">
+                <?php
+                } else { ?>
+                    <img class="image_progress_bar" height="120" src="{{asset('Uploads/progress_bar2.png')}}" alt="">
+                <?php
+                }
                 ?>
             </div>
         </div>
@@ -64,8 +62,23 @@
                                         <td style="vertical-align: top;">
                                             {{$order->full_name}}
                                         </td>
-                                        
+
                                         <td style="width: 200px;" style="vertical-align: top;">
+                                            @if(gettype(json_decode($order->order_db)) == "array")
+                                            @if(isset($order->OrderDetail))
+                                            @foreach (json_decode($order->order_db) as $order_detail)
+                                            <span>
+                                                <span>{{$order_detail->pro_name}}</span>
+                                            </span>
+                                            <br>
+                                            <span>
+                                                <img height="40" width="40" src="{{asset('Uploads/'.$order_detail->pro_image)}}" alt="">
+                                                <span class="text-secondary float-right">{{number_format($order_detail->pro_price)}}vnđ x {{$order_detail->pro_quantity}}</span>
+                                            </span>
+                                            <br>
+                                            @endforeach
+                                            @endif
+                                            @else
                                             @if(isset($order->OrderDetail))
                                             @foreach ($order->OrderDetail as $order_detail)
                                             <span>
@@ -79,7 +92,8 @@
                                             <br>
                                             @endforeach
                                             @endif
-                                            <p class="font-weight-bold mt-3">Tổng <span class="ml-5">{{$order->total}}vnđ</span></p>
+                                            @endif
+                                            <p class="font-weight-bold mt-3">Tổng <span class="ml-5">{{number_format($order->total)}}vnđ</span></p>
                                             <p class="font-weight-bold mt-3">Ship <span class="ml-5">30.000vnđ</span></p>
                                             <p class="font-weight-bold mt-3">Thanh toán <span class="ml-5">{{number_format($order->total+30000)}}vnđ</span></p>
                                         </td>

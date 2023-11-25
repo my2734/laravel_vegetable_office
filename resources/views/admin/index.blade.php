@@ -1,6 +1,12 @@
 @extends('admin.layout.master')
 @section('content')
+@if(session('admin.role') == 0)
 <h1>Trang Admin</h1>
+@elseif(session('admin.role') == 1)
+<h1>Trang nhân viên</h1>
+@else 
+<h1>Trang shipper</h1>
+@endif
 @if(session('message_success'))
 <div class="alert alert-success alert-dismissible fade show" role="alert">
     <strong>{{session('message_success')}}</strong>

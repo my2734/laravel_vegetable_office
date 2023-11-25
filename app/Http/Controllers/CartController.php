@@ -9,7 +9,8 @@ use App\Models\Blog;
 use App\Models\CategoryOfBlog;
 use App\Models\Tags;
 use App\Models\Warehouse;
-use Auth;
+// use Auth;
+use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\User_Info;
 use App\Models\Wish_List;
@@ -22,20 +23,33 @@ class CartController extends Controller
         $id = $request->id_product;
         $qty = $request->qty;
         $product = Product::find($id);
-        $data = array();
-        $data['id'] = $product->id;
-        $data['name'] = $product->name;
-        $data['qty'] = $qty;
-        $data['price'] = ($product->price_promotion != 0) ? $product->price_promotion : $product->price_unit;
-        $data['weight'] = 1;
-        $data['options']['image'] = $product->image;
-        $data['options']['slug'] = $product->slug;
-        $cart = Cart::add($data);
-        Cart::setTax($cart->rowId, 0);
-        $data['cart_qty'] = Cart::count();
-        $data['cart_total'] = Cart::total();
 
-        return response()->json($data);
+        $warehouse = Warehouse::where('product_id', $id)->first();
+        $max_qty = (int)$warehouse->import_quantity - (int)$warehouse->export_quantity;
+
+        if($qty > $max_qty){
+            $data = [
+                'status' => 401,
+                'message' => 'Over quantity limit product',
+            ];
+            $data['cart_qty'] = Cart::count();
+            $data['cart_total'] = Cart::total();
+            return response()->json($data);
+        }else{
+            $data = array();
+            $data['id'] = $product->id;
+            $data['name'] = $product->name;
+            $data['qty'] = $qty;
+            $data['price'] = ($product->price_promotion != 0) ? $product->price_promotion : $product->price_unit;
+            $data['weight'] = 1;
+            $data['options']['image'] = $product->image;
+            $data['options']['slug'] = $product->slug;
+            $cart = Cart::add($data);
+            Cart::setTax($cart->rowId, 0);
+            $data['cart_qty'] = Cart::count();
+            $data['cart_total'] = Cart::total();
+            return response()->json($data);
+        }
     }
 
     public function show_cart()

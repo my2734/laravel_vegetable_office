@@ -1,14 +1,14 @@
 @extends('admin.layout.master')
 @section('content')
 <div class="title_left">
-    <h3>Danh sách Tags(Blog)</h3>
+    <h3>@lang('lang.list_tags_blog')</h3>
 </div>
 <div class="col-md-12 col-sm-12  ">
     <div class="x_panel">
         <div class="x_title">
-            <h2>Tags List </h2>
+            <h2>@lang('lang.list_tags_blog')</h2>
             <ul class="nav navbar-right panel_toolbox">
-                <li><a class="text-white" href="{{route('tags.create')}}"><button class=" ml-3 primary-btn custom-primary-btn p-2 text-white">Create New <i class="fa fa-plus"></i></a></button>
+                <li><a class="text-white" href="{{route('tags.create')}}"><button class=" ml-3 primary-btn custom-primary-btn p-2 text-white">@lang('lang.create_new') <i class="fa fa-plus"></i></a></button>
                 </li>
                 <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                 </li>

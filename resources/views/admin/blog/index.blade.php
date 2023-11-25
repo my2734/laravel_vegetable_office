@@ -2,14 +2,14 @@
 
 @section('content')
     <div class="title_left">
-        <h3>Danh sách Blog</h3>
+        <h3>@lang('lang.list_blog')</h3>
     </div>
     <div class="col-md-12 col-sm-12  ">
         <div class="x_panel">
             <div class="x_title">
-                <h2>Blog List </h2>
+                <h2>@lang('lang.list_blog')</h2>
                 <ul class="nav navbar-right panel_toolbox">
-                    <li><a class="text-white" href="{{route('blog.create')}}"><button class="primary-btn custom-primary-btn p-2 text-white ml-3">Create New <i class="fa fa-plus"></i></a></button>
+                    <li><a class="text-white" href="{{route('blog.create')}}"><button class="primary-btn custom-primary-btn p-2 text-white ml-3">@lang('lang.create_new') <i class="fa fa-plus"></i></a></button>
                     </li>
                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                     </li>
@@ -21,13 +21,13 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Title</th>
-                            <th>Category</th>
+                            <th>@lang('lang.title')</th>
+                            <th>@lang('lang.category')</th>
                             <th>Tags</th>
-                            <th>Detail Header Blog</th>
-                            <th>Detail Footer Blog</th>
-                            <th>Image</th>
-                            <th>Manager</th>
+                            <th>@lang('lang.descript_header_blog')</th>
+                            <th>@lang('lang.descript_footer_blog')</th>
+                            <th>@lang('lang.image')</th>
+                            <th>@lang('lang.manager')</th>
                         </tr>
                     </thead>
                     
@@ -50,22 +50,22 @@
                                 <img height="50px;" src="{{asset('Uploads/'.$blog->image)}}" alt="">
                             </td>
                             <td>
-                                <button class="primary-btn custom-primary-btn p-2 text-white" data-toggle="modal" data-target="#delete_category{{$blog->id}}">Delete</button>
-                                <a href="{{route('blog.edit',$blog->id)}}" class="primary-btn custom-primary-btn p-2 text-white">Edit</a>
+                                <button class="primary-btn custom-primary-btn p-2 text-white" data-toggle="modal" data-target="#delete_category{{$blog->id}}">@lang('lang.delete')</button>
+                                <a href="{{route('blog.edit',$blog->id)}}" class="primary-btn custom-primary-btn p-2 text-white">@lang('lang.edit')</a>
                             
                                 <!-- Modal -->
                                 <div class="modal fade" id="delete_category{{$blog->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Bạn chắn chắc muốn bài viết này</h5>
+                                                <h5 class="modal-title" id="exampleModalLabel">@lang('lang.do_you_want_delete_blog')</h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="sub-btn custom-primary-btn p-2" data-dismiss="modal">Không</button>
-                                                <a href="{{route('blog.delete',$blog->id)}}" class="primary-btn custom-primary-btn p-2 text-white">Chắc chắn</a>
+                                                <button type="button" class="sub-btn custom-primary-btn p-2" data-dismiss="modal">@lang('lang.cancel')</button>
+                                                <a href="{{route('blog.delete',$blog->id)}}" class="primary-btn custom-primary-btn p-2 text-white">@lang('lang.sure')</a>
                                             </div>
                                         </div>
                                     </div>

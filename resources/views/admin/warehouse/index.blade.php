@@ -16,7 +16,7 @@
                             <div class="input-group d-flex align-items-center">
                                 <input type="text" name="search_key" class="form-control" placeholder="Search for...">
                                 <span class="input-group-btn">
-                                <button type="submit" class="primary-btn custom-primary-btn p-2 text-white ml-1 m-0" type="button">Search</button>
+                                <button type="submit" class="primary-btn custom-primary-btn p-2 text-white ml-1 m-0 btn-search-warehouse" type="button">Search</button>
                                 </span>
                             </div>
                             @csrf
