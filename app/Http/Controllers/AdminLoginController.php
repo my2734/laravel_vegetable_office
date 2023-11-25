@@ -75,16 +75,10 @@ class AdminLoginController extends Controller
         if (Auth::guard('admin')->attempt($arr)) {
            
             $admin = Admin::where('email',$request->email)->first();
-            // $request->session()->put('login.name',$user->name);
-            // $request->session()->put('login.id',$user->id);
-            // if(isset($user->avatar)){
-            //     $request->session()->put('login.avatar',$user->avatar);
-            // }
-            // echo "dang nhap thanh cong";
-            // die();
             $request->session()->put('admin.name',$admin->name);
             $request->session()->put('admin.id',$admin->id);
-            
+            $request->session()->put('admin.role',$admin->role);
+        
             return redirect()->route('admin.index')->with('message_success','Bạn đã đăng nhập thành công');
         } else {
             

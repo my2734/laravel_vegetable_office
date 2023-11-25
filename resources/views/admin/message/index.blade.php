@@ -21,7 +21,7 @@
                                 </div>
                                 <div class="about">
                                     <div class="name">{{$user->User_Info->name}}</div>
-                                    <div class="status"> <i class="fa fa-circle offline"></i> left 7 mins ago </div>
+                                    <div class="status"> <i class="fa fa-circle offline"></i> @lang('lang.left_7_mins_ago') </div>
                                 </div>
                             </a>
                         </li>
@@ -69,38 +69,6 @@
                                         @endif
                                     @endforeach
                                 @endif
-                                {{-- <li class="clearfix">
-                                    <div class="message-data text-right">
-                                        <span class="message-data-time">10:10 AM, Today</span>
-                                        <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="avatar">
-                                    </div>
-                                    <div class="message other-message float-right"> Hi Aiden, how are you? How is the
-                                        project coming along? 
-                                    </div>
-                                </li>
-                                <li class="clearfix">
-                                    <div class="message-data text-right">
-                                        <span class="message-data-time">10:10 AM, Today</span>
-                                    </div>
-                                    <div class="message other-message float-right"> Hi Aiden, how are you? How is the
-                                        project coming along? 
-                                    </div>
-                                </li>
-                                <li class="clearfix">
-                                    <div class="message-data">
-                                        <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="avatar">
-                                        <span class="message-data-time">10:12 AM, Today</span>
-                                    </div>
-                                    <div class="message my-message">Are we meeting today?</div>
-                                </li>
-                                <li class="clearfix">
-                                    <div class="message-data">
-                                        <span class="message-data-time">10:15 AM, Today</span>
-                                    </div>
-                                    <div class="message my-message">Project has been already finished and I have results
-                                        to show you.
-                                    </div>
-                                </li> --}}
                             </ul>
                         </div>
                         <div class="chat-message clearfix">
@@ -115,11 +83,11 @@
                     @else
                    <div>
                         <div class="row justify-content-center flex-column align-items-center my-5">
-                            <h1 class="">Welcome Admin</h1>
+                            <h1 class="">@lang('lang.welcome_admin')</h1>
                             <div class="welcome-message-picture">
                                 <img src="{{asset('backend/images/img.jpg')}}">
                             </div>
-                            <button class="welcome-message-button">Start a conversation</button>
+                            <button class="welcome-message-button">@lang('lang.start_conversation')</button>
                         </div>
                    </div>
                     @endif

@@ -15,11 +15,11 @@ use App\Models\User_Info;
 use App\Models\News;
 use App\Models\Warehouse;
 use App\Models\Order;
-use Mail;
 use Illuminate\Support\Facades\Session;
 use Carbon\Carbon;
-use Auth;
-use Route;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Mail;
 
 class HomeController extends Controller
 {
@@ -28,11 +28,14 @@ class HomeController extends Controller
         if (Auth::id()) {
             $user = User::find(Auth::id());
             $user_info = User_Info::where('user_id', Auth::id())->first();
-            if (!$user_info->user_id) {
+            if (!$user_info || !$user_info->user_id) {
+                $user_info = new User_Info();
                 $user_info->user_id = Auth::id();
+                $user_info->name = $user->name ? $user->name : "";
+                $user_info->email = $user->email ? $user->email : "";
                 $user_info->save();
             }
-            Auth::user()->avatar = $user_info->avatar;
+            Auth::user()->avatar = $user_info->avatar ? $user_info->avatar : null;
         }
         $categories = Category::where('status', 1)->get();
         foreach ($categories as $category) {
@@ -61,11 +64,14 @@ class HomeController extends Controller
         if (Auth::id()) {
             $user = User::find(Auth::id());
             $user_info = User_Info::where('user_id', Auth::id())->first();
-            if (!$user_info->user_id) {
+            if (!$user_info || !$user_info->user_id) {
+                $user_info = new User_Info();
                 $user_info->user_id = Auth::id();
+                $user_info->name = $user->name ? $user->name : "";
+                $user_info->email = $user->email ? $user->email : "";
                 $user_info->save();
             }
-            Auth::user()->avatar = $user_info->avatar;
+            Auth::user()->avatar = $user_info->avatar ? $user_info->avatar : null;
         }
         $categories = Category::where('status', 1)->get();
         $category_slug = Category::where('slug', $slug)->first();
@@ -88,19 +94,25 @@ class HomeController extends Controller
         if (Auth::id()) {
             $user = User::find(Auth::id());
             $user_info = User_Info::where('user_id', Auth::id())->first();
-            if (!$user_info->user_id) {
+            if (!$user_info || !$user_info->user_id) {
+                $user_info = new User_Info();
                 $user_info->user_id = Auth::id();
+                $user_info->name = $user->name ? $user->name : "";
+                $user_info->email = $user->email ? $user->email : "";
                 $user_info->save();
             }
-            Auth::user()->avatar = $user_info->avatar;
+            Auth::user()->avatar = $user_info->avatar ? $user_info->avatar : null;
         }
         $categories = Category::where('status', 1)->get();
         $product_slug = Product::with('product_image', 'warehouse')->where('slug', $slug)->first();
 
+
+        // echo json_encode($product_slug->warehouse->import_quantity - $product_slug->warehouse->export_quantity);
+        // die();
+
         $product_relate = Product::where('cat_id', $product_slug->cat_id)->where('id', '<>', $product_slug->id)->get();
         $comments =  CommentPro::where('product_id', $product_slug->id)->with('User')->get();
-        // echo json_encode($comments);
-        // die();
+
         $quantity_comment = CommentPro::where('product_id', $product_slug->id)->count();
         //        return response()->json($comment);
         $count_wish_list = 0;
@@ -108,14 +120,6 @@ class HomeController extends Controller
             $count_wish_list = Wish_List::where('user_id', Auth::user()->id)->count();
         }
 
-        // echo json_encode($product_slug);
-        // echo $product_slug->warehouse->import_quantity - 
-        // die();
-
-        // echo json_encode($comments);
-        // die();
-        // echo json_encode(Auth::user());
-        // die();
         return view('fontend.page.product', compact('categories', 'product_slug', 'product_relate', 'comments', 'quantity_comment', 'count_wish_list'));
     }
 
@@ -124,11 +128,14 @@ class HomeController extends Controller
         if (Auth::id()) {
             $user = User::find(Auth::id());
             $user_info = User_Info::where('user_id', Auth::id())->first();
-            if (!$user_info->user_id) {
+            if (!$user_info || !$user_info->user_id) {
+                $user_info = new User_Info();
                 $user_info->user_id = Auth::id();
+                $user_info->name = $user->name ? $user->name : "";
+                $user_info->email = $user->email ? $user->email : "";
                 $user_info->save();
             }
-            Auth::user()->avatar = $user_info->avatar;
+            Auth::user()->avatar = $user_info->avatar ? $user_info->avatar : null;
         }
         $categories = Category::where('status', 1)->get();
         $products = Product::with('comment', 'warehouse')->where('status', 1)->orderBy('updated_at', 'DESC')->paginate(9);
@@ -148,11 +155,14 @@ class HomeController extends Controller
         if (Auth::id()) {
             $user = User::find(Auth::id());
             $user_info = User_Info::where('user_id', Auth::id())->first();
-            if (!$user_info->user_id) {
+            if (!$user_info || !$user_info->user_id) {
+                $user_info = new User_Info();
                 $user_info->user_id = Auth::id();
+                $user_info->name = $user->name ? $user->name : "";
+                $user_info->email = $user->email ? $user->email : "";
                 $user_info->save();
             }
-            Auth::user()->avatar = $user_info->avatar;
+            Auth::user()->avatar = $user_info->avatar ? $user_info->avatar : null;
         }
         $categories = Category::where('status', 1)->get();
         $blogs =  Blog::orderBy('updated_at', 'DESC')->get();
@@ -171,11 +181,14 @@ class HomeController extends Controller
         if (Auth::id()) {
             $user = User::find(Auth::id());
             $user_info = User_Info::where('user_id', Auth::id())->first();
-            if (!$user_info->user_id) {
+            if (!$user_info || !$user_info->user_id) {
+                $user_info = new User_Info();
                 $user_info->user_id = Auth::id();
+                $user_info->name = $user->name ? $user->name : "";
+                $user_info->email = $user->email ? $user->email : "";
                 $user_info->save();
             }
-            Auth::user()->avatar = $user_info->avatar;
+            Auth::user()->avatar = $user_info->avatar ? $user_info->avatar : null;
         }
         $categories = Category::where('status', 1)->get();
         $blogs =  Blog::orderBy('updated_at', 'DESC')->paginate(6);
@@ -194,11 +207,14 @@ class HomeController extends Controller
         if (Auth::id()) {
             $user = User::find(Auth::id());
             $user_info = User_Info::where('user_id', Auth::id())->first();
-            if (!$user_info->user_id) {
+            if (!$user_info || !$user_info->user_id) {
+                $user_info = new User_Info();
                 $user_info->user_id = Auth::id();
+                $user_info->name = $user->name ? $user->name : "";
+                $user_info->email = $user->email ? $user->email : "";
                 $user_info->save();
             }
-            Auth::user()->avatar = $user_info->avatar;
+            Auth::user()->avatar = $user_info->avatar ? $user_info->avatar : null;
         }
         $categories = Category::where('status', 1)->get();
         $blogs =  Blog::orderBy('updated_at', 'DESC')->paginate(6);
@@ -223,11 +239,14 @@ class HomeController extends Controller
         if (Auth::id()) {
             $user = User::find(Auth::id());
             $user_info = User_Info::where('user_id', Auth::id())->first();
-            if (!$user_info->user_id) {
+            if (!$user_info || !$user_info->user_id) {
+                $user_info = new User_Info();
                 $user_info->user_id = Auth::id();
+                $user_info->name = $user->name ? $user->name : "";
+                $user_info->email = $user->email ? $user->email : "";
                 $user_info->save();
             }
-            Auth::user()->avatar = $user_info->avatar;
+            Auth::user()->avatar = $user_info->avatar ? $user_info->avatar : null;
         }
         $categories = Category::where('status', 1)->get();
         $blogs =  Blog::orderBy('updated_at', 'DESC')->get();
@@ -256,12 +275,15 @@ class HomeController extends Controller
         $user_id = Auth::id() ? Auth::id() : "";
 
         $route = Route::current();
-
+        
         if (Auth::id()) {
             $user = User::find(Auth::id());
             $user_info = User_Info::where('user_id', Auth::id())->first();
-            if (!$user_info->user_id) {
+            if (!$user_info || !$user_info->user_id) {
+                $user_info = new User_Info();
                 $user_info->user_id = Auth::id();
+                $user_info->name = $user->name ? $user->name : "";
+                $user_info->email = $user->email ? $user->email : "";
                 $user_info->save();
             }
             Auth::user()->avatar = $user_info->avatar;
@@ -313,13 +335,14 @@ class HomeController extends Controller
         if (Auth::id()) {
             $user = User::find(Auth::id());
             $user_info = User_Info::where('user_id', Auth::id())->first();
-            // echo json_encode($user_info);
-            // die();
-            if (!$user_info->user_id) {
+            if (!$user_info || !$user_info->user_id) {
+                $user_info = new User_Info();
                 $user_info->user_id = Auth::id();
+                $user_info->name = $user->name ? $user->name : "";
+                $user_info->email = $user->email ? $user->email : "";
                 $user_info->save();
             }
-            Auth::user()->avatar = $user_info->avatar;
+            Auth::user()->avatar = $user_info->avatar ? $user_info->avatar : null;
         }
 
 
@@ -393,11 +416,14 @@ class HomeController extends Controller
         if (Auth::id()) {
             $user = User::find(Auth::id());
             $user_info = User_Info::where('user_id', Auth::id())->first();
-            if (!$user_info->user_id) {
+            if (!$user_info || !$user_info->user_id) {
+                $user_info = new User_Info();
                 $user_info->user_id = Auth::id();
+                $user_info->name = $user->name ? $user->name : "";
+                $user_info->email = $user->email ? $user->email : "";
                 $user_info->save();
             }
-            Auth::user()->avatar = $user_info->avatar;
+            Auth::user()->avatar = $user_info->avatar ? $user_info->avatar : null;
         }
         $categories = Category::where('status', 1)->get();
 
@@ -443,9 +469,10 @@ class HomeController extends Controller
             $product_slug = $product->slug;
             // $html.='<li><a href="http://127.0.0.1:8001/san-pham/'.$product->slug.'">'.$product->name.'</a></li>';
             $html.='<li style="display:block;" class="mt-3">
-                    <a href="http://'.$domain.'/san-pham/'.$product_slug.'" ><img height="50" width="50" class="float-left mr-3" src="http://'.$domain.'/Uploads/'.$product->image.'" alt=""></a>
+                    <a href="http://'.$domain.':8000/san-pham/'.$product_slug.'" >
+                    <img height="50" width="50" class="float-left mr-3" src="http://'.$domain.':8000/Uploads/'.$product->image.'" alt=""></a>
                     <span >
-                        <a  href="http://'.$domain.'/san-pham/'.$product_slug.'" class="">'.$product->name.'</a><br>
+                        <a  href="http://'.$domain.':8000/san-pham/'.$product_slug.'" class="">'.$product->name.'</a><br>
                         <span class="info_search_item">'.$product->created_at.'</span>
                     </span>
                 </li>';
@@ -463,11 +490,14 @@ class HomeController extends Controller
         if (Auth::id()) {
             $user = User::find(Auth::id());
             $user_info = User_Info::where('user_id', Auth::id())->first();
-            if (!$user_info->user_id) {
+            if (!$user_info || !$user_info->user_id) {
+                $user_info = new User_Info();
                 $user_info->user_id = Auth::id();
+                $user_info->name = $user->name ? $user->name : "";
+                $user_info->email = $user->email ? $user->email : "";
                 $user_info->save();
             }
-            Auth::user()->avatar = $user_info->avatar;
+            Auth::user()->avatar = $user_info->avatar ? $user_info->avatar : null;
         }
         $search_key = $request->search_key;
         $key = $request->search_key;
@@ -490,11 +520,14 @@ class HomeController extends Controller
         if (Auth::id()) {
             $user = User::find(Auth::id());
             $user_info = User_Info::where('user_id', Auth::id())->first();
-            if (!$user_info->user_id) {
+            if (!$user_info || !$user_info->user_id) {
+                $user_info = new User_Info();
                 $user_info->user_id = Auth::id();
+                $user_info->name = $user->name ? $user->name : "";
+                $user_info->email = $user->email ? $user->email : "";
                 $user_info->save();
             }
-            Auth::user()->avatar = $user_info->avatar;
+            Auth::user()->avatar = $user_info->avatar ? $user_info->avatar : null;
         }
         $min_string = $request->minamount;
         $min_array = explode('đ', $min_string);
@@ -523,11 +556,14 @@ class HomeController extends Controller
         if (Auth::id()) {
             $user = User::find(Auth::id());
             $user_info = User_Info::where('user_id', Auth::id())->first();
-            if (!$user_info->user_id) {
+            if (!$user_info || !$user_info->user_id) {
+                $user_info = new User_Info();
                 $user_info->user_id = Auth::id();
+                $user_info->name = $user->name ? $user->name : "";
+                $user_info->email = $user->email ? $user->email : "";
                 $user_info->save();
             }
-            Auth::user()->avatar = $user_info->avatar;
+            Auth::user()->avatar = $user_info->avatar ? $user_info->avatar : null;
         }
         $slug = $request->cat_slug;
         $min_string = $request->minamount;
@@ -558,11 +594,14 @@ class HomeController extends Controller
         if (Auth::id()) {
             $user = User::find(Auth::id());
             $user_info = User_Info::where('user_id', Auth::id())->first();
-            if (!$user_info->user_id) {
+            if (!$user_info || !$user_info->user_id) {
+                $user_info = new User_Info();
                 $user_info->user_id = Auth::id();
+                $user_info->name = $user->name ? $user->name : "";
+                $user_info->email = $user->email ? $user->email : "";
                 $user_info->save();
             }
-            Auth::user()->avatar = $user_info->avatar;
+            Auth::user()->avatar = $user_info->avatar ? $user_info->avatar : null;
         }
         $categories = Category::where('status', 1)->get();
         $products = Product::with('comment')->where('status', 1)->orderBy('price_unit', 'ASC')->orderBy('updated_at', 'DESC')->paginate(9);
@@ -583,11 +622,14 @@ class HomeController extends Controller
         if (Auth::id()) {
             $user = User::find(Auth::id());
             $user_info = User_Info::where('user_id', Auth::id())->first();
-            if (!$user_info->user_id) {
+            if (!$user_info || !$user_info->user_id) {
+                $user_info = new User_Info();
                 $user_info->user_id = Auth::id();
+                $user_info->name = $user->name ? $user->name : "";
+                $user_info->email = $user->email ? $user->email : "";
                 $user_info->save();
             }
-            Auth::user()->avatar = $user_info->avatar;
+            Auth::user()->avatar = $user_info->avatar ? $user_info->avatar : null;
         }
         $categories = Category::where('status', 1)->get();
         $products = Product::with('comment')->where('status', 1)->orderBy('price_unit', 'DESC')->orderBy('updated_at', 'DESC')->paginate(9);
@@ -608,11 +650,14 @@ class HomeController extends Controller
         if (Auth::id()) {
             $user = User::find(Auth::id());
             $user_info = User_Info::where('user_id', Auth::id())->first();
-            if (!$user_info->user_id) {
+            if (!$user_info || !$user_info->user_id) {
+                $user_info = new User_Info();
                 $user_info->user_id = Auth::id();
+                $user_info->name = $user->name ? $user->name : "";
+                $user_info->email = $user->email ? $user->email : "";
                 $user_info->save();
             }
-            Auth::user()->avatar = $user_info->avatar;
+            Auth::user()->avatar = $user_info->avatar ? $user_info->avatar : null;
         }
 
         $categories = Category::where('status', 1)->get();
@@ -637,11 +682,14 @@ class HomeController extends Controller
         if (Auth::id()) {
             $user = User::find(Auth::id());
             $user_info = User_Info::where('user_id', Auth::id())->first();
-            if (!$user_info->user_id) {
+            if (!$user_info || !$user_info->user_id) {
+                $user_info = new User_Info();
                 $user_info->user_id = Auth::id();
+                $user_info->name = $user->name ? $user->name : "";
+                $user_info->email = $user->email ? $user->email : "";
                 $user_info->save();
             }
-            Auth::user()->avatar = $user_info->avatar;
+            Auth::user()->avatar = $user_info->avatar ? $user_info->avatar : null;
         }
 
         $categories = Category::where('status', 1)->get();

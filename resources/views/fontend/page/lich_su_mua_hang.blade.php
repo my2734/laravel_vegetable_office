@@ -15,7 +15,7 @@
                    <h4 class="my-4 font-weight-bold" id="receive_order">@lang('lang.purchase_history')</h4>
                     <a href="{{route('checkout.lich_su_mua_hang_filter',0)}}" style="cursor:pointer; background-color: #a3b18a; color: #000;" class="ml-2 badge badge-primary">@lang('lang.order_pending_confirmation')</a>
                     <a href="{{route('checkout.lich_su_mua_hang_filter',1)}}" style="cursor:pointer;background-color: #588157; " class="ml-2 badge badge-secondary">@lang('lang.order_in_transit')</a>
-                    <a href="{{route('checkout.lich_su_mua_hang_filter',2)}}" style="cursor:pointer;background-color: #3a5a40; " class="ml-2 badge badge-success">@lang('lang.order_received')</a>
+                    <a href="{{route('checkout.lich_su_mua_hang_filter',4)}}" style="cursor:pointer;background-color: #3a5a40; " class="ml-2 badge badge-success">@lang('lang.order_received')</a>
                     <a href="{{route('checkout.lich_su_mua_hang_filter',-1)}}" style="cursor:pointer;background-color: #344e41; " class="ml-2 badge badge-danger">@lang('lang.order_canceled')</a>
                     <h5 class="my-3 font-weight-bold">{{ (isset($title_page)? $title_page :"") }}</h5>
                     <div class="x_content mt-4">
@@ -27,7 +27,7 @@
                                     <th class="text-center">@lang('lang.product_infomation')</th>
                                     <th class="text-center">@lang('lang.shipping_address')</th>
                                     <th class="text-center">@lang('lang.order_date')</th>
-                                    <th class="text-center">Phương thức thanh toán</th>
+                                    <th class="text-center">@lang('lang.order_payment')</th>
                                     <th class="text-center">@lang('lang.status_order')</th>
                                 </tr>
                                 
@@ -35,24 +35,40 @@
                             <tbody>
                                 @foreach($orders as $key => $order)
                                 <tr>
-                                    <th scope="row">{{($key+1)}}</th>
+                                    
+                                    <th scope="row">{{($key+1)}} </th>
                                     <td>{{$order->full_name}}</td>
                                     <td>
                                         @php
                                             $total = 0;
                                         @endphp
-                                        @foreach($order->OrderDetail as $order_detail)
-                                        @php
-                                            $total += $order_detail->pro_price*$order_detail->pro_quantity;
-                                        @endphp
-                                        <span>
-                                            <span>{{$order_detail->pro_name}}</span>
-                                        </span><br>
-                                        <span>
-                                            <img height="50" width="50" src="{{asset('Uploads/'.$order_detail->pro_image)}}" alt="">
-                                            <span class="float-right text-secondary">{{number_format($order_detail->pro_price)}}vnđ x {{$order_detail->pro_quantity}}</span>
-                                        </span><br>
-                                        @endforeach
+                                        @if(gettype(json_decode($order->order_db)) == 'array')
+                                            @foreach(json_decode($order->order_db) as $order_detail)
+                                            @php
+                                                $total += $order_detail->pro_price*$order_detail->pro_quantity;
+                                            @endphp
+                                            <span>
+                                                <span>{{$order_detail->pro_name}}</span>
+                                            </span><br>
+                                            <span>
+                                                <img height="50" width="50" src="{{asset('Uploads/'.$order_detail->pro_image)}}" alt="">
+                                                <span class="float-right text-secondary">{{number_format($order_detail->pro_price)}}vnđ x {{$order_detail->pro_quantity}}</span>
+                                            </span><br>
+                                            @endforeach
+                                        @else
+                                            @foreach($order->OrderDetail as $order_detail)
+                                            @php
+                                                $total += $order_detail->pro_price*$order_detail->pro_quantity;
+                                            @endphp
+                                            <span>
+                                                <span>{{$order_detail->pro_name}}</span>
+                                            </span><br>
+                                            <span>
+                                                <img height="50" width="50" src="{{asset('Uploads/'.$order_detail->pro_image)}}" alt="">
+                                                <span class="float-right text-secondary">{{number_format($order_detail->pro_price)}}vnđ x {{$order_detail->pro_quantity}}</span>
+                                            </span><br>
+                                            @endforeach
+                                        @endif
                                         <p class="font-weight-bold mt-3">@lang('lang.payment') <span class="float-right ">{{number_format($total)}}vnđ</span></p>
                                     </td>
 
@@ -84,8 +100,8 @@
                                        
 
                                         @if($order->status==0) @lang('lang.pending_confirmation') <br><button data-toggle="modal" data-target="#delete_order<?php echo $order->id ?>" class="btn btn-sm primary-btn custom-primary-btn custom-primary-btn-cancel">@lang('lang.cancel_order')</button>
-                                        @elseif($order->status == 4) <button id="{{$order->id}}" class="btn btn-sm primary-btn custom-primary-btn receive_order">@lang('lang.receive_the_delivery')</button>
-                                        @elseif($order->status == 5) @lang('lang.received_the_delivery')
+                                        @elseif($order->status == 3) <button id="{{$order->id}}" class="btn btn-sm primary-btn custom-primary-btn receive_order">@lang('lang.receive_the_delivery')</button>
+                                        @elseif($order->status == 4) @lang('lang.received_the_delivery')
                                         @elseif($order->status == -1) @lang('lang.canceled')
                                             <br>
                                             <h5>@lang('lang.reason'):</h5>
@@ -109,7 +125,7 @@
                                                             <input type="text" name="reason" class="form-control" placeholder="">
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-sm primary-btn custom-primary-btn receive_order" data-dismiss="modal">@lang('lang.close')</button>
+                                                            <button type="button" class="btn btn-sm primary-btn custom-primary-btn" data-dismiss="modal">@lang('lang.close')</button>
                                                             <button type="submit" class="btn btn-sm primary-btn custom-primary-btn custom-primary-btn-cancel">@lang('lang.sure')</a>
                                                         </div>
                                                         @csrf
@@ -122,6 +138,9 @@
                                 @endforeach
                             </tbody>
                         </table>
+                       <div class="my-3 float-right">
+                       {{$orders->links('vendor.pagination.custom')}}
+                       </div>
                     </div>
                 </div>
             </div>

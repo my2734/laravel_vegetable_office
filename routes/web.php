@@ -26,6 +26,7 @@ use Illuminate\Routing\Router;
 use App\Http\Controllers\ShipController;
 use App\Http\Controllers\ShipOrderController;
 use App\Http\Controllers\ShipperController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -93,8 +94,8 @@ Route::prefix('admin')->middleware('auth_admin')->group(function(){
     Route::get('/user', [AdminController::class, 'list_user'])->name('user.index');
 
     Route::prefix('/giao-hang')->group(function () {
-        Route::get('/', [ShipController::class, 'index'])->name('ship.index');
-        Route::get('/profile', [ShipController::class, 'profile'])->name('ship.profile');
+        Route::get('/', [ShipController::class, 'index'])->name('ship.order.index');
+        Route::get('/profile', [ShipController::class, 'profile'])->name('ship.order.index');
 
         Route::prefix('/don-hang')->group(function(){
             Route::get('/',[ShipOrderController::class,'index'])->name('ship.order.index');
@@ -150,7 +151,6 @@ Route::prefix('admin')->middleware('auth_admin')->group(function(){
         Route::get('/delete/{id}', [TagsController::class, 'delete'])->name('tags.delete');
         Route::get('/edit/{id}', [Tagscontroller::class, 'edit'])->name('tags.edit');
         Route::post('/update/{id}', [TagsController::class, 'update'])->name('tags.update');
-
         Route::get('/change_status', [TagsController::class, 'change_status'])->name('tags.change_status');
     });
 
@@ -196,6 +196,7 @@ Route::prefix('admin')->middleware('auth_admin')->group(function(){
 
         Route::get('/print-pdf/{order_id}', [DataInputOutputController::class, 'print_pdf'])->name('order.print_pdf');
     });
+
     //Statistical
     Route::prefix('/statistical')->group(function () {
         Route::get('/', [OrderController::class, 'index'])->name('order.index');
@@ -221,9 +222,10 @@ Route::prefix('admin')->middleware('auth_admin')->group(function(){
     //Manager human
     Route::prefix('/nhan-su')->middleware('check_role_admin')->group(function () {
         Route::get('/', [AdminController::class, 'manager_human_index'])->name('manager_human.index');
-        Route::get('/delete-role', [AdminController::class, 'manager_human_delete_role'])->name('manager_human.delete_role');
+        Route::get('/delete-role/{id}', [AdminController::class, 'manager_human_delete_role'])->name('manager_human.delete_role');
         Route::get('/change-role', [AdminController::class, 'manager_human_change_role'])->name('manager_human.change_role');
         Route::get('/change-user-current/{id}', [AdminController::class, 'manager_human_change_user_current'])->name('manager_human.change_user_current');
+        Route::get('/change-role-user', [AdminController::class, 'change_role_user'])->name('manager_human.change_role_user');
     });
 
     //News

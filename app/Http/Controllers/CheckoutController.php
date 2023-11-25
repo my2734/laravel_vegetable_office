@@ -14,7 +14,8 @@ use Mail;
 use Illuminate\Http\Request;
 use Cart;
 use Carbon\Carbon;
-use Auth;
+// use Auth;
+use Illuminate\Support\Facades\Auth;
 class CheckoutController extends Controller
 {
     public function checkout_show(){
@@ -224,7 +225,6 @@ class CheckoutController extends Controller
         $order->order_note = $request->order_note;
         $order->created_at = Carbon::now();
         $order->updated_at = Carbon::now();
-        echo $request->method_payment;
         if($request->method_payment != 'offline'){
             $order->payment_type = 1;
         }
@@ -232,10 +232,13 @@ class CheckoutController extends Controller
         
         // Insert tbl_order_detail
         $carts = Cart::content();
-        Cart::destroy();
+        // Cart::destroy();
+        // echo json_encode($carts);
+        // die();
         $total = 0;
         $quantity_of_cart = 0;
 
+        $order_data = [];
         foreach($carts as $cart){
             $order_detail = new OrderDetail();
             $order_detail->order_id = $order->id;
@@ -252,15 +255,20 @@ class CheckoutController extends Controller
             $quantity_of_cart +=  $order_detail->pro_quantity;
 
             //update kho hang
-            $warehouse_item = Warehouse::where('product_id',$order_detail->pro_id)->first();
-            $warehouse_item->export_quantity = $warehouse_item->export_quantity+$order_detail->pro_quantity;
+            $warehouse_item = Warehouse::where('product_id',$cart->id)->first();
+            $warehouse_item->export_quantity = $warehouse_item->export_quantity+$order_detail->pro_quantity;           
             $warehouse_item->save();
 
             //update total tbl_order
             $order_update = Order::find($order->id);
             $order_update->total = $total;
-            $order_update->save();
+            // $order_update->save();
+            array_push($order_data, $order_detail);
         }
+
+        $order->total = $total;
+        $order->order_db = json_encode($order_data);
+        $order->save();
         // $cart = [];
 
         //add Statistic
@@ -464,14 +472,13 @@ class CheckoutController extends Controller
          }
         $categories = Category::where('status',1)->get();
         $user_id = Auth::user()->id;
-        $orders = Order::where('user_id',$user_id)->with('OrderDetail')->orderBy('id','DESC')->get();
-        // return response()->json($orders);
+        $orders = Order::where('user_id',$user_id)->with('OrderDetail')->orderBy('id','DESC')->paginate(9);
+
+
         $count_wish_list = 0;
         if(Auth::id()){
             $count_wish_list = Wish_List::where('user_id',Auth::user()->id)->count();
         }
-        // echo json_encode($orders);
-        // die();
         return view('fontend.page.lich_su_mua_hang',compact('categories','orders','count_wish_list'));
     }
 
@@ -487,7 +494,7 @@ class CheckoutController extends Controller
          }
         $order_id = $request->order_id;
         $order = Order::find($order_id);
-        $order->status = 5;
+        $order->status = 4;
         $order->save();
     }
 
@@ -519,7 +526,6 @@ class CheckoutController extends Controller
     }
 
     public function lich_su_mua_hang_filter($status){
-    
         if(Auth::id()){
             $user = User::find(Auth::id());
             $user_info = User_Info::where('user_id', Auth::id())->first();
@@ -531,7 +537,10 @@ class CheckoutController extends Controller
          }
         $categories = Category::where('status',1)->get();
         $user_id = Auth::user()->id;
-        $orders = Order::where('user_id',$user_id)->where('status',$status)->with('OrderDetail')->orderBy('id','DESC')->get();
+        $orders = Order::where('user_id',$user_id)->where('status',$status)->with('OrderDetail')->orderBy('id','DESC')->paginate(9);
+        if($status == 1){
+            $orders = Order::where('user_id',$user_id)->whereIn('status',[1,2,3])->with('OrderDetail')->orderBy('id','DESC')->paginate(9);
+        }
         // return response()->json($orders);
         $count_wish_list = 0;
         if(Auth::id()){

@@ -129,6 +129,9 @@
         'image' => 'Hình ảnh', 
         'price_unit' => 'Giá sản phẩm', 
         'stock' => 'Số lượng kho', 
-        
+        'order_payment' => 'Phương thức thanh toán',
+        'form_login' => 'Đăng nhập',
+        'update_blog' => 'Cập nhật Blog', 
+        'create_blog' => 'Thêm mới Blog',
     ]
 ?>

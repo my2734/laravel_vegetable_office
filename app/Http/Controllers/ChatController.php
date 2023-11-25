@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\Client\Chat;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use App\Events\MyEvent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;

@@ -46,14 +46,17 @@ class OrderController extends Controller
 
     public function filter_by_status($status){
         $orders = Order::where('status',$status)->with('OrderDetail')->orderBy('updated_at','DESC')->paginate(4);
+        if($status == 1){
+            $orders = Order::whereIn('status', [1, 2, 3])->with('OrderDetail')->orderBy('updated_at','DESC')->paginate(4);
+        }
         if($status == 0){
             $message = "Đơn hàng chờ xác nhận";
-        }elseif($status == 1){
-            $message = "Đơn hàng đang giao";
-        }elseif($status == 2){
+        }elseif($status == -1){
+            $message = "Đơn hàng đã hủy";
+        }elseif($status == 4){
             $message = "Đơn hàng đã giao thành công";
         }else{
-            $message = "Đơn hàng đã hủy";
+            $message = "Đơn hàng đang giao";
         }
         $news = News::with('User')->with('User_Info')->where('status',0)->orderBy('created_at','DESC')->take(6)->get();
         $total_news = News::where('status',0)->count();
