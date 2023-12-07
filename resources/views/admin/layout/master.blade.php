@@ -8,11 +8,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initialf-scale=1">
   <meta name="csrf-token" content="{{ csrf_token() }}" />
-  {{--
-        <link rel="icon" href="{{asset('backend/images/favicon.ico')}}" type="image/ico" />
-  --}}
+
   <link rel="icon" type="image/x-icon" href="{{asset('backend/images/images.png')}}">
-  <title>Gentelella Alela! | </title>
+  <title>{{session('setting.name_site')}}</title>
   <!-- Bootstrap -->
   <link href="{{asset('backend/vendors/bootstrap/dist/css/bootstrap.min.css')}}" rel="stylesheet">
   <!-- Font Awesome -->
@@ -38,15 +36,28 @@
   <!-- Moris Chart -->
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <style>
+    /* .nav.side-menu>li.active>a, */
+    .sidebar-footer,
+    .left_col,
+    .nav_title,
+    .sidebar-footer a,
+    body {
+      background-color: <?php echo session('setting.color_pattern_admin') ?>;
+    }
+    .nav.side-menu>li.active>a{
+      background: linear-gradient(#334556, #2c4257), <?php echo session('setting.color_pattern_admin') ?>;
+    }
+  </style>
 </head>
 
 <body class="nav-md">
   <div class="container body">
-    <div class="main_container">
-      <div class="col-md-3 left_col">
-        <div class="left_col scroll-view">
-          <div class="navbar nav_title" style="border: 0;">
-            <a href="{{route('admin.index')}}" class="site_title"><i class="fa fa-paw"></i> <span>Gentelella Alela!</span></a>
+    <div id="main_content" class="main_container">
+      <div id="left_full" class="col-md-3 left_col">
+        <div id="left_col_center" class="left_col scroll-view">
+          <div id="left_col_top" class="navbar nav_title" style="border: 0;">
+            <a href="{{route('admin.index')}}" class="site_title"><i class="fa fa-paw"></i> <span>{{session('setting.name_site')}}</span></a>
           </div>
           <div class="clearfix"></div>
           <!-- menu profile quick info -->
@@ -65,7 +76,7 @@
           @include('admin.layout.leftMenu')
           <!-- /sidebar menu -->
           <!-- /menu footer buttons -->
-          <div class="sidebar-footer hidden-small">
+          <div id="left_col_bottom" class="sidebar-footer hidden-small">
             <a data-toggle="tooltip" data-placement="top" title="Settings">
               <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
             </a>
@@ -148,8 +159,22 @@
   <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+
   <script>
     $(document).ready(function() {
+      //call ajax to set background color
+      // $.get({
+      //   url: '{{route("setting.get_all_setting")}}',
+      //   success: function(res){
+      //     const data = JSON.parse(res) //array setting
+      //     const colorPatternItem = data.find((settingItem)=> settingItem.setting_name === "color_pattern_admin")
+      //     console.log(colorPatternItem)
+      //     $('#main_content, #left_col_top, #left_col_center, #left_col_bottom, #left_full').css({
+      //           background: colorPatternItem.setting_value
+      //         });
+      //   }
+      // })
+
 
       Pusher.logToConsole = true;
       var pusher = new Pusher('9b486b695b2b9d9f825b', {
@@ -211,14 +236,14 @@
             success: function(response) {
               console.log(response)
               $('#contentMessage').append(`
-                              <li class="clearfix">
-                                  <div class="message-data text-right">
-                                      <span class="message-data-time">${response['time']}</span>
-                                  </div>
-                                  <div class="message other-message float-right">${response['message']}</div>
-                              </li>
-                                      
-                          `)
+                  <li class="clearfix">
+                      <div class="message-data text-right">
+                          <span class="message-data-time">${response['time']}</span>
+                      </div>
+                      <div class="message other-message float-right">${response['message']}</div>
+                  </li>
+                          
+              `)
               scrollChat()
 
             },
@@ -230,6 +255,24 @@
           displayError('Please enter message')
         }
       })
+
+
+      
+
+      function displaySuccessChooseColor(message, color) {
+        Toastify({
+          text: message,
+          duration: 3000,
+          newWindow: true,
+          close: true,
+          gravity: "top", // `top` or `bottom`
+          position: "right", // `left`, `center` or `right`
+          stopOnFocus: true, // Prevents dismissing of toast on hover
+          style: {
+            background: color,
+          },
+        }).showToast();
+      }
 
 
 

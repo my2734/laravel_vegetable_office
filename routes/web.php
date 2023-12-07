@@ -22,6 +22,7 @@ use App\Http\Controllers\WarehouseController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\AdminChatController;
+use App\Http\Controllers\SettingController;
 use Illuminate\Routing\Router;
 use App\Http\Controllers\ShipController;
 use App\Http\Controllers\ShipOrderController;
@@ -231,6 +232,15 @@ Route::prefix('admin')->middleware('auth_admin')->group(function(){
     //News
     Route::prefix('/thong-bao')->group(function () {
         Route::get('/change-status', [AdminController::class, 'news_change_status'])->name('news.change_status');
+    });
+
+    // Setting
+    Route::prefix('/cai-dat')->group(function () {
+        Route::get('/', [SettingController::class, 'index'])->name('setting.index');
+        Route::get('/update-color-patern/{color}', [SettingController::class, 'update_background_main'])->name('setting.update_background_main');
+        Route::get('/get-all-setting', [SettingController::class, 'get_all_setting'])->name('setting.get_all_setting');
+        Route::post('/update-percent-setting', [SettingController::class, 'update_percent_setting'])->name('setting.update_percent_setting');
+        Route::post('/update-name-site-setting', [SettingController::class, 'update_name_site_setting'])->name('setting.update_name_site_setting');
     });
 
     route::get('/search-san-pham-ajax-admin', [AdminController::class, 'search_ajax_admin'])->name('admin.search_ajax_admin');

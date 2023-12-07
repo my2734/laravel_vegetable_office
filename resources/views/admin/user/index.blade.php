@@ -3,7 +3,7 @@
 <div class="col-md-12 col-sm-12  ">
     <div class="x_panel">
         <div class="x_title">
-            <h2>Danh sách khách hàng</h2>
+            <h2>@lang('lang.list_user')</h2>
             <ul class="nav navbar-right panel_toolbox">
                
                 <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
@@ -16,10 +16,10 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Full Name</th>
-                        <th>Image</th>
-                        <th>Phone</th>
-                        <th>Email</th>
+                        <th>@lang('lang.full_name')</th>
+                        <th>@lang('lang.image')</th>
+                        <th>@lang('lang.phone')</th>
+                        <th>@lang('lang.email')</th>
                     </tr>
                 </thead>
                 <tbody>

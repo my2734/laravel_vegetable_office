@@ -6,6 +6,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use App\Http\Controllers\session;
 
@@ -63,22 +64,40 @@ class AdminLoginController extends Controller
             'password.required' => 'Vui lòng nhập password',
             'password.min'      => 'Mật khẩu ít nhất 6 ký tự'
         ]);
+
         $arr = [
             'email' => $request->email,
             'password' => $request->password,
         ];
-
-
-        // echo json_encode($arr);
-        // die();
-
+        
         if (Auth::guard('admin')->attempt($arr)) {
-           
             $admin = Admin::where('email',$request->email)->first();
+            $color_pattern_admin = Setting::where('setting_name','color_pattern_admin')->first();
+            $profit_order = Setting::where('setting_name','profit_order')->first();
+            $name_site = Setting::where('setting_name','name_site')->first();
+
+
+            if(isset($color_pattern_admin)){
+                $request->session()->put('setting.color_pattern_admin', $color_pattern_admin->setting_value);        
+            }else{
+                $request->session()->put('setting.color_pattern_admin', "#2a3f54");
+            }
+
+            if(isset($profit_order)){
+                $request->session()->put('setting.profit_order', $profit_order->setting_value);        
+            }else{
+                $request->session()->put('setting.profit_order', '10');
+            }
+
+            if(isset($name_site)){
+                $request->session()->put('setting.name_site', $name_site->setting_value);        
+            }else{
+                $request->session()->put('setting.name_site', '3SachFood');
+            }
+
             $request->session()->put('admin.name',$admin->name);
             $request->session()->put('admin.id',$admin->id);
             $request->session()->put('admin.role',$admin->role);
-        
             return redirect()->route('admin.index')->with('message_success','Bạn đã đăng nhập thành công');
         } else {
             

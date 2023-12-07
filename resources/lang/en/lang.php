@@ -110,7 +110,6 @@ return [
     'comment' => "Comment", //Bình luận
     'description' => 'Description', //Mô tả
     'delete' => 'Delete', //Xóa
-    'product_infomation' => 'Products Infomation', //Thông tin sản phẩm
     'please_check_quantity_cart' => 'Please check the quantity in your cart.', //Vui lòng kiểm tra lại số lượng trong giỏ hàng
     'price' => 'Price', //Giá sản phẩm
     'quantity' => 'Quantity', //Số lượng
@@ -211,4 +210,29 @@ return [
     'update_tags' => 'Update Tags', //Chỉnh sửa Tags
     'create_tags' => 'Create Tags',//Tạo mới Tags
     'list_tags_blog' => 'List Tags(Blog)',//Danh sách Tags(Blog)
+    'do_you_want_delete_category' => 'Do you want delete this category',//Bạn chắn chắc muốn danh mục này
+    'list_user' => 'List User',//Danh sách khách hàng
+    'product_id' => 'Product ID',//Mã sản phẩm
+    'import_quantity' => 'Import quantity', //Số lượng nhập
+    'export_quantity' => 'Export quantity', //Số lượng xuất
+    'stock' => 'Stock', //Tồn kho
+    'page_admin' => 'Page Admin', //Trang Admin
+    'page_staff' => 'Page Staff',//Trang nhân viên
+    'page_shipper' => 'Page Shipper',//Trang Shipper
+    'total_order' => 'Total Order', //Tổng đơn hàng
+    'more_info' => 'More info',//Xem thêm
+    'total_user' => 'Total User', //Tổng khách hàng
+    'total_product' => 'Total Product',//Tổng sản phẩm
+    'total_blog' => 'Total Blog',//Tổng Blog
+    'start_date' => 'Start date',//Ngày bắt đầu
+    'end_date' => 'End date',//Ngày kết thúc
+    'statistics' => 'Statistics',//Thống kê
+    'statistics_by' => 'Statistics by',//Thống kê theo
+    '7_date_ago' => '7 date ago',//7 ngày trước
+    '1_month_ago' => '1 month ago',//1 tháng trước
+    '3_month_ago' => '3 month ago',//3 tháng trước
+    'checkout' => 'Checkout', //Thanh toán
+    'order_history' => 'Order History',//Lịch sử đơn hàng
+    'your_order' => 'Your Order', //Đơn hàng của bạn    ''
+    'total' => 'Total'
 ];

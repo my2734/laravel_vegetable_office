@@ -14,6 +14,7 @@
         <li><a href="{{route('tags.index')}}"><i class="fa fa-tags"></i></i> Tags (Blogs)</a></li>
         <li><a href="{{route('user.index')}}"><i class="fa fa-user" aria-hidden="true"></i> @lang('lang.user') </a></li>
         <li><a href="{{route('comment.index')}}"><i class="fa fa-comments" aria-hidden="true"></i> @lang('lang.comment') </a></li>
+        <li><a href="{{route('setting.index')}}"><i class="fa fa-cog" aria-hidden="true"></i> Setting </a></li>
         @if(session('admin.role')!=1)
         <li><a href="{{route('manager_human.index')}}"><i class="fa fa-users" aria-hidden="true"></i> @lang('lang.manager_human')</a></li>
         @endif

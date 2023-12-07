@@ -108,7 +108,7 @@
                     </div>
                     <span class="text-danger text-left">@error('content') {{$message}}  @enderror</span>
                     <div class="col-lg-12 text-center">
-                        <textarea name="content" placeholder="Your message">{{old('content')}}</textarea>
+                        <textarea name="content" class="textAreaMessage" placeholder="Your message">{{old('content')}}</textarea>
                         @if($user_id)
                         <input type="hidden" id="name" value="<?php echo $name ?>">
                         <input type="hidden" id="avatar" value={{$avatar}}>

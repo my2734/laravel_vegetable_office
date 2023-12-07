@@ -56,7 +56,7 @@
                     <tr>
                         <th>@lang('lang.order_id')</th>
                         <th class="text-center">@lang('lang.receiver')</th>
-                        <th class="text-center">@lang(lang.product_infomation)</th>
+                        <th class="text-center">@lang('lang.product_infomation')</th>
                         <th class="text-center">@lang('lang.shipping_address')</th>
                         <th class="text-center">@lang('lang.order_date')</th>
                         <th class="text-center">@lang('lang.payment_method')</th>

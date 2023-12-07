@@ -20,9 +20,9 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Name</th>
-                        <th>Status</th>
-                        <th>Manager</th>
+                        <th>@lang('lang.name')</th>
+                        <th>@lang('lang.status')</th>
+                        <th>@lang('lang.manager')</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -30,7 +30,13 @@
                     <tr>
                         <th scope="row">{{($key+1)}}</th>
                         <td>{{$tags->name}}</td>
-                        <td><span id="{{$tags->id}}" class="cursor_pointer change_status_tags{{$tags->id}} change_status_tags badge {{$tags->status==1?'badge-danger':'badge-secondary'}}">{{$tags->status==1?"Hiển thị":"Không hiển thị"}}</span></td>
+                        <td><span id="{{$tags->id}}" class="cursor_pointer change_status_tags{{$tags->id}} change_status_tags badge {{$tags->status==1?'badge-danger':'badge-secondary'}}">
+                            @if($tags->status==1)
+                            @lang('lang.display')
+                            @else
+                            @lang('lang.not_display')
+                            @endif    
+                        </span></td>
                         <td>
                             <button class="primary-btn custom-primary-btn p-2 text-white" data-toggle="modal" data-target="#delete_tags{{$tags->id}}"><i class="fa fa-trash" aria-hidden="true"></i></button>
                             <a href="{{route('tags.edit',$tags->id)}}" class="primary-btn custom-primary-btn p-2 text-white"><i class="fa fa-pencil" aria-hidden="true"></a>
@@ -39,14 +45,14 @@
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Bạn chắn chắc muốn danh mục này</h5>
+                                            <h5 class="modal-title" id="exampleModalLabel">@lang('lang.do_you_want_delete_category')</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="sub-btn custom-primary-btn p-2" data-dismiss="modal">Không</button>
-                                            <a href="{{route('tags.delete',$tags->id)}}" class="primary-btn custom-primary-btn p-2 text-white">Chắc chắn</a>
+                                            <button type="button" class="sub-btn custom-primary-btn p-2" data-dismiss="modal">@lang('lang.cancel')</button>
+                                            <a href="{{route('tags.delete',$tags->id)}}" class="primary-btn custom-primary-btn p-2 text-white">@lang('lang.sure')</a>
                                         </div>
                                     </div>
                                 </div>

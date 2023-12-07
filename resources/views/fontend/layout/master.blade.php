@@ -9,7 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <link rel="icon" type="image/x-icon" href="{{asset('fontend/img/favicon.png')}}">
-    <title>Ogani | Template</title>
+    <title>{{session('setting.name_site')}}</title>
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -440,6 +440,37 @@
                 }
 
             })
+
+            $('.btn_send_email').click(e => {
+                let isSubmit = true
+                //validation name
+                if (!$('input[name="name"]').val()) {
+                    displayError('Please enter name')
+                    isSubmit = false
+                }
+                //validation email
+                const regexFormatEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+                if (!$('input[name="email"]').val()) {
+                    displayError('Please enter email')
+                    isSubmit = false
+                } else if (!regexFormatEmail.test($('input[name="email"]').val())) {
+                    displayError('Incorrectly formatted email')
+                    isSubmit = false
+                }
+                //validation message
+                if (!$('.textAreaMessage').val()) {
+                    displayError('Please enter message')
+                    isSubmit = false
+                }
+
+                if (!isSubmit) {
+                    e.preventDefault();
+                }
+            })
+
+            $('.input-upload-image-avatar').change((e) => {
+                console.log("hello ca nha yeu cua kem")
+            })
         })
 
         $('.qty_mul_pro').keyup(function() {
@@ -686,17 +717,46 @@
 
                 if ($(this)[0].files[0].size < 5242880) {
                     isSize = true
+                } else {
+                    displayError('Limit size image 5kb')
                 }
                 const ext = $(this).val().split('.').pop().toLowerCase();
 
                 if (arr_type_allow.includes(ext)) {
                     isType = true
+                } else {
+                    displayError('Please choose type image')
                 }
             })
 
+            function validateOtherField() {
+                let isSubmit = true;
+                // Biểu thức chính quy kiểm tra xem chuỗi có chỉ chứa ký tự chữ cái và dấu cách hay không
+                const regexText = /^[a-zA-Z\u00C0-\u024F\s']+$/;
+                const regexPhone = /^[0-9\s]{10,12}$/; ///^[0-9\s]+$/;
+                const regexEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+                //full_name
+                //country
+                //conscious
+                //district
+                //commune
+                //email
+                if($('input[name="email"]').val() && !regexEmail.test($('input[name="email"]').val())){
+                    displayError('Incorrectly format email')
+                    isSubmit = false
+                }
+                //phone
+                if($('input[name="phone"]').val() && !regexPhone.test($('input[name="phone"]').val())){
+                    displayError('Incorrectly format phone')
+                    isSubmit = false
+                }
+                //address_detail   
+                return isSubmit             
+            }
+
 
             $('.submit-form-profile').click(function(e) {
-
+                
                 if (isUpdateImage) {
                     if (!isType) {
                         e.preventDefault()
@@ -706,8 +766,61 @@
                         displayError('Limit size image 5kb')
                     }
                 }
-
+                //validation other field
+                if(!validateOtherField()) e.preventDefault()
             })
+
+            $('.btn-submit-store-checkout').click(e=>{      
+                console.log(validationFormStoreOrder())          
+                if(!validationFormStoreOrder()) e.preventDefault();
+            })
+
+            function validationFormStoreOrder(){
+                let isSumit = true
+                const regexText = /^[a-zA-Z\u00C0-\u024F\s']+$/;
+                const regexPhone = /^[0-9\s]{10,12}$/; ///^[0-9\s]+$/;
+                const regexEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+                //full_name
+                if(!$('input[name="full_name"]').val()){
+                    displayError('Please enter field full name')
+                    isSumit = false
+                }
+                //country
+                if(!$('input[name="country"]').val()){
+                    displayError("Please enter field country")
+                    isSumit = false
+                }
+                //conscious
+                if(!$('input[name="conscious"]').val()){
+                    displayError("Please enter field conscious")
+                    isSumit = false
+                }
+                //district
+                if(!$('input[name="conscious"]').val()){
+                    displayError("Please enter field conscious")
+                    isSumit = false
+                }
+                //email
+                if(!$('input[name="email"]').val()){
+                    displayError("Please enter field email")
+                }else if(!regexEmail.test($('input[name="email"]').val().trim())){
+                    displayError("Incorrectly format field email")
+                    isSumit = false
+                }
+                //phone
+                if(!$('input[name="phone"]').val()){
+                    displayError("Please enter field phone")
+                }else if(!regexPhone.test($('input[name="phone"]').val().trim())){
+                    displayError("Incorrectly format field phone")
+                    isSumit = false
+                }
+                //address_detail
+                if(!$('.address_detail').val()){
+                    displayError("Please enter field address detail")
+                    isSumit = false
+                }
+                return isSumit
+            }
 
             function displayError(message) {
                 Toastify({
@@ -724,7 +837,7 @@
                 }).showToast();
             }
 
-            
+
         })
     </script>
 </body>

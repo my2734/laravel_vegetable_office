@@ -1,4 +1,17 @@
 @extends('fontend.layout.master')
+@section('search_page_home')
+<div class="hero__search__form" style="postion: relative;">
+    <form action="{{route('home.search_product')}}" method="POST" style="postion: relative;">
+        <input type="text" id="search_key" name="search_key" placeholder="What do yo u need?">
+        <button type="submit" class="site-btn">SEARCH</button>
+        @csrf
+    </form>
+</div>
+<div class="autocomplete" style="margin-top: 64px;">
+    <ul style="display: block;">
+    </ul>
+</div>
+@endsection
 @section('content')
 <!-- Breadcrumb Section Begin -->
 <section class="breadcrumb-section set-bg" data-setbg="{{asset('fontend/img/breadcrumb.jpg')}}">

@@ -14,6 +14,7 @@ use App\Models\User;
 use App\Models\User_Info;
 use App\Models\News;
 use App\Models\Warehouse;
+use App\Models\Setting;
 use App\Models\Order;
 use Illuminate\Support\Facades\Session;
 use Carbon\Carbon;
@@ -23,8 +24,15 @@ use Illuminate\Support\Facades\Mail;
 
 class HomeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $name_site = Setting::where('setting_name','name_site')->first();
+        if(isset($name_site)){
+            $request->session()->put('setting.name_site', $name_site->setting_value);        
+        }else{
+            $request->session()->put('setting.name_site', '3SachFood');
+        }
+
         if (Auth::id()) {
             $user = User::find(Auth::id());
             $user_info = User_Info::where('user_id', Auth::id())->first();
@@ -59,8 +67,16 @@ class HomeController extends Controller
         return view('fontend.page.homePage', compact('categories', 'products', 'product_laster', 'product_top_rate', 'blogs', 'count_wish_list', 'home_active'));
     }
 
-    public function category($slug)
+    public function category(Request $request, $slug)
     {
+
+        $name_site = Setting::where('setting_name','name_site')->first();
+        if(isset($name_site)){
+            $request->session()->put('setting.name_site', $name_site->setting_value);        
+        }else{
+            $request->session()->put('setting.name_site', '3SachFood');
+        }
+
         if (Auth::id()) {
             $user = User::find(Auth::id());
             $user_info = User_Info::where('user_id', Auth::id())->first();
@@ -88,8 +104,14 @@ class HomeController extends Controller
         return view('fontend.page.category', compact('categories', 'products', 'product_laster', 'product_top_rate', 'blogs', 'category_slug', 'product_sales', 'count_wish_list'));
     }
 
-    public function product($slug)
+    public function product(Request $request, $slug)
     {
+        $name_site = Setting::where('setting_name','name_site')->first();
+        if(isset($name_site)){
+            $request->session()->put('setting.name_site', $name_site->setting_value);        
+        }else{
+            $request->session()->put('setting.name_site', '3SachFood');
+        }
 
         if (Auth::id()) {
             $user = User::find(Auth::id());
@@ -123,8 +145,15 @@ class HomeController extends Controller
         return view('fontend.page.product', compact('categories', 'product_slug', 'product_relate', 'comments', 'quantity_comment', 'count_wish_list'));
     }
 
-    public function all_product()
+    public function all_product(Request $request)
     {
+        $name_site = Setting::where('setting_name','name_site')->first();
+        if(isset($name_site)){
+            $request->session()->put('setting.name_site', $name_site->setting_value);        
+        }else{
+            $request->session()->put('setting.name_site', '3SachFood');
+        }
+        
         if (Auth::id()) {
             $user = User::find(Auth::id());
             $user_info = User_Info::where('user_id', Auth::id())->first();
@@ -275,7 +304,7 @@ class HomeController extends Controller
         $user_id = Auth::id() ? Auth::id() : "";
 
         $route = Route::current();
-        
+
         if (Auth::id()) {
             $user = User::find(Auth::id());
             $user_info = User_Info::where('user_id', Auth::id())->first();
@@ -459,30 +488,29 @@ class HomeController extends Controller
         return json_encode($data);
     }
 
-    public function search_ajax(Request $request){
+    public function search_ajax(Request $request)
+    {
         $domain = request()->getHost();
         $key = $request->key;
-        $list_product = Product::where('status', 1)->where('name', 'LIKE', "%{$key}%")->take(10)->get();
+        // echo $key;
+        // die();
+        $list_product = Product::where('status', 1)->where('name', 'LIKE', "%{$key}%")->orWhere('description', 'LIKE', "%{$key}%")->take(10)->get();
         // return json_encode($list_product[0]->image);
         $html = '<ul style="display: block;">';
-        foreach($list_product as $product){
+        foreach ($list_product as $product) {
             $product_slug = $product->slug;
-            // $html.='<li><a href="http://127.0.0.1:8001/san-pham/'.$product->slug.'">'.$product->name.'</a></li>';
-            $html.='<li style="display:block;" class="mt-3">
-                    <a href="http://'.$domain.':8000/san-pham/'.$product_slug.'" >
-                    <img height="50" width="50" class="float-left mr-3" src="http://'.$domain.':8000/Uploads/'.$product->image.'" alt=""></a>
+            $html .= '<li style="display:block;" class="mt-3">
+                    <a href="http://' . $domain . '/san-pham/' . $product_slug . '" >
+                    <img height="50" width="50" class="float-left mr-3" src="http://' . $domain . '/Uploads/' . $product->image . '" alt=""></a>
                     <span >
-                        <a  href="http://'.$domain.':8000/san-pham/'.$product_slug.'" class="">'.$product->name.'</a><br>
-                        <span class="info_search_item">'.$product->created_at.'</span>
+                        <a  href="http://' . $domain . '/san-pham/' . $product_slug . '" class="">' . $product->name . '</a><br>
+                        <span class="info_search_item">' . $product->created_at . '</span>
                     </span>
                 </li>';
         }
-        $html.='</ul>';
+        $html .= '</ul>';
 
-        // echo json_encode($request);
-       
-        
-    echo $html;
+        echo $html;
     }
 
     public function search_product(Request $request)
@@ -516,7 +544,7 @@ class HomeController extends Controller
 
     public function filter_product(Request $request)
     {
-        
+
         if (Auth::id()) {
             $user = User::find(Auth::id());
             $user_info = User_Info::where('user_id', Auth::id())->first();
@@ -537,7 +565,7 @@ class HomeController extends Controller
         $max_array = explode('đ', $max_string);
         $max = $max_array[0];
         $products = Product::where('status', 1)->whereBetween('price_unit', [$min, $max])->with('warehouse')->paginate(9);
-        
+
         $filter_page = 1;
         $categories = Category::where('status', 1)->get();
         $product_sales = Product::with('comment', 'warehouse')->where('price_promotion', '>', 0)->get();

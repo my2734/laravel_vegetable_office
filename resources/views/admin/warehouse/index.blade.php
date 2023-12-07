@@ -3,7 +3,7 @@
 @section('content')
     <div class="title_left">
         
-        <h3>Kho hàng</h3>
+        <h3>@lang('lang.warehouse')</h3>
     </div>
     <div class="col-md-12 col-sm-12  ">
         <div class="x_panel">
@@ -16,7 +16,7 @@
                             <div class="input-group d-flex align-items-center">
                                 <input type="text" name="search_key" class="form-control" placeholder="Search for...">
                                 <span class="input-group-btn">
-                                <button type="submit" class="primary-btn custom-primary-btn p-2 text-white ml-1 m-0 btn-search-warehouse" type="button">Search</button>
+                                <button type="submit" class="primary-btn custom-primary-btn p-2 text-white ml-1 m-0 btn-search-warehouse" type="button">@lang('lang.search')</button>
                                 </span>
                             </div>
                             @csrf
@@ -34,19 +34,19 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Image</th>
-                            <th>Code Product</th>
-                            <th>Name</th>
-                            <th>Số lượng nhập</th>
-                            <th>Số lượng xuất</th>
-                            <th>Tồn kho</th>
+                            <th>@lang('lang.image')</th>
+                            <th>@lang('lang.product_id')</th>
+                            <th>@lang('lang.name')</th>
+                            <th>@lang('lang.import_quantity')</th>
+                            <th>@lang('lang.export_quantity')</th>
+                            <th>@lang('lang.stock')</th>
                         </tr>
                     </thead>
                     <tbody>
                        @foreach($products as $key => $product)
                        <tr>
                             <th>{{($key+1)}}</th>
-                            <td width="60                                                                                                                         px">
+                            <td width="60px">
                                 <img height="50px;" width="50px;" class="mt-1" src="{{asset('Uploads/'.$product->product_image[0]->image)}}" alt="">
                             </td>
                             <td>{{$product->id}}</td>

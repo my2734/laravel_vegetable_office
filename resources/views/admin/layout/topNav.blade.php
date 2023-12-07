@@ -73,7 +73,7 @@
         </li>
         <li>
           <div class="mx-3">
-            <a href="{{route('change.languge','vi')}}" class="custom-item-language ml-2">@lang('lang.Vietnames')</a>
+            <a href="{{route('change.languge','vi')}}" class="custom-item-language ml-2">@lang('lang.vietnames')</a>
             <a href="{{route('change.languge','en')}}" class="custom-item-language ml-2">@lang('lang.english')</a>
           </div>
         </li>

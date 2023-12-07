@@ -8,8 +8,8 @@
                 <div class="breadcrumb__text">
                     <h2>Checkout</h2>
                     <div class="breadcrumb__option">
-                        <a href="./index.html">Home</a>
-                        <span>Checkout</span>
+                        <a href="./index.html">@lang('lang.home')</a>
+                        <span>@lang('lang.checkout')</span>
                     </div>
                 </div>
             </div>
@@ -22,7 +22,7 @@
 <section class="checkout spad">
     <div class="container">
         <div class="checkout__form">
-            <a href="{{route('checkout.lich_su_mua_hang')}}" class="float-right btn text-white" style="background: #7fad39;">Lịch sử đơn hàng<i class="fa fa-history ml-2" aria-hidden="true"></i></a>
+            <a href="{{route('checkout.lich_su_mua_hang')}}" class="float-right btn text-white" style="background: #7fad39;">@lang('lang.order_history')<i class="fa fa-history ml-2" aria-hidden="true"></i></a>
             <h4>@lang('lang.payment')</h4>
             <form action="{{route('check.add_order')}}" method="POST">
                 <div class="row" >
@@ -86,7 +86,7 @@
                         </div>
                         <div class="checkout__input">
                             <p>@lang('lang.address_detail')<span>*</span></p>
-                            <textarea style="color: #333 !important" name="address_detail" rows="4" class="form-control">{{isset($user_buy->address_detail)?$user_buy->address_detail:old('address_detail')}}</textarea>
+                            <textarea style="color: #333 !important" name="address_detail" rows="4" class="form-control address_detail">{{isset($user_buy->address_detail)?$user_buy->address_detail:old('address_detail')}}</textarea>
                             @if($errors->has('address_detail'))
                                 <span class="text-danger">{{$errors->first('address_detail')}}</span>
                             @endif
@@ -100,15 +100,20 @@
                     </div>
                     <div class="col-lg-4 col-md-6">
                         <div class="checkout__order">
-                            <h4>Your Order</h4>
-                            <div class="checkout__order__products">Products <span>Total</span></div>
+                            <h4>@lang('lang.your_order')</h4>
+                            <div class="checkout__order__products">@lang('lang.product') <span>@lang('lang.total')</span></div>
                             <ul>
                                 @foreach($carts as $cart)
-                                <li>{{$cart->name}} x {{$cart->qty}} <span>{{number_format($cart->price)}}vnđ</span></li>
+                                <li class="mb-1">
+                                    <div class="d-flex justify-content-between">
+                                        <p>{{$cart->name}} x {{$cart->qty}}</p>
+                                        <span>{{number_format($cart->price)}}vnđ</span>
+                                    </div>
+                                </li>
                                 @endforeach
                             </ul>
-                            <div class="checkout__order__subtotal">Subtotal <span>{{$sub_total}}vnđ</span></div>
-                            <div class="checkout__order__total">Total <span>{{$sub_total}}vnđ</span></div>
+                            <div class="checkout__order__subtotal"></div>
+                            <div class="checkout__order__total">@lang('lang.total') <span>{{$sub_total}}vnđ</span></div>
                             <input type='hidden' name="total" value={{$sub_total}}>
                             <div class="form-group">
                                 <div class="form-check">
@@ -119,12 +124,9 @@
                                     <input class="form-check-input" value="vnpay" type="radio" name="method_payment">
                                     <label class="form-check-label">@lang('lang.payment_vnpay')</label>
                                 </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" value="momo" type="radio" name="method_payment" >
-                                    <label class="form-check-label">@lang('lang.payment_momo')</label>
-                                </div>
+                                
                             </div>
-                            <button type="submit" name="redirect" class="site-btn">@lang('lang.place_order')</button>
+                            <button type="submit" name="redirect" class="site-btn btn-submit-store-checkout">@lang('lang.place_order')</button>
                         </div>
                     </div>
                 </div>
