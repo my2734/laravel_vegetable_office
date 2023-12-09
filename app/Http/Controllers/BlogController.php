@@ -19,9 +19,6 @@ class BlogController extends Controller
 {
     public function index(){
         $blogs = Blog::with('category_of_blog','tagses')->orderBy('updated_at','DESC')->paginate(4);
-        // echo json_encode(Blog::count());
-        // die();
-        // return response()->json($blogs);
         $news = News::with('User')->with('User_Info')->where('status',0)->orderBy('created_at','DESC')->take(6)->get();
         $total_news = News::where('status',0)->count();
         

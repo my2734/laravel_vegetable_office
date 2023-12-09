@@ -123,11 +123,11 @@
                                         <form action="{{route('warehouse.import_quantity',$product->id)}}" method="POST">
                                             <div class="modal-body">
                                                 <lable>@lang('lang.quanlity'):</label>
-                                                    <input type="text" name="quantity" class="form-control quantity-import-product">
+                                                <input id="product-quantity-{{$product->id}}" type="text" name="quantity" class="form-control quantity-import-product">
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="sub-btn custom-primary-btn p-2  mb-0" data-dismiss="modal">@lang('lang.cancel')</button>
-                                                <button type="Submit" class="primary-btn custom-primary-btn p-2 text-white mb-0 btn-import-product">@lang('lang.sure')</button>
+                                                <button id="{{$product->id}}" type="Submit" class="primary-btn custom-primary-btn p-2 text-white mb-0 btn-import-product">@lang('lang.sure')</button>
                                             </div>
                                             @csrf
                                         </form>

@@ -521,9 +521,6 @@ class CheckoutController extends Controller
 
     public function detroy_order(Request $request, $id)
     {
-        // echo json_encode($id);
-        // die();
-
         if (Auth::id()) {
             $user = User::find(Auth::id());
             $user_info = User_Info::where('user_id', Auth::id())->first();
@@ -534,16 +531,22 @@ class CheckoutController extends Controller
             Auth::user()->avatar = $user_info->avatar;
         }
         $order_id = $id;
+        // $order = Order::find($order_id);
+        // $order->status = -1;
+        // $order->reason = $request->reason;
+        // $order->save();
 
-        //delete order_dtail
-        // OrderDetail::where('order_id',$order_id)->delete();
-        //delete order
-        $order = Order::find($order_id);
-        $order->status = -1;
-        $order->reason = $request->reason;
-        $order->save();
-        // echo json_encode($order);
-        // die();
+        //update quantity product in warehouse
+
+        $orderDetailList = OrderDetail::where('order_id', $order_id)->get();
+        foreach($orderDetailList as $orderDetailItem){
+            $warehouseItem = Warehouse::where('product_id', $orderDetailItem->pro_id)->first();
+            if(isset($warehouseItem)){
+                $warehouseItem->import_quantity =  $warehouseItem->import_quantity + $orderDetailItem->pro_quantity;
+                $warehouseItem->export_quantity =  $warehouseItem->export_quantity - $orderDetailItem->pro_quantity;
+                $warehouseItem->save();
+            }
+        }
         return redirect()->back()->with('message_success', 'Hủy đơn hàng thành công');
     }
 

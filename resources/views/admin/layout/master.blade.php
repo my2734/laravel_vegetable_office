@@ -45,7 +45,8 @@
     body {
       background-color: <?php echo session('setting.color_pattern_admin') ?>;
     }
-    .nav.side-menu>li.active>a{
+
+    .nav.side-menu>li.active>a {
       background: linear-gradient(#334556, #2c4257), <?php echo session('setting.color_pattern_admin') ?>;
     }
   </style>
@@ -257,7 +258,7 @@
       })
 
 
-      
+
 
       function displaySuccessChooseColor(message, color) {
         Toastify({
@@ -316,6 +317,53 @@
         }
       })
 
+      $('.btn-store-human').click(function(e) {
+        let isSubmit = true
+        //validation name
+        if (!$('input[name="name"]').val()) {
+          displayError('Please enter name')
+          isSubmit = false
+        }
+
+        //validation email
+        const regexEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+        if (!$('input[name="email"]').val()) {
+          displayError('Please enter email')
+          isSubmit = false
+        } else if (!regexEmail.test($('input[name="email"]').val())) {
+          displayError('Incorrect email format')
+          isSubmit = false
+        }
+        //validation phone
+        const regexPhone = /^[0-9\s]{10,12}$/; ///^[0-9\s]+$/;
+        if (!$('input[name="phone"]').val()) {
+          displayError('Please enter phone')
+          isSubmit = false
+        } else if (!regexPhone.test($('input[name="phone"]').val())) {
+          displayError('Incorrect phone format')
+          isSubmit = false
+        }
+
+        //validation password
+        if (!$('input[name="password"]').val()) {
+          displayError('Please enter password')
+          isSubmit = false
+        } else if ($('input[name="password"]').val().length < 6 || $('input[name="password"]').val().length > 8) {
+          displayError('Password must be between 6 and 8 characters long')
+          isSubmit = false
+        }
+        //validation password and confirm password
+        if ($('input[name="password"]').val() !== $('input[name="confirm_password"]').val()) {
+          displayError('Incorrect confirm password')
+          isSubmit = false
+        }
+
+        if (!isSubmit) {
+          e.preventDefault();
+        }
+
+      })
+
       function displayError(message) {
         Toastify({
           text: message,
@@ -331,242 +379,484 @@
         }).showToast();
       }
 
-
-    })
-  </script>
-  <script>
-    $('.btn_change_status').click(function() {
-      var order_id = $(this).attr('id');
-      $.get({
-        url: "{{route('order.change_status')}}",
-        data: {
-          order_id: order_id
-        },
-        success: function() {
-          location.reload();
-        }
-      });
-    });
-
-    var chart = Morris.Bar({
-      element: 'myfirstchart',
-      data: [{
-          period: "2022-10-15",
-          order: 5,
-          sales: "63000000",
-          profit: "19000000",
-          quantity: 14
-        },
-        {
-          period: "2022-10-16",
-          order: 20,
-          sales: "74000000",
-          profit: "20000000",
-          quantity: 32
-        },
-        {
-          period: "2022-10-17",
-          order: 12,
-          sales: "66000000",
-          profit: "18000000",
-          quantity: 23
-        },
-        {
-          period: "2022-10-18",
-          order: 5,
-          sales: "63000000",
-          profit: "19000000",
-          quantity: 14
-        },
-        {
-          period: "2022-10-19",
-          order: 20,
-          sales: "74000000",
-          profit: "20000000",
-          quantity: 33
-        },
-        {
-          period: "2022-10-20",
-          order: 12,
-          sales: "66000000",
-          profit: "18000000",
-          quantity: 22
-        },
-        {
-          period: "2022-10-21",
-          order: 5,
-          sales: "63000000",
-          profit: "19000000",
-          quantity: 14
-        },
-        {
-          period: "2022-10-22",
-          order: 10,
-          sales: "12000000",
-          profit: "7000000",
-          quantity: 16
-        },
-        {
-          period: "2022-10-23",
-          order: 14,
-          sales: "25000000",
-          profit: "16000000",
-          quantity: 94
-        },
-        {
-          period: "2022-10-24",
-          order: 20,
-          sales: "34000000",
-          profit: "20000000",
-          quantity: 33
-        },
-        {
-          period: "2022-10-25",
-          order: 12,
-          sales: "36000000",
-          profit: "18000000",
-          quantity: 22
-        },
-        {
-          period: "2022-10-26",
-          order: 5,
-          sales: "33000000",
-          profit: "19000000",
-          quantity: 14
-        }
-      ],
-      xkey: 'period',
-      ykeys: ['order', 'sales', 'profit', 'quantity'],
-      labels: ['Đơn hàng', 'Doanh số', 'Lợi nhuận', 'Số lượng']
-    });
-
-    $(function() {
-      $("#datepicker1").datepicker({
-        dateFormat: "yy-mm-dd"
-      });
-    });
-
-    $(function() {
-      $("#datepicker2").datepicker({
-        dateFormat: "yy-mm-dd"
-      });
-    });
-
-    function validate_datepicker() {
-      let statusSubmit = true;
-      if (!$('#datepicker1').val()) {
-        statusSubmit = false
-        $('#datepicker1_error').html('Ngày bắt đầu không được để trống')
-      } else {
-        $('#datepicker1_error').html('')
-
-      }
-      if (!$('#datepicker2').val()) {
-        statusSubmit = false
-        $('#datepicker2_error').html('Ngày kết thúc không được để trống')
-      } else {
-        $('#datepicker2_error').html('')
-
-      }
-      return statusSubmit
-    }
-
-    $('.btn_thong_ke').click(function() {
-      const statusSubmit = validate_datepicker();
-      if (statusSubmit) {
-        const ngaybatdau = $('#datepicker1').val();
-        const ngayketthuc = $('#datepicker2').val();
+      $('.btn_change_status').click(function() {
+        var order_id = $(this).attr('id');
         $.get({
-          url: "{{route('admin.thongke_start_end')}}",
+          url: "{{route('order.change_status')}}",
           data: {
-            ngaybatdau: ngaybatdau,
-            ngayketthuc: ngayketthuc
+            order_id: order_id
           },
+          success: function() {
+            location.reload();
+          }
+        });
+      });
+
+      var chart = Morris.Bar({
+        element: 'myfirstchart',
+        data: [{
+            period: "2022-10-15",
+            order: 5,
+            sales: "63000000",
+            profit: "19000000",
+            quantity: 14
+          },
+          {
+            period: "2022-10-16",
+            order: 20,
+            sales: "74000000",
+            profit: "20000000",
+            quantity: 32
+          },
+          {
+            period: "2022-10-17",
+            order: 12,
+            sales: "66000000",
+            profit: "18000000",
+            quantity: 23
+          },
+          {
+            period: "2022-10-18",
+            order: 5,
+            sales: "63000000",
+            profit: "19000000",
+            quantity: 14
+          },
+          {
+            period: "2022-10-19",
+            order: 20,
+            sales: "74000000",
+            profit: "20000000",
+            quantity: 33
+          },
+          {
+            period: "2022-10-20",
+            order: 12,
+            sales: "66000000",
+            profit: "18000000",
+            quantity: 22
+          },
+          {
+            period: "2022-10-21",
+            order: 5,
+            sales: "63000000",
+            profit: "19000000",
+            quantity: 14
+          },
+          {
+            period: "2022-10-22",
+            order: 10,
+            sales: "12000000",
+            profit: "7000000",
+            quantity: 16
+          },
+          {
+            period: "2022-10-23",
+            order: 14,
+            sales: "25000000",
+            profit: "16000000",
+            quantity: 94
+          },
+          {
+            period: "2022-10-24",
+            order: 20,
+            sales: "34000000",
+            profit: "20000000",
+            quantity: 33
+          },
+          {
+            period: "2022-10-25",
+            order: 12,
+            sales: "36000000",
+            profit: "18000000",
+            quantity: 22
+          },
+          {
+            period: "2022-10-26",
+            order: 5,
+            sales: "33000000",
+            profit: "19000000",
+            quantity: 14
+          }
+        ],
+        xkey: 'period',
+        ykeys: ['order', 'sales', 'profit', 'quantity'],
+        labels: ['Đơn hàng', 'Doanh số', 'Lợi nhuận', 'Số lượng']
+      });
+
+      var pieChartProfit = Morris.Donut({
+        element: 'pieChartProfit',
+        data: [{
+          "label": "",
+          "value": "",
+          "product_id": 1,
+        }],
+        colors: ['#468499', '#a0db8e', '#ff7f50', '#ffff00']
+      });
+
+      $.get({
+        url: "{{route('admin.top_4_product_sale_7_date_ago')}}",
+        success: function(data) {
+          const dataResult = JSON.parse(data)
+          if (dataResult['status'] == 200) {
+            pieChartProfit.setData(dataResult['data'])
+            $('#messageNotificationTopSale').html(dataResult['message'])
+          }
+        }
+      })
+
+      $.get({
+        url: "{{route('admin.profit_7_date_ago')}}",
+        success: function(data) {
+          const dataResult = JSON.parse(data)
+
+          if (dataResult['status'] == 200) {
+            $('#profit_revenue').html(dataResult['data']['revenue'] + " vnđ")
+            $('#profit_profit').html(dataResult['data']['profit'] + " vnđ")
+            // pieChartProfit.setData(dataResult['data'])
+            $('#messageNotificationProfit').html(dataResult['message'])
+          }
+        }
+      })
+
+      $('.btn_top_sale_7date_ago').click(() => {
+        $.get({
+          url: "{{route('admin.top_4_product_sale_7_date_ago')}}",
+          success: function(data) {
+            const dataResult = JSON.parse(data)
+            if (dataResult['status'] == 200) {
+              pieChartProfit.setData(dataResult['data'])
+              $('#messageNotificationTopSale').html(dataResult['message'])
+            }
+          }
+        })
+      })
+
+      $('.btn_top_sale_1month_ago').click(() => {
+        $.get({
+          url: "{{route('admin.top_4_product_sale_30_date_ago')}}",
+          success: function(data) {
+            const dataResult = JSON.parse(data)
+            if (dataResult['status'] == 200) {
+              pieChartProfit.setData(dataResult['data'])
+              $('#messageNotificationTopSale').html(dataResult['message'])
+            }
+          }
+        })
+      })
+
+      $('.btn_top_sale_3month_ago').click(() => {
+        $.get({
+          url: "{{route('admin.top_4_product_sale_90_date_ago')}}",
+          success: function(data) {
+            const dataResult = JSON.parse(data)
+            if (dataResult['status'] == 200) {
+              pieChartProfit.setData(dataResult['data'])
+              $('#messageNotificationTopSale').html(dataResult['message'])
+            }
+          }
+        })
+      })
+
+      $('.btn_profit_7date_ago').click(() => {
+        $.get({
+          url: "{{route('admin.profit_7_date_ago')}}",
+          success: function(data) {
+            const dataResult = JSON.parse(data)
+
+            if (dataResult['status'] == 200) {
+              $('#profit_revenue').html(dataResult['data']['revenue'] + " vnđ")
+              $('#profit_profit').html(dataResult['data']['profit'] + " vnđ")
+              // pieChartProfit.setData(dataResult['data'])
+              $('#messageNotificationProfit').html(dataResult['message'])
+            }
+          }
+        })
+      })
+
+      $('.btn_profit_1month_ago').click(() => {
+        $.get({
+          url: "{{route('admin.profit_30_date_ago')}}",
+          success: function(data) {
+            const dataResult = JSON.parse(data)
+
+            if (dataResult['status'] == 200) {
+              $('#profit_revenue').html(dataResult['data']['revenue'] + " vnđ")
+              $('#profit_profit').html(dataResult['data']['profit'] + " vnđ")
+              // pieChartProfit.setData(dataResult['data'])
+              $('#messageNotificationProfit').html(dataResult['message'])
+            }
+          }
+        })
+      })
+
+      $('.btn_profit_3month_ago').click(() => {
+        $.get({
+          url: "{{route('admin.profit_90_date_ago')}}",
+          success: function(data) {
+            const dataResult = JSON.parse(data)
+
+            if (dataResult['status'] == 200) {
+              $('#profit_revenue').html(dataResult['data']['revenue'] + " vnđ")
+              $('#profit_profit').html(dataResult['data']['profit'] + " vnđ")
+              // pieChartProfit.setData(dataResult['data'])
+              $('#messageNotificationProfit').html(dataResult['message'])
+            }
+          }
+        })
+      })
+
+      $('.btn_start_end_profit').click(() => {
+        const statusSubmit = validate_datepicker_profit();
+        const ngaybatdau = $('#datepicker1_profit').val()
+        const ngayketthuc = $('#datepicker2_profit').val()
+        if (statusSubmit) {
+          $.get({
+            url: "{{route('admin.profit_start_end')}}",
+            data: {
+              ngaybatdau: ngaybatdau,
+              ngayketthuc: ngayketthuc
+            },
+            success: function(data) {
+              const dataResult = JSON.parse(data)
+
+              if (dataResult['status'] == 200) {
+                $('#profit_revenue').html(dataResult['data']['revenue'] + " vnđ")
+                $('#profit_profit').html(dataResult['data']['profit'] + " vnđ")
+                $('#messageNotificationProfit').html(dataResult['message'])
+              }
+            }
+          })
+        }
+      })
+
+      function validate_datepicker_profit() {
+        let statusSubmit = true;
+        if (!$('#datepicker1_profit').val()) {
+          statusSubmit = false
+          $('#datepicker1_profit_error').html('Ngày bắt đầu không được để trống')
+        } else {
+          $('#datepicker1_profit_error').html('')
+
+        }
+        if (!$('#datepicker2_profit').val()) {
+          statusSubmit = false
+          $('#datepicker2_profit_error').html('Ngày kết thúc không được để trống')
+        } else {
+          $('#datepicker2_profit_error').html('')
+        }
+
+        //date_start must less than date_end
+        if (new Date($('#datepicker1_profit').val()) > new Date($('#datepicker2_profit').val())) {
+          statusSubmit = false
+          $('#datepicker2_profit_error').html('Ngày bắt đầu không được lớn hơn ngày kết thúc')
+        }
+        return statusSubmit
+      }
+
+      function validate_datepicker_topsale() {
+        let statusSubmit = true;
+        if (!$('#datepicker1_topsale').val()) {
+          statusSubmit = false
+          $('#datepicker1_topsale_error').html('Ngày bắt đầu không được để trống')
+        } else {
+          $('#datepicker1_topsale_error').html('')
+
+        }
+        if (!$('#datepicker2_topsale').val()) {
+          statusSubmit = false
+          $('#datepicker2_topsale_error').html('Ngày kết thúc không được để trống')
+        } else {
+          $('#datepicker2_topsale_error').html('')
+        }
+
+        //date_start must less than date_end
+        if (new Date($('#datepicker1_topsale').val()) > new Date($('#datepicker2_topsale').val())) {
+          statusSubmit = false
+          $('#datepicker2_topsale_error').html('Ngày bắt đầu không được lớn hơn ngày kết thúc')
+        }
+        return statusSubmit
+      }
+
+      $('.btn_start_end_topsale').click(() => {
+        const statusSubmit = validate_datepicker_topsale();
+        const ngaybatdau = $('#datepicker1_topsale').val()
+        const ngayketthuc = $('#datepicker2_topsale').val()
+        if (statusSubmit) {
+          $.get({
+            url: "{{route('admin.top_4_product_sale_start_end')}}",
+            data: {
+              ngaybatdau: ngaybatdau,
+              ngayketthuc: ngayketthuc
+            },
+            success: function(data) {
+              const dataResult = JSON.parse(data)
+              if (dataResult['status'] == 200) {
+                pieChartProfit.setData(dataResult['data'])
+                $('#messageNotificationTopSale').html(dataResult['message'])
+              }
+            }
+          })
+        }
+      })
+
+
+
+
+
+      $(function() {
+        $("#datepicker1").datepicker({
+          dateFormat: "yy-mm-dd"
+        });
+      });
+
+      $(function() {
+        $("#datepicker2").datepicker({
+          dateFormat: "yy-mm-dd"
+        });
+      });
+
+      $(function() {
+        $("#datepicker1_topsale").datepicker({
+          dateFormat: "yy-mm-dd"
+        });
+      });
+
+      $(function() {
+        $("#datepicker2_topsale").datepicker({
+          dateFormat: "yy-mm-dd"
+        });
+      });
+
+      $(function() {
+        $("#datepicker1_profit").datepicker({
+          dateFormat: "yy-mm-dd"
+        });
+      });
+
+      $(function() {
+        $("#datepicker2_profit").datepicker({
+          dateFormat: "yy-mm-dd"
+        });
+      });
+
+
+      function validate_datepicker() {
+        let statusSubmit = true;
+        if (!$('#datepicker1').val()) {
+          statusSubmit = false
+          $('#datepicker1_error').html('Ngày bắt đầu không được để trống')
+        } else {
+          $('#datepicker1_error').html('')
+
+        }
+        if (!$('#datepicker2').val()) {
+          statusSubmit = false
+          $('#datepicker2_error').html('Ngày kết thúc không được để trống')
+        } else {
+          $('#datepicker2_error').html('')
+        }
+
+        //date_start must less than date_end
+        if (new Date($('#datepicker1').val()) > new Date($('#datepicker2').val())) {
+          statusSubmit = false
+          $('#datepicker2_error').html('Ngày bắt đầu không được lớn hơn ngày kết thúc')
+        }
+        return statusSubmit
+      }
+
+      $('.btn_thong_ke').click(function() {
+        const statusSubmit = validate_datepicker();
+        if (statusSubmit) {
+          const ngaybatdau = $('#datepicker1').val();
+          const ngayketthuc = $('#datepicker2').val();
+          $.get({
+            url: "{{route('admin.thongke_start_end')}}",
+            data: {
+              ngaybatdau: ngaybatdau,
+              ngayketthuc: ngayketthuc
+            },
+            success: function(data) {
+              data = JSON.parse(data);
+              const ngaybatdau = data['ngaybatdau'];
+              const ngayketthuc = data['ngayketthuc'];
+              if (data['chart_data'].length > 0) {
+                chart.setData(data['chart_data']);
+                $('#title_thong_ke').html("Kết quả thống kê doanh thu từ ngày " + ngaybatdau + " đến ngày " + ngayketthuc);
+              } else {
+                chart.setData([{}])
+                $('#title_thong_ke').html("Từ ngày " + ngaybatdau + " đến ngày " + ngayketthuc + " không có đơn hàng nào");
+              }
+            }
+          });
+        }
+
+      });
+
+      $('.btn_7ngaytruoc').click(function() {
+        //remove active
+        const arr_btn_sort = $('.custom-primary-btn-sort')
+        for (let i = 0; i < arr_btn_sort.length; i++) {
+          $(arr_btn_sort[i]).removeClass('custom-primary-btn-sort-active')
+        }
+        $(this).addClass('custom-primary-btn-sort-active')
+        $.get({
+          url: "{{route('admin.thongke_7_date')}}",
           success: function(data) {
             data = JSON.parse(data);
-            const ngaybatdau = data['ngaybatdau'];
-            const ngayketthuc = data['ngayketthuc'];
-            if (data['chart_data'].length > 0) {
-              chart.setData(data['chart_data']);
-              $('#title_thong_ke').html("Kết quả thống kê doanh thu từ ngày " + ngaybatdau + " đến ngày " + ngayketthuc);
+            if (data['chart_data'].length == 0) {
+              chart.setData([{}]);
+              $('#title_thong_ke').html("7 ngày qua không có đơn hàng");
             } else {
-              chart.setData([{}])
-              $('#title_thong_ke').html("Từ ngày " + ngaybatdau + " đến ngày " + ngayketthuc + " không có đơn hàng nào");
+              chart.setData(data['chart_data']);
+              $('#title_thong_ke').html("Kết quả thống kê doanh thu 7 ngày qua");
             }
           }
         });
-      }
-
-    });
-
-    $('.btn_7ngaytruoc').click(function() {
-      //remove active
-      const arr_btn_sort = $('.custom-primary-btn-sort')
-      for (let i = 0; i < arr_btn_sort.length; i++) {
-        $(arr_btn_sort[i]).removeClass('custom-primary-btn-sort-active')
-      }
-      $(this).addClass('custom-primary-btn-sort-active')
-      $.get({
-        url: "{{route('admin.thongke_7_date')}}",
-        success: function(data) {
-          data = JSON.parse(data);
-          if (data['chart_data'].length == 0) {
-            chart.setData([{}]);
-            $('#title_thong_ke').html("7 ngày qua không có đơn hàng");
-          } else {
-            chart.setData(data['chart_data']);
-            $('#title_thong_ke').html("Kết quả thống kê doanh thu 7 ngày qua");
-          }
-        }
       });
-    });
 
-    $('.btn_30ngaytruoc').click(function() {
-      const arr_btn_sort = $('.custom-primary-btn-sort')
-      for (let i = 0; i < arr_btn_sort.length; i++) {
-        $(arr_btn_sort[i]).removeClass('custom-primary-btn-sort-active')
-      }
-      $(this).addClass('custom-primary-btn-sort-active')
-      $.get({
-        url: "{{route('admin.thongke_30_date')}}",
-        success: function(data) {
-          data = JSON.parse(data);
-          //  console.log(data)
-          if (data['chart_data'].length > 0) {
-            chart.setData(data['chart_data']);
-            $('#title_thong_ke').html("Kết quả thống kê doanh thu doanh thu 1 tháng qua");
-          } else {
-            chart.setData([{}]);
-            $('#title_thong_ke').html("1 tháng qua không có đơn hàng nào");
-          }
+      $('.btn_30ngaytruoc').click(function() {
+        const arr_btn_sort = $('.custom-primary-btn-sort')
+        for (let i = 0; i < arr_btn_sort.length; i++) {
+          $(arr_btn_sort[i]).removeClass('custom-primary-btn-sort-active')
         }
-      });
-    });
-
-    $('.btn_90ngaytruoc').click(function() {
-      const arr_btn_sort = $('.custom-primary-btn-sort')
-      for (let i = 0; i < arr_btn_sort.length; i++) {
-        $(arr_btn_sort[i]).removeClass('custom-primary-btn-sort-active')
-      }
-      $(this).addClass('custom-primary-btn-sort-active')
-      $.get({
-        url: "{{route('admin.thongke_90_date')}}",
-        success: function(data) {
-          data = JSON.parse(data);
-          if (data['chart_data'].length > 0) {
-            chart.setData(data['chart_data']);
-            $('#title_thong_ke').html("Kết quả thống kê doanh thu doanh thu 3 tháng qua");
-          } else {
-            chart.setData([{}])
-            $('#title_thong_ke').html('3 tháng qua không có đơn hàng nào')
+        $(this).addClass('custom-primary-btn-sort-active')
+        $.get({
+          url: "{{route('admin.thongke_30_date')}}",
+          success: function(data) {
+            data = JSON.parse(data);
+            //  console.log(data)
+            if (data['chart_data'].length > 0) {
+              chart.setData(data['chart_data']);
+              $('#title_thong_ke').html("Kết quả thống kê doanh thu doanh thu 1 tháng qua");
+            } else {
+              chart.setData([{}]);
+              $('#title_thong_ke').html("1 tháng qua không có đơn hàng nào");
+            }
           }
-        }
+        });
       });
-    });
-  </script>
-  <script>
-    $(document).ready(function() {
 
+      $('.btn_90ngaytruoc').click(function() {
+        const arr_btn_sort = $('.custom-primary-btn-sort')
+        for (let i = 0; i < arr_btn_sort.length; i++) {
+          $(arr_btn_sort[i]).removeClass('custom-primary-btn-sort-active')
+        }
+        $(this).addClass('custom-primary-btn-sort-active')
+        $.get({
+          url: "{{route('admin.thongke_90_date')}}",
+          success: function(data) {
+            data = JSON.parse(data);
+            if (data['chart_data'].length > 0) {
+              chart.setData(data['chart_data']);
+              $('#title_thong_ke').html("Kết quả thống kê doanh thu doanh thu 3 tháng qua");
+            } else {
+              chart.setData([{}])
+              $('#title_thong_ke').html('3 tháng qua không có đơn hàng nào')
+            }
+          }
+        });
+      });
 
 
       $('.change_status_category').click(function() {
@@ -690,11 +980,6 @@
         })
       });
 
-
-    });
-  </script>
-  <script>
-    $(document).ready(function() {
       $('.change_status_product').click(function() {
         const product_id = $(this).attr('id');
         $.get({
@@ -946,13 +1231,14 @@
         }
       })
 
-      $('.btn-import-product').click((e) => {
-        const quantityImportProduct = $('.quantity-import-product').val()
+      $('.btn-import-product').click(function(e) {
+        const productId = $(this).attr('id')
+        const quantityProductImport = $('#product-quantity-' + productId).val()
 
-        if (!quantityImportProduct) {
+        if (!quantityProductImport) {
           displayError('Please enter quantity product')
           e.preventDefault();
-        } else if (!/^\d+$/.test(quantityImportProduct)) {
+        } else if (!/^\d+$/.test(quantityProductImport)) {
           displayError('Please enter the correct format')
           e.preventDefault();
         }

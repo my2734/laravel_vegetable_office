@@ -15,7 +15,7 @@ class ProductController extends Controller
 {
     public function index(){
         $categories = Category::get();
-        $products = Product::with('product_image','category')->orderBy('updated_at','DESC')->get();
+        // $products = Product::with('product_image','category')->orderBy('updated_at','DESC')->get();
         $products = Product::with('product_image','category')->orderBy('updated_at','DESC')->paginate(20);
         // return response()->json($products[0]->category->name);
         $product_quantity = Product::count();

@@ -529,7 +529,7 @@ class HomeController extends Controller
         }
         $search_key = $request->search_key;
         $key = $request->search_key;
-        $products = Product::where('status', 1)->where('name', 'LIKE', "%{$key}%")->with('warehouse')->paginate(9);
+        $products = Product::where('status', 1)->where('name', 'LIKE', "%{$key}%")->with('warehouse')->paginate(20);
         $categories = Category::where('status', 1)->get();
         $product_sales = Product::with('comment', 'warehouse')->where('price_promotion', '>', 0)->get();
         $blogs =  Blog::get();

@@ -4,14 +4,14 @@
 <h1>@lang('lang.page_admin')</h1>
 @elseif(session('admin.role') == 1)
 <h1>@lang('lang.page_staff')</h1>
-@else 
+@else
 <h1>@lang('lang.page_shipper')</h1>
 @endif
 @if(session('message_success'))
 <div class="alert alert-success alert-dismissible fade show" role="alert">
     <strong>{{session('message_success')}}</strong>
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
+        <span aria-hidden="true">&times;</span>
     </button>
 </div>
 @endif
@@ -97,8 +97,8 @@
         </div>
     </div>
     <div class="col-6">
-      <label for="exampleInputEmail1"></label><br>
-      <span class="primary-btn custom-primary-btn-sort btn_thong_ke mt-1" style="cursor:pointer;">@lang('lang.statistics')</span>
+        <label for="exampleInputEmail1"></label><br>
+        <span class="primary-btn custom-primary-btn-sort btn_thong_ke mt-1" style="cursor:pointer;">@lang('lang.statistics')</span>
     </div>
 </div>
 <div class="row my-3">
@@ -115,13 +115,76 @@
         </div>
     </div>
 </div>
-<!-- <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
-    <div class="col-3">
-      <div class="form-group">
-        <label for="exampleInputEmail1">Ngày bắt đầu</label>
-      </div>
-    </div>
-    </div> -->
 <h4 class="ml-3" id="title_thong_ke"></h4>
 <div class="mt-3" id="myfirstchart" style="height: 250px;"></div>
+<div class="row">
+    <div class="col-md-6">
+        <h4 class="mt-4" id="">Các sản phẩm được bán chạy</h4>
+        <button class="primary-btn custom-primary-btn-sort btn_top_sale_7date_ago">7 ngày trước</button>
+        <button class="primary-btn custom-primary-btn-sort btn_top_sale_1month_ago">1 tháng trước</button>
+        <button class="primary-btn custom-primary-btn-sort btn_top_sale_3month_ago">3 tháng trước</button>
+
+        <div class="row mt-3">
+            <div class="col-3">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">@lang('lang.start_date')</label>
+                    <input type="text" id="datepicker1_topsale" class="form-control" id="exampleInputEmail1">
+                    <span class="text-danger" id="datepicker1_topsale_error"></span><br>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">@lang('lang.end_date')</label>
+                    <input type="text" id="datepicker2_topsale" class="form-control" id="exampleInputEmail1">
+                    <span class="text-danger" id="datepicker2_topsale_error"></span><br>
+                </div>
+            </div>
+            <div class="col-6">
+                <label for="exampleInputEmail1"></label><br>
+                <span class="primary-btn custom-primary-btn-sort btn_start_end_topsale mt-1" style="cursor:pointer;">@lang('lang.statistics')</span>
+            </div>
+        </div>
+        <h5 id="messageNotificationTopSale"></h5>
+    </div>
+    <div class="col-md-6">
+        <h4 class="mt-4" id="">Lợi nhuận và doanh thu</h4>
+        <button class="primary-btn custom-primary-btn-sort btn_profit_7date_ago">7 ngày trước</button>
+        <button class="primary-btn custom-primary-btn-sort btn_profit_1month_ago">1 tháng trước</button>
+        <button class="primary-btn custom-primary-btn-sort btn_profit_3month_ago">3 tháng trước</button>
+        <div class="row mt-3">
+            <div class="col-3">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">@lang('lang.start_date')</label>
+                    <input type="text" id="datepicker1_profit" class="form-control" id="exampleInputEmail1">
+                    <span class="text-danger" id="datepicker1_profit_error"></span><br>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">@lang('lang.end_date')</label>
+                    <input type="text" id="datepicker2_profit" class="form-control" id="exampleInputEmail1">
+                    <span class="text-danger" id="datepicker2_profit_error"></span><br>
+                </div>
+            </div>
+            <div class="col-6">
+                <label for="exampleInputEmail1"></label><br>
+                <span class="primary-btn custom-primary-btn-sort btn_start_end_profit mt-1" style="cursor:pointer;">@lang('lang.statistics')</span>
+            </div>
+        </div>
+        <h5 id="messageNotificationProfit"></h5>
+    </div>
+</div>
+<div class="row align-items-center">
+    <div class="col-md-6">
+
+        <div class="mt-3" id="pieChartProfit" style="height: 250px;"></div>
+    </div>
+    <div class="col-md-6">
+
+        <div class="small-box p-5" style="border: 1px solid #ccc; color: #333;">
+            <h3>Doanh thu: <span id="profit_revenue" class="float-right">15.000.000 vnđ</span></h3>
+            <h3>Lợi nhuận: <span id="profit_profit" class="float-right">5.000.000 vnđ</span></h3>
+        </div>
+    </div>
+</div>
 @endsection

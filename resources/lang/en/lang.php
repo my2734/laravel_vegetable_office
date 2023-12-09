@@ -77,7 +77,7 @@ return [
     'open_time' => 'Open time', // Thời gian mở cửa
     'leave_message' => 'Leave Message', //Để lại tin nhắn
     'send_message' => 'SEND MESSAGE', // GỬI TIN NHẮN
-    'purchase_history' => 'purchase history', //Lịch sử mua hàng
+    'purchase_history' => 'Purchase history', //Lịch sử mua hàng
     'order_pending_confirmation' => 'Order pending confirmation', //Đơn hàng chờ xác nhận
     'order_in_transit' => 'Order in transit', //Đơn hàng đang giao
     'order_received' => 'Order received', //Đơn hàng đã nhận

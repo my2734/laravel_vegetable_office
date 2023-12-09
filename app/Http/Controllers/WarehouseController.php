@@ -21,6 +21,15 @@ class WarehouseController extends Controller
         return view('admin.warehouse.index',compact('products','product_quantity','news','total_news'));
     }
 
+    public function filter_sold_out(){
+        $products = Product::with('product_image','category','warehouse')->orderBy('updated_at','DESC')->paginate(20);
+        $product_quantity = Product::count();
+        $news = News::with('User')->with('User_Info')->where('status',0)->orderBy('created_at','DESC')->take(6)->get();
+        $total_news = News::where('status',0)->count();
+        $status_display_sold_out = true;
+        return view('admin.warehouse.index',compact('products','product_quantity','news','total_news','status_display_sold_out'));
+    }
+
     public function import_quantity(Request $request,$id){
         $warehouse = Warehouse::where('product_id',$id)->first();
         $warehouse->import_quantity = (int)($request->quantity) + $warehouse->import_quantity;

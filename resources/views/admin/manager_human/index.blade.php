@@ -2,6 +2,7 @@
 @section('content')
 <div class="title_left">
     <h3>@lang('lang.manager_human')</h3>
+    <a href="{{route('manager_human.create')}}" class="primary-btn custom-primary-btn p-2 text-white mb-3">Tạo mới</a>
 </div>
 <div class="col-md-12 col-sm-12  ">
     <div class="x_panel">
@@ -31,8 +32,8 @@
                         <td>{{$admin->email}}</td>
                         <td>{{ $admin->phone }}</td>
                         <td>
-                            @if($admin->role == 0)
-                            <p style="font-size: 16px;">Administrator</p>
+                            @if(session('admin.id') == $admin->id)
+                            <p style="font-size: 16px;">@lang('lang.administrator')</p>
                             @else
                             <select class="form-control choose-role-user" name="chooseRoleUser" id="<?php echo $admin->id ?>">
                                 <option <?php echo $admin->role == 0 ? "selected" : "" ?> value="0">@lang('lang.administrator')</option>

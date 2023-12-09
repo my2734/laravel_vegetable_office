@@ -94,6 +94,16 @@ Route::prefix('admin')->middleware('auth_admin')->group(function(){
     Route::get('/thongke_90_date', [AdminController::class, 'thongke_90_date'])->name('admin.thongke_90_date');
     Route::get('/user', [AdminController::class, 'list_user'])->name('user.index');
 
+    Route::get('/profit_start_end',[AdminController::class, 'profit_start_end'])->name('admin.profit_start_end');
+    Route::get('/profit_7_date_ago',[AdminController::class, 'profit_7_date_ago'])->name('admin.profit_7_date_ago');
+    Route::get('/profit_30_date_ago',[AdminController::class, 'profit_30_date_ago'])->name('admin.profit_30_date_ago');
+    Route::get('/profit_90_date_ago',[AdminController::class, 'profit_90_date_ago'])->name('admin.profit_90_date_ago');
+
+    Route::get('/top-4-product-sale-7-ago', [AdminController::class, 'top_4_product_sale_7_date_ago'])->name('admin.top_4_product_sale_7_date_ago');
+    Route::get('/top-4-product-sale-30-ago', [AdminController::class, 'top_4_product_sale_30_date_ago'])->name('admin.top_4_product_sale_30_date_ago');
+    Route::get('/top-4-product-sale-90-ago', [AdminController::class, 'top_4_product_sale_90_date_ago'])->name('admin.top_4_product_sale_90_date_ago');
+    Route::get('/top-4-product-sale-start-end', [AdminController::class, 'top_4_product_sale_start_end'])->name('admin.top_4_product_sale_start_end');
+
     Route::prefix('/giao-hang')->group(function () {
         Route::get('/', [ShipController::class, 'index'])->name('ship.order.index');
         Route::get('/profile', [ShipController::class, 'profile'])->name('ship.order.index');
@@ -137,11 +147,11 @@ Route::prefix('admin')->middleware('auth_admin')->group(function(){
         Route::get('/delete/{id}', [ProductController::class, 'delete'])->name('product.delete');
         Route::get('/edit/{id}', [ProductController::class, 'edit'])->name('product.edit');
         Route::post('/update/{id}', [ProductController::class, 'update'])->name('product.update');
-
         Route::get('/change_status', [ProductController::class, 'change_status'])->name('product.change_status');
-
         Route::post('/search-san-pham', [ProductController::class, 'search_product'])->name('product.search_product');
         Route::post('/filter-by-category', [ProductController::class, 'filter_by_category'])->name('product.filter_by_category');
+
+        
     });
 
     // Tags
@@ -210,6 +220,7 @@ Route::prefix('admin')->middleware('auth_admin')->group(function(){
         Route::get('/', [WarehouseController::class, 'index'])->name('warehouse.index');
         Route::post('/import-quantity/{product_id}', [WarehouseController::class, 'import_quantity'])->name('warehouse.import_quantity');
         Route::post('/search-kho-hang', [WarehouseController::class, 'search_product'])->name('warehouse.search_product');
+        Route::get('/filter-sold-out', [WarehouseController::class, 'filter_sold_out'])->name('warehouse.filter_sold_out');
     });
 
     //Manager Comment
@@ -227,6 +238,10 @@ Route::prefix('admin')->middleware('auth_admin')->group(function(){
         Route::get('/change-role', [AdminController::class, 'manager_human_change_role'])->name('manager_human.change_role');
         Route::get('/change-user-current/{id}', [AdminController::class, 'manager_human_change_user_current'])->name('manager_human.change_user_current');
         Route::get('/change-role-user', [AdminController::class, 'change_role_user'])->name('manager_human.change_role_user');
+
+        Route::get('/create', [AdminController::class, 'manager_human_create'])->name('manager_human.create');
+        Route::post('/store', [AdminController::class, 'manager_human_store'])->name('manager_human.store');
+        
     });
 
     //News
