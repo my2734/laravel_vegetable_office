@@ -112,7 +112,6 @@
                 </div>
             </div>
         </div>
-
         <div class="container">
             <div class="row">
                 <div class="col-lg-3">
@@ -297,11 +296,13 @@
                 <div class="col-lg-12">
                     <div class="footer__copyright">
                         <div class="footer__copyright__text">
-                            {{-- <p>
+                            {{--
+                                <p>
                                     <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                                     Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
                                     <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                                </p> --}}
+                                </p>
+                                --}}
                         </div>
                         <div class="footer__copyright__payment"><img src="{{asset('fontend/img/payment-item.png')}}" alt=""></div>
                     </div>
@@ -326,7 +327,6 @@
     <script>
         $(document).ready(function() {
             // var moment = require('moment');
-
             console.log("TEST", moment().format('MMMM Do YYYY, h:mm:ss a'))
 
             function scrollChat() {
@@ -348,12 +348,12 @@
                 const user_id = $('#message-content').attr('user_id')
                 if (user_id == data['user_id']) {
                     $('#message-content').append(`
-                                    <div class="d-flex flex-column align-items-end">
-                                        <label for="">Admin</label>
-                                        <p>${data['message']}</p>
-                                        <p class="span_time">${data['time']}</p>
-                                    </div>
-                        `)
+                                        <div class="d-flex flex-column align-items-end">
+                                            <label for="">Admin</label>
+                                            <p>${data['message']}</p>
+                                            <p class="span_time">${data['time']}</p>
+                                        </div>
+                            `)
                     scrollChat()
                 }
             });
@@ -419,12 +419,12 @@
                         success: function(response) {
                             if (response.status == "success") {
                                 $('#message-content').append(`
-                                        <div>
-                                            <label for="">${response['user_name']}</label>
-                                            <p>${response['message']}</p>
-                                            <p class="span_time">${response['time']}</p>
-                                        </div>
-                                    `)
+                                            <div>
+                                                <label for="">${response['user_name']}</label>
+                                                <p>${response['message']}</p>
+                                                <p class="span_time">${response['time']}</p>
+                                            </div>
+                                        `)
                                 scrollChat()
                             } else {
                                 displayError('Please login')
@@ -471,134 +471,34 @@
             $('.input-upload-image-avatar').change((e) => {
                 console.log("hello ca nha yeu cua kem")
             })
-        })
+            $('.qty_mul_pro').keyup(function() {
+                const qty = $(this).val()
+                if (!/^\d+$/.test(qty)) {
+                    displayError('Nhập sai định dạng')
+                }
+            })
 
-        $('.qty_mul_pro').keyup(function() {
-            const qty = $(this).val()
-            if (!/^\d+$/.test(qty)) {
-                displayError('Nhập sai định dạng')
-            }
-        })
-
-        $('.add_one_cart').click(function() {
-            const inventory = $(this).attr('inventory')
-            console.log(inventory)
-            if (inventory <= 0) {
-                displayError('The quantity of products is insufficient')
-            } else {
-                var id_product = $(this).attr('id');
-                var qty = 1;
-                // alert(id_product+" "+ qty);
-                $.ajax({
-                    url: "{{route('cart.add_one_cart')}}",
-                    method: "GET",
-                    data: {
-                        id_product: id_product,
-                        qty: qty
-                    },
-                    success: function(data) {
-                        $('#qty_cart').html(data['cart_qty']);
-                        $('.cart_total_price').html(data['cart_total'] + "vnđ");
-                        Toastify({
-                            text: "Add to cart success",
-                            duration: 3000,
-                            newWindow: true,
-                            close: true,
-                            gravity: "top", // `top` or `bottom`
-                            position: "right", // `left`, `center` or `right`
-                            stopOnFocus: true, // Prevents dismissing of toast on hover
-                            style: {
-                                background: "#A7D397",
-                            },
-                        }).showToast();
-
-
-                    }
-                });
-            }
-        });
-
-        function displayError(message) {
-            Toastify({
-                text: message,
-                duration: 3000,
-                newWindow: true,
-                close: true,
-                gravity: "top", // `top` or `bottom`
-                position: "right", // `left`, `center` or `right`
-                stopOnFocus: true, // Prevents dismissing of toast on hover
-                style: {
-                    background: "#C70039",
-                },
-            }).showToast();
-        }
-
-        $('.add_mul_product').click(function() {
-            var id_product = $(this).attr('id');
-            var qty = $('.qty_mul_pro').val();
-            // console.log(qty)
-            const max_qty = $('.quantity_product').text()
-            // console.log(max_qty)
-            let isAddToCart = true
-            if (parseInt(qty) > parseInt(max_qty)) {
-                displayError('Over quantity limit product')
-                isAddToCart = false
-            } else if (qty <= 0) {
-                displayError('Product quantity must be positive')
-                isAddToCart = false;
-            }
-
-            if (isAddToCart) {
-                $.get({
-                    url: "{{route('cart.add_one_cart')}}",
-                    data: {
-                        id_product: id_product,
-                        qty: qty
-                    },
-                    success: function(data) {
-                        $('#qty_cart').html(data['cart_qty']);
-                        $('.cart_total_price').html(data['cart_total'] + "vnđ");
-                        $('.qty_mul_pro').val(1)
-                        Toastify({
-                            text: "Add to cart success",
-                            duration: 3000,
-                            newWindow: true,
-                            close: true,
-                            gravity: "top", // `top` or `bottom`
-                            position: "right", // `left`, `center` or `right`
-                            stopOnFocus: true, // Prevents dismissing of toast on hover
-                            style: {
-                                background: "#A7D397",
-                            },
-                        }).showToast();
-                    }
-                });
-            }
-
-        });
-
-        $('.update_cart').change(function() {
-            var rowId = $(this).attr('id');
-            var qty = $(this).val();
-            if (qty > 0) {
-                $(this).attr('statusError', false);
-                $('.error_quantity' + rowId).html('')
-                $.get({
-                    url: "{{route('cart.update_cart')}}",
-                    data: {
-                        rowId: rowId,
-                        qty: qty
-                    },
-                    success: function(data) {
-                        if (data['status'] == 200) {
-                            $('#qty_cart').html(data['total_count']);
-                            $('#price_product' + data['rowId']).html(data['price_pro'] + "vnđ");
-                            $('.cart_total_price').html(data['total_cart'] + "vnđ");
-                            $('.btn_sub_total_shopping_cart').html(data['total_cart'] + "vnđ");
-                            $('.btn_total_shopping_cart').html(data['total_cart'] + "vnđ");
-
+            $('.add_one_cart').click(function() {
+                const inventory = $(this).attr('inventory')
+                console.log(inventory)
+                if (inventory <= 0) {
+                    displayError('The quantity of products is insufficient')
+                } else {
+                    var id_product = $(this).attr('id');
+                    var qty = 1;
+                    // alert(id_product+" "+ qty);
+                    $.ajax({
+                        url: "{{route('cart.add_one_cart')}}",
+                        method: "GET",
+                        data: {
+                            id_product: id_product,
+                            qty: qty
+                        },
+                        success: function(data) {
+                            $('#qty_cart').html(data['cart_qty']);
+                            $('.cart_total_price').html(data['cart_total'] + "vnđ");
                             Toastify({
-                                text: "Update to cart success",
+                                text: "Add to cart success",
                                 duration: 3000,
                                 newWindow: true,
                                 close: true,
@@ -609,51 +509,124 @@
                                     background: "#A7D397",
                                 },
                             }).showToast();
-                        } else {
-                            displayError(data['message'])
+
+
                         }
-
-                    }
-                });
-            } else if (!/^\d+$/.test('qty')) {
-                displayError('Vui lòng nhập số')
-            } else {
-                $('.error_quantity' + rowId).html('Số lượng lớn hơn 0')
-                $('#price_product' + rowId).html("0vnđ");
-                $(this).attr('statusError', true);
-            }
-
-
-        });
-    </script>
-    <script>
-        $('#dropdownMenu2').click(function() {
-            $('#dropdownMenu2_show').css('display', 'block');
-            window.onclick(function() {
-                $('#dropdownMenu2_show').css('display', 'none');
-            });
-        });
-    </script>
-    <script>
-        $('.receive_order').click(function() {
-            var order_id = $(this).attr('id');
-            $.get({
-                url: "{{route('checkout.receive_order')}}",
-                data: {
-                    order_id: order_id
-                },
-                success: function() {
-                    location.reload();
+                    });
                 }
             });
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
 
 
+            $('.add_mul_product').click(function() {
+                var id_product = $(this).attr('id');
+                var qty = $('.qty_mul_pro').val();
+                // console.log(qty)
+                const max_qty = $('.quantity_product').text()
+                // console.log(max_qty)
+                let isAddToCart = true
+                if (parseInt(qty) > parseInt(max_qty)) {
+                    displayError('Over quantity limit product')
+                    isAddToCart = false
+                } else if (qty <= 0) {
+                    displayError('Product quantity must be positive')
+                    isAddToCart = false;
+                }
 
+                if (isAddToCart) {
+                    $.get({
+                        url: "{{route('cart.add_one_cart')}}",
+                        data: {
+                            id_product: id_product,
+                            qty: qty
+                        },
+                        success: function(data) {
+                            $('#qty_cart').html(data['cart_qty']);
+                            $('.cart_total_price').html(data['cart_total'] + "vnđ");
+                            $('.qty_mul_pro').val(1)
+                            Toastify({
+                                text: "Add to cart success",
+                                duration: 3000,
+                                newWindow: true,
+                                close: true,
+                                gravity: "top", // `top` or `bottom`
+                                position: "right", // `left`, `center` or `right`
+                                stopOnFocus: true, // Prevents dismissing of toast on hover
+                                style: {
+                                    background: "#A7D397",
+                                },
+                            }).showToast();
+                        }
+                    });
+                }
 
+            });
+
+            $('.update_cart').change(function() {
+                var rowId = $(this).attr('id');
+                var qty = $(this).val();
+                if (qty > 0) {
+                    $(this).attr('statusError', false);
+                    $('.error_quantity' + rowId).html('')
+                    $.get({
+                        url: "{{route('cart.update_cart')}}",
+                        data: {
+                            rowId: rowId,
+                            qty: qty
+                        },
+                        success: function(data) {
+                            if (data['status'] == 200) {
+                                $('#qty_cart').html(data['total_count']);
+                                $('#price_product' + data['rowId']).html(data['price_pro'] + "vnđ");
+                                $('.cart_total_price').html(data['total_cart'] + "vnđ");
+                                $('.btn_sub_total_shopping_cart').html(data['total_cart'] + "vnđ");
+                                $('.btn_total_shopping_cart').html(data['total_cart'] + "vnđ");
+
+                                Toastify({
+                                    text: "Update to cart success",
+                                    duration: 3000,
+                                    newWindow: true,
+                                    close: true,
+                                    gravity: "top", // `top` or `bottom`
+                                    position: "right", // `left`, `center` or `right`
+                                    stopOnFocus: true, // Prevents dismissing of toast on hover
+                                    style: {
+                                        background: "#A7D397",
+                                    },
+                                }).showToast();
+                            } else {
+                                displayError(data['message'])
+                            }
+
+                        }
+                    });
+                } else if (!/^\d+$/.test('qty')) {
+                    displayError('Vui lòng nhập số')
+                } else {
+                    $('.error_quantity' + rowId).html('Số lượng lớn hơn 0')
+                    $('#price_product' + rowId).html("0vnđ");
+                    $(this).attr('statusError', true);
+                }
+            });
+
+            $('#dropdownMenu2').click(function() {
+                $('#dropdownMenu2_show').css('display', 'block');
+                window.onclick(function() {
+                    $('#dropdownMenu2_show').css('display', 'none');
+                });
+            });
+
+            $('.receive_order').click(function() {
+                var order_id = $(this).attr('id');
+                $.get({
+                    url: "{{route('checkout.receive_order')}}",
+                    data: {
+                        order_id: order_id
+                    },
+                    success: function() {
+                        location.reload();
+                    }
+                });
+            });
             $('.btn_delete_wish_list').click(function() {
                 const wish_list_id = $(this).attr('id');
                 $.get({
@@ -667,12 +640,9 @@
                         $('#qty_wish_list').html(data.quantity_product_wish_list)
                     }
                 });
+
             });
-        });
-    </script>
-    <script>
-        $('.autocomplete').hide();
-        $(document).ready(function() {
+            $('.autocomplete').hide();
             $('#customRange_price').change(function() {
                 const result = parseInt($(this).val());
                 var min = result - 20;
@@ -699,15 +669,10 @@
                 }
             });
 
-        });
-
-        $('.btn-search-blog').click(function(e) {
-            e.preventDefault();
-            console.log("hello ca nha yeu")
-        })
-    </script>
-    <script>
-        $(document).ready(function() {
+            $('.btn-search-blog').click(function(e) {
+                e.preventDefault();
+                console.log("hello ca nha yeu")
+            })
             let isSize = false
             let isType = false
             let arr_type_allow = ['gif', 'png', 'jpg', 'jpeg', 'webp']
@@ -741,22 +706,22 @@
                 //district
                 //commune
                 //email
-                if($('input[name="email"]').val() && !regexEmail.test($('input[name="email"]').val())){
+                if ($('input[name="email"]').val() && !regexEmail.test($('input[name="email"]').val())) {
                     displayError('Incorrectly format email')
                     isSubmit = false
                 }
                 //phone
-                if($('input[name="phone"]').val() && !regexPhone.test($('input[name="phone"]').val())){
+                if ($('input[name="phone"]').val() && !regexPhone.test($('input[name="phone"]').val())) {
                     displayError('Incorrectly format phone')
                     isSubmit = false
                 }
                 //address_detail   
-                return isSubmit             
+                return isSubmit
             }
 
 
             $('.submit-form-profile').click(function(e) {
-                
+
                 if (isUpdateImage) {
                     if (!isType) {
                         e.preventDefault()
@@ -767,55 +732,55 @@
                     }
                 }
                 //validation other field
-                if(!validateOtherField()) e.preventDefault()
+                if (!validateOtherField()) e.preventDefault()
             })
 
-            $('.btn-submit-store-checkout').click(e=>{      
-                console.log(validationFormStoreOrder())          
-                if(!validationFormStoreOrder()) e.preventDefault();
+            $('.btn-submit-store-checkout').click(e => {
+                console.log(validationFormStoreOrder())
+                if (!validationFormStoreOrder()) e.preventDefault();
             })
 
-            function validationFormStoreOrder(){
+            function validationFormStoreOrder() {
                 let isSumit = true
                 const regexText = /^[a-zA-Z\u00C0-\u024F\s']+$/;
                 const regexPhone = /^[0-9\s]{10,12}$/; ///^[0-9\s]+$/;
                 const regexEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
                 //full_name
-                if(!$('input[name="full_name"]').val()){
+                if (!$('input[name="full_name"]').val()) {
                     displayError('Please enter field full name')
                     isSumit = false
                 }
                 //country
-                if(!$('input[name="country"]').val()){
+                if (!$('input[name="country"]').val()) {
                     displayError("Please enter field country")
                     isSumit = false
                 }
                 //conscious
-                if(!$('input[name="conscious"]').val()){
+                if (!$('input[name="conscious"]').val()) {
                     displayError("Please enter field conscious")
                     isSumit = false
                 }
                 //district
-                if(!$('input[name="conscious"]').val()){
+                if (!$('input[name="conscious"]').val()) {
                     displayError("Please enter field conscious")
                     isSumit = false
                 }
                 //email
-                if(!$('input[name="email"]').val()){
+                if (!$('input[name="email"]').val()) {
                     displayError("Please enter field email")
-                }else if(!regexEmail.test($('input[name="email"]').val().trim())){
+                } else if (!regexEmail.test($('input[name="email"]').val().trim())) {
                     displayError("Incorrectly format field email")
                     isSumit = false
                 }
                 //phone
-                if(!$('input[name="phone"]').val()){
+                if (!$('input[name="phone"]').val()) {
                     displayError("Please enter field phone")
-                }else if(!regexPhone.test($('input[name="phone"]').val().trim())){
+                } else if (!regexPhone.test($('input[name="phone"]').val().trim())) {
                     displayError("Incorrectly format field phone")
                     isSumit = false
                 }
                 //address_detail
-                if(!$('.address_detail').val()){
+                if (!$('.address_detail').val()) {
                     displayError("Please enter field address detail")
                     isSumit = false
                 }
@@ -836,6 +801,56 @@
                     },
                 }).showToast();
             }
+
+            function displaySuccess(message) {
+                Toastify({
+                    text: message,
+                    duration: 3000,
+                    newWindow: true,
+                    close: true,
+                    gravity: "top", // `top` or `bottom`
+                    position: "right", // `left`, `center` or `right`
+                    stopOnFocus: true, // Prevents dismissing of toast on hover
+                    style: {
+                        background: "#A7D397",
+                    },
+                }).showToast();
+            }
+
+
+            $('.btn-apply-discount').click(function() {
+
+                const event_id = $('input[name="discount"]:checked').val()
+
+                var formComment = new FormData();
+                formComment.append('event_id', event_id);
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    contentType: false,
+                    processData: false,
+                    url: "{{route('discout.apply_discount')}}",
+                    type: 'POST',
+                    dataType: 'json',
+                    data: formComment,
+                    success: function(response) {
+                        if (response['status'] != 200) {
+                            window.location.href = '/login'
+                        } else {
+                            displaySuccess('Apply ticket dicount success')
+                        }
+
+                    },
+                    error: function() {
+                        alert("Có lỗi xảy ra");
+                    },
+                });
+
+            })
 
 
         })

@@ -78,18 +78,50 @@
         </div>
         <div class="row">
             <div class="col-lg-12">
-                <div class="shoping__cart__btns">
-                    <a  style="background: #7fad39;" href="{{route('home.all_product')}}" class="text-white primary-btn cart-btn "><i class="fa fa-undo" aria-hidden="true"></i> @lang('lang.countinue_shopping')</a>
+            <div class="shoping__cart__btns">
+                    <a  style="background: #408e52;" href="{{route('home.all_product')}}" class="text-white primary-btn cart-btn "><i class="fa fa-undo" aria-hidden="true"></i> TIẾP TỤC MUA SẮM</a>
+                    <button type="button" data-toggle="modal" data-target="#discount" style="background: #408e52;" class="text-white primary-btn cart-btn "><i class="fa fa-qrcode" aria-hidden="true"></i> ÁP MÃ GIẢM GIÁ</button>
+                    <!-- Button trigger modal -->
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="discount" tabindex="-1" aria-labelledby="discountLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="discountLabel">Modal title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                            <div class="modal-body">
+                                <div>
+                                    @if(isset($arr_list_event))
+                                    @foreach($arr_list_event as $event)
+                                    <div class="d-flex my-2">
+                                        <img width="50" height="50" style="object-fit: cover;" src="{{asset('fontend/img/sale.jpg')}}" alt="">
+                                        <div class="px-3">
+                                            <p class="" style="line-height: 16px;">Giảm {{$event->percent}}% cho mỗi đơn hàng</p>
+                                            <p class="" style="line-height: 0px">Áp dụng đến hết ngày {{$event->end_date}}</p>
+                                        </div>
+                                        <input type="radio" name="discount" value="{{$event->id}}" id="">
+                                    </div>
+                                    @endforeach
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="primary-btn cart-btn" data-dismiss="modal">Đóng</button>
+                            <button type="button" style="background: #408e52;" class="text-white primary-btn cart-btn btn-apply-discount">Áp mã</button>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="col-lg-6">
                 <div class="shoping__continue">
                     <div class="shoping__discount">
-                        <h5>@lang('lang.discount_code')</h5>
-                        <form action="#">
-                            <input type="text" placeholder="Enter your coupon code">
-                            <button type="submit" class="site-btn">@lang('lang.apply_coupon')</button>
-                        </form>
+                        
                     </div>
                 </div>
             </div>

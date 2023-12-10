@@ -112,7 +112,9 @@
                                 </li>
                                 @endforeach
                             </ul>
-                            <div class="checkout__order__subtotal"></div>
+                            @if(isset($event))
+                            <div class="checkout__order__subtotal"><p>Giảm {{$event->percent}}%<span class="float-right">vnđ<span></p></div>
+                            @endif
                             <div class="checkout__order__total">@lang('lang.total') <span>{{$sub_total}}vnđ</span></div>
                             <input type='hidden' name="total" value={{$sub_total}}>
                             <div class="form-group">

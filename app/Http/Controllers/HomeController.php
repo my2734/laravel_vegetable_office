@@ -735,4 +735,23 @@ class HomeController extends Controller
         }
         return view('fontend.page.category', compact('categories', 'products', 'product_laster', 'product_top_rate', 'blogs', 'category_slug', 'product_sales', 'high_to_low', 'count_wish_list'));
     }
+
+    public function apply_discount(Request $request){
+        if(Auth::id()){
+            $request->session()->put('discount.id',$request->event_id);
+            $res = [
+                'status' => '200',
+                'data' => json_encode($request->session()->get('discount'))
+            ];
+            echo json_encode($res);
+        }else{
+            $res = [
+                'status' => '401',
+                'message' => 'Vui lòng đăng nhập'
+            ];
+            echo json_encode($res);
+        }
+    }
+
+    
 }

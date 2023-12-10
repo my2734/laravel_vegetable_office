@@ -27,6 +27,7 @@ use Illuminate\Routing\Router;
 use App\Http\Controllers\ShipController;
 use App\Http\Controllers\ShipOrderController;
 use App\Http\Controllers\ShipperController;
+use App\Http\Controllers\EventController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -259,6 +260,17 @@ Route::prefix('admin')->middleware('auth_admin')->group(function(){
     });
 
     route::get('/search-san-pham-ajax-admin', [AdminController::class, 'search_ajax_admin'])->name('admin.search_ajax_admin');
+
+
+    //event 
+    Route::prefix('/su-kien')->group(function(){
+        Route::get('/', [EventController::class, 'index'])->name('event.index');
+        Route::get('/create', [EventController::class, 'create'])->name('event.create');
+        Route::post('/store', [EventController::class, 'store'])->name('event.store');
+        Route::get('/edit/{id}', [EventController::class, 'edit'])->name('event.edit');
+        Route::post('/update/{id}', [EventController::class, 'update'])->name('event.update');
+        Route::get('/delete/{id}', [EventController::class, 'delete'])->name('event.delete');
+    });
 });
 
 
@@ -395,7 +407,7 @@ route::get('/high-to-low-category/{slug}', [HomeController::class, 'sort_high_to
 
 
 
-
+route::post('/apply-discount', [HomeController::class, 'apply_discount'])->name('discout.apply_discount');
 // Route::get('qr-code', function () {
 //     return QrCode::size(500)->generate('Welcome to kerneldev.com!');
 // });

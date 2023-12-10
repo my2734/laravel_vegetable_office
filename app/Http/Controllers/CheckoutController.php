@@ -12,6 +12,7 @@ use App\Models\Warehouse;
 use App\Models\Wish_List;
 use App\Models\News;
 use App\Models\Setting;
+use App\Models\Event;
 use Mail;
 use Illuminate\Http\Request;
 use Cart;
@@ -46,9 +47,16 @@ class CheckoutController extends Controller
         foreach ($carts as $cart) {
             if ($cart->qty <= 0) $status_checkout = false;
         }
+
+       
+
         if (!$status_checkout) {
             return redirect()->back();
         } else {
+            if(session('discount') && session('discount.id')){
+                $event = Event::find(session('discount.id'));
+                return view('fontend.page.checkout', compact('event','categories', 'carts', 'sub_total', 'user_buy', 'count_wish_list'));
+            }
             return view('fontend.page.checkout', compact('categories', 'carts', 'sub_total', 'user_buy', 'count_wish_list'));
         }
     }

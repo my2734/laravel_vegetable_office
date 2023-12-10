@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\Blog;
 use App\Models\CategoryOfBlog;
 use App\Models\Tags;
+use App\Models\Event;
 use App\Models\Warehouse;
 // use Auth;
 use Illuminate\Support\Facades\Auth;
@@ -27,7 +28,7 @@ class CartController extends Controller
         $warehouse = Warehouse::where('product_id', $id)->first();
         $max_qty = (int)$warehouse->import_quantity - (int)$warehouse->export_quantity;
 
-        if($qty > $max_qty){
+        if ($qty > $max_qty) {
             $data = [
                 'status' => 401,
                 'message' => 'Over quantity limit product',
@@ -35,7 +36,7 @@ class CartController extends Controller
             $data['cart_qty'] = Cart::count();
             $data['cart_total'] = Cart::total();
             return response()->json($data);
-        }else{
+        } else {
             $data = array();
             $data['id'] = $product->id;
             $data['name'] = $product->name;
@@ -57,7 +58,7 @@ class CartController extends Controller
         //        return response()->json(Cart::tax());
         if (Auth::id()) {
             $user = User::find(Auth::id());
-           $user_info = User_Info::where('user_id', Auth::id())->first();
+            $user_info = User_Info::where('user_id', Auth::id())->first();
             if (!$user_info->user_id) {
                 $user_info->user_id = Auth::id();
                 $user_info->save();
@@ -74,9 +75,19 @@ class CartController extends Controller
         }
         $quantity_cart = count($carts);
 
-        if(Auth::id()){
+        $date = date('m/d/Y h:i:s a', time());
+
+        $arr_list_event = [];
+        $list_event = Event::get();
+
+        foreach ($list_event as $event) {
+            if (strtotime($date) <= strtotime($event->end_date) && strtotime($date) >= strtotime($event->start_date)) {
+                $arr_list_event[] = $event;
+            }
+        }
+        if (Auth::id()) {
             $user = User::find(Auth::id());
-           $user_info = User_Info::where('user_id', Auth::id())->first();
+            $user_info = User_Info::where('user_id', Auth::id())->first();
             if (!$user_info->user_id) {
                 $user_info->user_id = Auth::id();
                 $user_info->save();
@@ -86,9 +97,9 @@ class CartController extends Controller
             $avatar = $user_info->avatar;
             $date = date("Y/m/d");
             $time = date("h:i:s");
-            return view('fontend.page.shoping_cart', compact('carts', 'categories', 'sub_total', 'count_wish_list', 'quantity_cart','name', 'avatar','date','time'));
+            return view('fontend.page.shoping_cart', compact('arr_list_event', 'carts', 'categories', 'sub_total', 'count_wish_list', 'quantity_cart', 'name', 'avatar', 'date', 'time'));
         }
-        return view('fontend.page.shoping_cart', compact('carts', 'categories', 'sub_total', 'count_wish_list', 'quantity_cart'));
+        return view('fontend.page.shoping_cart', compact('arr_list_event', 'carts', 'categories', 'sub_total', 'count_wish_list', 'quantity_cart'));
     }
 
     public function delete_one_cart($rowId)
@@ -108,13 +119,13 @@ class CartController extends Controller
         $warehouse = Warehouse::where('product_id', $cart_old->id)->first();
         $max_qty = (int)$warehouse->import_quantity - (int)$warehouse->export_quantity;
 
-        if($qty > $max_qty){
+        if ($qty > $max_qty) {
             $res = [
                 'status' => 401,
                 'message' => 'Over quantity limit product',
             ];
             return response()->json($res);
-        }else{
+        } else {
             Cart::update($rowId, $qty);
             $cart = Cart::get($rowId);
             $data['status'] = 200;
@@ -124,10 +135,10 @@ class CartController extends Controller
             $data['total_cart'] = Cart::total();
             return response()->json($data);
         }
-
     }
 
-    function check_quantity(Request $request){
+    function check_quantity(Request $request)
+    {
         $id_product = $request->id_product;
         $qty = $request->qty;
         // echo json_encode(Cart::content());
@@ -136,5 +147,5 @@ class CartController extends Controller
         // $data['id_product'] = $id_product;
         // $data['qty'] = $qty;
         // echo json_encode($data);
-    }   
+    }
 }
