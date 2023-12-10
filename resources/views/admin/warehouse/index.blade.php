@@ -23,7 +23,7 @@
                     </form>
                 </div>
                 <div class="col-3">
-                    <a href="{{route('warehouse.filter_sold_out')}}" class="primary-btn custom-primary-btn p-2 text-white ml-1 mt-1">Hết hàng</a>
+                    <a href="{{route('warehouse.filter_sold_out')}}" class="primary-btn custom-primary-btn p-2 text-white ml-1 mt-1">@lang('lang.out_of_stock')</a>
                 </div>
             </div>
 

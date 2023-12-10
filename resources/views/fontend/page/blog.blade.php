@@ -6,10 +6,10 @@
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="breadcrumb__text">
-                    <h2>Blog</h2>
+                    <h2>@lang('lang.blog')</h2>
                     <div class="breadcrumb__option">
-                        <a href="{{route('home.index')}}">Home</a>
-                        <span>Blog</span>
+                        <a href="{{route('home.index')}}">@lang('lang.home')</a>
+                        <span>@lang('lang.blog')</span>
                     </div>
                 </div>
             </div>

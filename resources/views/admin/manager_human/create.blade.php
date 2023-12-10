@@ -1,7 +1,7 @@
 @extends('admin.layout.master')
 @section('content')
 <div class="title-left">
-    <h2>Tạo mới nhân viên</h2>
+    <h2>@lang('lang.create_human')</h2>
 </div>
 <div class="col-md-12">
     <div class="x_panel">
@@ -34,9 +34,9 @@
                 </div>
                 <div class="col-md-6 col-sm-6 mt-4 form-group">
                     <select class="select2_single form-control" name="cat_id" tabindex="-1">
-                        <option value="0">Administrator</option>
-                        <option value="1">Staff</option>
-                        <option value="2">Shipper</option>
+                        <option value="0">@lang('lang.administrator')</option>
+                        <option value="1">@lang('lang.staff')</option>
+                        <option value="2">@lang('lang.shipper')</option>
                     </select>
                 </div>
                 <div class="col-md-6 col-sm-6 mt-4 form-group">

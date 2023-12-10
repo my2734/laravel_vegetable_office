@@ -87,7 +87,8 @@
                                             $class_btn_high_to_low = "active_btn_sort";
                                         }
                                     ?>
-                                    <a href="{{route('sort_low_to_high_all_product')}}" class="btn btn-default custom-btn-default {{$class_btn_low_to_high}}"><i class="fa fa-sort-amount-asc" aria-hidden="true"></i>@lang('lang.low_to_high')</a>
+                                    <a href="{{route('sort_low_to_high_all_product')}}" class="btn btn-default custom-btn-default {{$class_btn_low_to_high}}">
+                                        <i class="fa fa-sort-amount-asc" aria-hidden="true"></i>@lang('lang.low_to_high')</a>
                                     <a href="{{route('sort_high_to_low_all_product')}}" class="btn btn-default custom-btn-default {{$class_btn_high_to_low}}"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i>@lang('lang.high_to_low')</a>
 
                                 </div>
