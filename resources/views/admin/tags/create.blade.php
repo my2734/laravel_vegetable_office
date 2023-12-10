@@ -42,7 +42,7 @@
                 <div class="col-md-12 col-sm-12  form-group">
                     <div class="checkbox">
                         <h4>
-                            <input type="checkbox" {{isset($tags_edit) ? "checked" : "" }} name="status" value="1" class="mr-3">@lang('lang.status')
+                            <input type="checkbox" {{ isset($tags_edit) ? 'checked' : '' }} name="status" value="1" class="mr-3">@lang('lang.status')
                         </h4>
                     </div>
                 </div>

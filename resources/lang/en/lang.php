@@ -27,7 +27,6 @@ return [
     'who_we_are'    => 'Who We Are',
     'our_services'  => 'Our Services',
     'projects'      => 'Projects',
-    'contact'       => 'Contact',
     'innovation'    => 'Innovation',
     'testimonials'   => 'Testimonials',
     'join_our_newsletter_now'  => 'Join Our Newsletter Now',
@@ -37,7 +36,6 @@ return [
     'email_address' => 'Email Address',
     'password'  => 'Password',
     'remember_password' => 'Remember Password',
-    'login'     => 'Login',
     'categories' => 'Categories',
     'tags'  => 'Tagst',
     'post_you_may_like' => 'Post you may like',
@@ -67,7 +65,6 @@ return [
     'city' => 'City', //Tỉnh/Thành phố
     'district' => 'District', //Quận/Huyện
     'commune' => 'Commune', //Xã/Thị xã
-    'phone' => 'Phone', //Số điện thoại
     'note' => 'Note', //Ghi chú
     'address_detail' => 'Address detail', //Địa chỉ chi tiết
     'ship_cod' => 'Ship Cod', //Thanh toán khi nhận hàng
@@ -77,7 +74,6 @@ return [
     'open_time' => 'Open time', // Thời gian mở cửa
     'leave_message' => 'Leave Message', //Để lại tin nhắn
     'send_message' => 'SEND MESSAGE', // GỬI TIN NHẮN
-    'purchase_history' => 'Purchase history', //Lịch sử mua hàng
     'order_pending_confirmation' => 'Order pending confirmation', //Đơn hàng chờ xác nhận
     'order_in_transit' => 'Order in transit', //Đơn hàng đang giao
     'order_received' => 'Order received', //Đơn hàng đã nhận
@@ -96,7 +92,6 @@ return [
     'reason' => 'Reason', //Lí do
     'are_cancel_order' => 'Are you sure you want to cancel this order?', //Bạn chắn chắc muốn hủy đơn hàng này
     'close' => 'Close', //Không,
-    'sure' => 'Sure', //Chắc chắn
     'cancellation_reason' => 'Cancellation reason', //Lý do hủy đơn hàng
     'add_to_card' => 'ADD TO CARD', //THÊM VÀO GIỎ HÀNG
     'message_over_quantity_add_to_card' => 'Insufficient product quantity. Please choose a different product.', //Số lượng sản phẩm không đủ. Vui lòng chọn sản phẩm khác.
@@ -138,7 +133,6 @@ return [
     'descript_footer_blog' => 'Description footer Blog', //Mô tả cuối Blog
     'cancel' => 'Cancel', //Trở về,
     'reset' => 'Reset', //Khởi động lại
-    'update' => 'Update', //Cập nhật
     'submit' => 'Submit', //Tạo mới
     'list_blog' => 'List Blog', //Danh sách Blog
     'create_new' => 'Create New', //Tạo mới
@@ -195,7 +189,6 @@ return [
     'payment_has_been_processed' => 'The payment has been processed online',//Đã thanh toán online
     'pay_delivery' => 'Pay on delivery',//Nhận khi thanh toán
     'confirm' => 'Confirm', //Xác nhận
-    'in_transit' => 'In transit',//Đang giao hàng
     'create_product' => 'Create Product', //Tạo mới sản phẩm
     'update_product' => 'Update Product',//Chỉnh sửa sản phẩm
     'best_selling' => 'Best-selling', //Bán chạy
@@ -210,12 +203,10 @@ return [
     'update_tags' => 'Update Tags', //Chỉnh sửa Tags
     'create_tags' => 'Create Tags',//Tạo mới Tags
     'list_tags_blog' => 'List Tags(Blog)',//Danh sách Tags(Blog)
-    'do_you_want_delete_category' => 'Do you want delete this category',//Bạn chắn chắc muốn danh mục này
     'list_user' => 'List User',//Danh sách khách hàng
     'product_id' => 'Product ID',//Mã sản phẩm
     'import_quantity' => 'Import quantity', //Số lượng nhập
     'export_quantity' => 'Export quantity', //Số lượng xuất
-    'stock' => 'Stock', //Tồn kho
     'page_admin' => 'Page Admin', //Trang Admin
     'page_staff' => 'Page Staff',//Trang nhân viên
     'page_shipper' => 'Page Shipper',//Trang Shipper
@@ -234,5 +225,23 @@ return [
     'checkout' => 'Checkout', //Thanh toán
     'order_history' => 'Order History',//Lịch sử đơn hàng
     'your_order' => 'Your Order', //Đơn hàng của bạn    ''
-    'total' => 'Total'
+    'update_category_blog' => 'Update category Blog',//Cập nhật danh mục (Blog)
+    'create_category_blog' => 'Create category Blog', //Thêm mới danh mục (Blog)
+    'create_new_event' => 'Create event',//Tạo mới sự kiện;
+    'update_event' => 'Update event',//Cập nhật sự kiện
+    'create_event' => 'Create event',//Tạo mới sự kiện
+    'list_discount' => 'List discount',//Danh sách giảm giá
+    'percent' => 'Percent',//Phần trăm giảm giá
+    'do_you_want_delete_this_event' => 'Do you want delete this event?',//Bạn chắn chắc muốn xóa giảm giá này
+    'setting' => 'Setting', //Cài đặt
+    'event' => 'Event', //Sự kiện
+    'create_human' => 'Create new human',//Tạo mới nhân viên
+    'main_background' => 'Main background',//Nền chính
+    'percent_profit_order' => 'Percent Profit Order',//Lợi nhuận của mỗi đơn hàng
+    'site_name' => 'Site name',//Tên website
+    'product_top_sale' => 'Top sale product',//Các sản phẩm được bán chạy
+    'revenue_and_profit' => 'Revenue and profit',//Lợi nhuận và doanh thu
+    'send' => 'SEND',//GỬI
+    'fruit_fresh' => 'FRUIT FRESH',//TRÁI CÂY SẠCH
+    '' => 'Free Pickup and Delivery Available',//
 ];

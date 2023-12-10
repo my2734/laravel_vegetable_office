@@ -1,14 +1,14 @@
 @extends('admin.layout.master')
 @section('content')
 <div class="title_left">
-    <h3>Danh sách giảm giá</h3>
+    <h3>@lang('lang.list_discount')</h3>
 </div>
 <div class="col-md-12 col-sm-12  ">
     <div class="x_panel">
         <div class="x_title">
-            <h2>Event List </h2>
+            <h2>@lang('lang.list_discount')</h2>
             <ul class="nav navbar-right panel_toolbox">
-                <li><a href="{{route('event.create')}}" class="text-white" href=""><button class="btn btn-primary ml-3 btn-sm">Thêm<i class="fa fa-plus"></i></a></button>
+                <li><a href="{{route('event.create')}}" class="text-white" href=""><button class="btn btn-primary ml-3 btn-sm">@lang('lang.create_new')<i class="fa fa-plus"></i></a></button>
                 </li>
                 <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                 </li>
@@ -20,12 +20,12 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Tên</th>
-                        <th>Mô tả</th>
-                        <th>Phần trăm giảm giá</th>
-                        <th>Ngày bắt đầu</th>
-                        <th>Ngày kết thúc</th>
-                        <th>Quản Lý</th>
+                        <th>@lang('lang.name')</th>
+                        <th>@lang('lang.description')</th>
+                        <th>@lang('lang.percent')</th>
+                        <th>@lang('lang.start_date')</th>
+                        <th>@lang('lang.end_date')</th>
+                        <th>@lang('lang.manager')</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -48,14 +48,14 @@
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Bạn chắn chắc muốn xóa giảm giá này</h5>
+                                            <h5 class="modal-title" id="exampleModalLabel">@lang('lang.do_you_want_delete_this_event')</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Không</button>
-                                            <a href="{{route('event.delete', $event->id)}}" class="btn btn-danger text-white">Chắc chắn</a>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang('lang.close')</button>
+                                            <a href="{{route('event.delete', $event->id)}}" class="btn btn-danger text-white">@lang('lang.sure')</a>
                                         </div>
                                     </div>
                                 </div>

@@ -1,12 +1,16 @@
 @extends('admin.layout.master')
 @section('content')
     <div class="title-left">
-        <h2>Tạo mới danh mục</h2>
+        <h2>@lang('lang.create_new_event')</h2>
     </div>
     <div class="col-md-12">
         <div class="x_panel">
             <div class="x_title">
-                <h2>{{isset($event_edit) ? "Update Event" : "Create Event"}}</h2>
+                @if(isset($event_edit))
+                <h2>@lang('lang.update_event')</h2>
+                @else
+                <h2>@lang('lang.create_event')</h2>
+                @endif
                 <ul class="nav navbar-right panel_toolbox">
                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                     </li>
@@ -40,14 +44,14 @@
                         <textarea name="description" class="form-control" placeholder="Mô tả" id="floatingTextarea">{{isset($event_edit) && $event_edit->description ? $event_edit->description : old('description')}}</textarea>
                     </div>
                     <div class="col-md-6 col-sm-6  form-group">
-                        <label>Ngày bắt đầu</label>
+                        <label>@lang('lang.start_date')</label>
                         <input value="{{isset($event_edit) ? $event_edit->start_date :old('start_date')}}" name="start_date" type="date" class="form-control">
                         @if($errors->has('start_date'))
                         <span class="text-danger ">{{$errors->first('start_date')}}</span>
                     @endif
                     </div>
                     <div class="col-md-6 col-sm-6  form-group">
-                        <label>Ngày kết thúc</label>
+                        <label>@lang('lang.end_date')</label>
                         <input value="{{isset($event_edit) ? $event_edit->end_date : old('end_date')}}" name="end_date" type="date" class="form-control">
                         @if($errors->has('end_date'))
                         <span class="text-danger ">{{$errors->first('end_date')}}</span>
@@ -55,12 +59,12 @@
                     </div>
                     <div class="ln_solid"></div>
                     <div class="form-group row justify-content-center mt-5">
-                            <a href="{{route('event.index')}}"><button type="button" class="primary-btn custom-primary-btn p-2 text-white btn-submit-store-form btn-update-category">Cancel</button></a>
-                            <button class="primary-btn custom-primary-btn p-2 text-white btn-submit-store-form btn-update-category" type="reset">Reset</button>
+                            <a href="{{route('event.index')}}"><button type="button" class="primary-btn custom-primary-btn p-2 text-white btn-submit-store-form btn-update-category">@lang('lang.no')</button></a>
+                            <button class="primary-btn custom-primary-btn p-2 text-white btn-submit-store-form btn-update-category" type="reset">@lang('lang.reset')</button>
                             @if(isset($event_edit))
-                            <button type="submit" class="primary-btn custom-primary-btn p-2 text-white btn-submit-store-form btn-update-category">Update</button>
+                            <button type="submit" class="primary-btn custom-primary-btn p-2 text-white btn-submit-store-form btn-update-category">@lang('lang.update')</button>
                             @else
-                            <button type="submit" class="primary-btn custom-primary-btn p-2 text-white btn-submit-store-form btn-update-category">Submit</button>
+                            <button type="submit" class="primary-btn custom-primary-btn p-2 text-white btn-submit-store-form btn-update-category">@lang('lang.submit')</button>
                             @endif
                     </div>
                     @csrf

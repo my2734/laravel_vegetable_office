@@ -2,18 +2,18 @@
 @section('content')
 <div class="title-left">
     @if(isset($category_of_blog_edit))
-    <h2>Cập nhật danh mục (Blog)</h2>
+    <h2>@lang('lang.update_category_blog')</h2>
     @else
-    <h2>Thêm mới danh mục (Blog)</h2>
+    <h2>@lang('lang.create_category_blog')</h2>
     @endif
 </div>
 <div class="col-md-12">
     <div class="x_panel">
         <div class="x_title">
             @if(isset($category_of_blog_edit))
-            <h2>Cập nhật danh mục (Blog)</h2>
+            <h2>@lang('lang.update_category_blog')</h2>
             @else
-            <h2>Thêm mới danh mục (Blog)</h2>
+            <h2>@lang('lang.create_category_blog')</h2>
             @endif
             <ul class="nav navbar-right panel_toolbox">
                 <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>

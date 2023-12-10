@@ -119,10 +119,10 @@
 <div class="mt-3" id="myfirstchart" style="height: 250px;"></div>
 <div class="row">
     <div class="col-md-6">
-        <h4 class="mt-4" id="">Các sản phẩm được bán chạy</h4>
-        <button class="primary-btn custom-primary-btn-sort btn_top_sale_7date_ago">7 ngày trước</button>
-        <button class="primary-btn custom-primary-btn-sort btn_top_sale_1month_ago">1 tháng trước</button>
-        <button class="primary-btn custom-primary-btn-sort btn_top_sale_3month_ago">3 tháng trước</button>
+        <h4 class="mt-4" id="">@lang('lang.product_top_sale')</h4>
+        <button class="primary-btn custom-primary-btn-sort btn_top_sale_7date_ago">@lang('lang.7_date_ago')</button>
+        <button class="primary-btn custom-primary-btn-sort btn_top_sale_1month_ago">@lang('lang.1_month_ago')</button>
+        <button class="primary-btn custom-primary-btn-sort btn_top_sale_3month_ago">@lang('lang.3_month_ago')</button>
 
         <div class="row mt-3">
             <div class="col-3">
@@ -147,10 +147,10 @@
         <h5 id="messageNotificationTopSale"></h5>
     </div>
     <div class="col-md-6">
-        <h4 class="mt-4" id="">Lợi nhuận và doanh thu</h4>
-        <button class="primary-btn custom-primary-btn-sort btn_profit_7date_ago">7 ngày trước</button>
-        <button class="primary-btn custom-primary-btn-sort btn_profit_1month_ago">1 tháng trước</button>
-        <button class="primary-btn custom-primary-btn-sort btn_profit_3month_ago">3 tháng trước</button>
+        <h4 class="mt-4" id="">@lang('lang.revenue_and_profit')</h4>
+        <button class="primary-btn custom-primary-btn-sort btn_profit_7date_ago">@lang('lang.7_date_ago')</button>
+        <button class="primary-btn custom-primary-btn-sort btn_profit_1month_ago">@lang('lang.1_month_ago')</button>
+        <button class="primary-btn custom-primary-btn-sort btn_profit_3month_ago">@lang('lang.3_month_ago')</button>
         <div class="row mt-3">
             <div class="col-3">
                 <div class="form-group">

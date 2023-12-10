@@ -73,7 +73,7 @@
                 </div>
 
                 <div class="col-md-12 col-sm-12  form-group">
-                    <label for="">Mô tả</label>
+                    <label for="">@lang('lang.description')</label>
                     <textarea class="form-control" rows="5" name="description" id="">{{isset($product_edit) ? $product_edit->description : old('description')}}</textarea>
                 </div>
                 <div class="col-md-6 col-sm-6 form-group">

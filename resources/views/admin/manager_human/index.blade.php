@@ -2,7 +2,7 @@
 @section('content')
 <div class="title_left">
     <h3>@lang('lang.manager_human')</h3>
-    <a href="{{route('manager_human.create')}}" class="primary-btn custom-primary-btn p-2 text-white mb-3">Tạo mới</a>
+    <a href="{{route('manager_human.create')}}" class="primary-btn custom-primary-btn p-2 text-white mb-3">@lang('lang.create_new')</a>
 </div>
 <div class="col-md-12 col-sm-12  ">
     <div class="x_panel">

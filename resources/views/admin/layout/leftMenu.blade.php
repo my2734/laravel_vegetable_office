@@ -12,10 +12,10 @@
         <li><a href="{{route('blog.index')}}"><i class="fa fa-cloud-upload" aria-hidden="true"></i> @lang('lang.post_blog')</a></li>
         <li><a href="{{route('category_of_blog.index')}}"><i class="fa fa-list-alt"></i> @lang('lang.category_blog') </a> </li>
         <li><a href="{{route('tags.index')}}"><i class="fa fa-tags"></i></i> Tags (Blogs)</a></li>
-        <li><a href="{{route('event.index')}}"><i class="fa fa-birthday-cake" aria-hidden="true"></i> Event</a></li>
+        <li><a href="{{route('event.index')}}"><i class="fa fa-birthday-cake" aria-hidden="true"></i> @lang('lang.event')</a></li>
         <li><a href="{{route('user.index')}}"><i class="fa fa-user" aria-hidden="true"></i> @lang('lang.user') </a></li>
         <li><a href="{{route('comment.index')}}"><i class="fa fa-comments" aria-hidden="true"></i> @lang('lang.comment') </a></li>
-        <li><a href="{{route('setting.index')}}"><i class="fa fa-cog" aria-hidden="true"></i> Setting </a></li>
+        <li><a href="{{route('setting.index')}}"><i class="fa fa-cog" aria-hidden="true"></i> @lang('lang.setting') </a></li>
         @if(session('admin.role')!=1)
         <li><a href="{{route('manager_human.index')}}"><i class="fa fa-users" aria-hidden="true"></i> @lang('lang.manager_human')</a></li>
         @endif
