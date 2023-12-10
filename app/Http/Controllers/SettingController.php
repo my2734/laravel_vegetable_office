@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Setting;
+use App\Models\News;
 use Illuminate\Support\Facades\Session;
 
 
@@ -12,7 +13,10 @@ class SettingController extends Controller
 {
     public function index()
     {
-        return view("admin.setting.index");
+        $news = News::with('User')->with('User_Info')->where('status', 0)->orderBy('created_at', 'DESC')->take(6)->get();
+        $total_news = News::where('status', 0)->count();
+
+        return view("admin.setting.index", compact('news', 'total_news'));
     }
 
     public function update_background_main(Request $request, $color)

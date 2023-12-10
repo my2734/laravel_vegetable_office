@@ -4,12 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Event;
+use App\Models\News;
 use Carbon\Carbon;
 
 class EventController extends Controller
 {
     function index()
     {
+
+        $news = News::with('User')->with('User_Info')->where('status', 0)->orderBy('created_at', 'DESC')->take(6)->get();
+        $total_news = News::where('status', 0)->count();
+
         $date = date('m/d/Y h:i:s a', time());
 
         $arr_list_event = [];
@@ -20,12 +25,15 @@ class EventController extends Controller
             }
         }
 
-        return view('admin.event.index', compact('arr_list_event'));
+        return view('admin.event.index', compact('arr_list_event','news','total_news'));
     }
 
     function create()
     {
-        return view('admin.event.create');
+        $news = News::with('User')->with('User_Info')->where('status', 0)->orderBy('created_at', 'DESC')->take(6)->get();
+        $total_news = News::where('status', 0)->count();
+
+        return view('admin.event.create',compact('news', 'total_news'));
     }
 
     function store(Request $request)
@@ -59,8 +67,11 @@ class EventController extends Controller
 
     function edit($id)
     {
+        $news = News::with('User')->with('User_Info')->where('status', 0)->orderBy('created_at', 'DESC')->take(6)->get();
+        $total_news = News::where('status', 0)->count();
+
         $event_edit = Event::find($id);
-        return view('admin.event.create', compact('event_edit'));
+        return view('admin.event.create', compact('event_edit','news', 'total_news'));
     }
 
     function update($id)
@@ -71,6 +82,7 @@ class EventController extends Controller
         $event_edit->description = isset($_POST['description']) ? $_POST['description'] : $event_edit->description;
         $event_edit->start_date = isset($_POST['start_date']) ? $_POST['start_date'] : $event_edit->start_date;
         $event_edit->end_date = isset($_POST['end_date']) ? $_POST['end_date'] : $event_edit->end_date;
+        $event_edit->timestamp = Carbon::now()->timestamp;
         $event_edit->save();
         return redirect()->route('event.index');
     }

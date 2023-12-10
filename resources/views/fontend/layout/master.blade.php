@@ -426,7 +426,7 @@
 
                         },
                         error: function() {
-                            alert("Có lỗi xảy ra");
+                            console.log("Có lỗi xảy ra");
                         },
                     });
                 } else {
@@ -468,7 +468,7 @@
             $('.qty_mul_pro').keyup(function() {
                 const qty = $(this).val()
                 if (!/^\d+$/.test(qty)) {
-                    displayError('Nhập sai định dạng')
+                    displayError('Enter incorrect format')
                 }
             })
 
@@ -596,7 +596,7 @@
                 } else if (!/^\d+$/.test('qty')) {
                     displayError('Vui lòng nhập số')
                 } else {
-                    $('.error_quantity' + rowId).html('Số lượng lớn hơn 0')
+                    $('.error_quantity' + rowId).html('Field number greater than 0')
                     $('#price_product' + rowId).html("0vnđ");
                     $(this).attr('statusError', true);
                 }
@@ -840,7 +840,7 @@
 
                     },
                     error: function() {
-                        alert("Có lỗi xảy ra");
+                        displaySuccess('Apply ticket dicount fail')
                     },
                 });
 

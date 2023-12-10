@@ -203,7 +203,7 @@
           $('#contentMessage').append(`
                               <li class="clearfix">
                                   <div class="message-data">
-                                      <img style="width: 40px; height: 40px;" src="http://${data['domain']}:8000/Uploads/${data['user_detail']['user__info']['avatar']}" alt="avatar">
+                                      <img style="width: 40px; height: 40px;" src="http://${data['domain']}/Uploads/${data['user_detail']['user__info']['avatar']}" alt="avatar">
                                       <span class="message-data-time">${data['time']}</span>
                                   </div>
                                   <div class="message my-message mb-2">${data['message']}</div>
@@ -634,14 +634,14 @@
         let statusSubmit = true;
         if (!$('#datepicker1_profit').val()) {
           statusSubmit = false
-          $('#datepicker1_profit_error').html('Ngày bắt đầu không được để trống')
+          $('#datepicker1_profit_error').html('Please enter field start date')
         } else {
           $('#datepicker1_profit_error').html('')
 
         }
         if (!$('#datepicker2_profit').val()) {
           statusSubmit = false
-          $('#datepicker2_profit_error').html('Ngày kết thúc không được để trống')
+          $('#datepicker2_profit_error').html('Please enter field end date')
         } else {
           $('#datepicker2_profit_error').html('')
         }
@@ -649,7 +649,7 @@
         //date_start must less than date_end
         if (new Date($('#datepicker1_profit').val()) > new Date($('#datepicker2_profit').val())) {
           statusSubmit = false
-          $('#datepicker2_profit_error').html('Ngày bắt đầu không được lớn hơn ngày kết thúc')
+          $('#datepicker2_profit_error').html('The start date must not be later than the end date')
         }
         return statusSubmit
       }
@@ -658,14 +658,14 @@
         let statusSubmit = true;
         if (!$('#datepicker1_topsale').val()) {
           statusSubmit = false
-          $('#datepicker1_topsale_error').html('Ngày bắt đầu không được để trống')
+          $('#datepicker1_topsale_error').html('Please enter field start date')
         } else {
           $('#datepicker1_topsale_error').html('')
 
         }
         if (!$('#datepicker2_topsale').val()) {
           statusSubmit = false
-          $('#datepicker2_topsale_error').html('Ngày kết thúc không được để trống')
+          $('#datepicker2_topsale_error').html('Please enter field end date')
         } else {
           $('#datepicker2_topsale_error').html('')
         }
@@ -673,7 +673,7 @@
         //date_start must less than date_end
         if (new Date($('#datepicker1_topsale').val()) > new Date($('#datepicker2_topsale').val())) {
           statusSubmit = false
-          $('#datepicker2_topsale_error').html('Ngày bắt đầu không được lớn hơn ngày kết thúc')
+          $('#datepicker2_topsale_error').html('The start date must not be later than the end date')
         }
         return statusSubmit
       }
@@ -745,14 +745,14 @@
         let statusSubmit = true;
         if (!$('#datepicker1').val()) {
           statusSubmit = false
-          $('#datepicker1_error').html('Ngày bắt đầu không được để trống')
+          $('#datepicker1_error').html('Please enter field start date')
         } else {
           $('#datepicker1_error').html('')
 
         }
         if (!$('#datepicker2').val()) {
           statusSubmit = false
-          $('#datepicker2_error').html('Ngày kết thúc không được để trống')
+          $('#datepicker2_error').html('Please enter field end date')
         } else {
           $('#datepicker2_error').html('')
         }
@@ -760,7 +760,7 @@
         //date_start must less than date_end
         if (new Date($('#datepicker1').val()) > new Date($('#datepicker2').val())) {
           statusSubmit = false
-          $('#datepicker2_error').html('Ngày bắt đầu không được lớn hơn ngày kết thúc')
+          $('#datepicker2_error').html('The start date must not be later than the end date.')
         }
         return statusSubmit
       }
@@ -782,10 +782,10 @@
               const ngayketthuc = data['ngayketthuc'];
               if (data['chart_data'].length > 0) {
                 chart.setData(data['chart_data']);
-                $('#title_thong_ke').html("Kết quả thống kê doanh thu từ ngày " + ngaybatdau + " đến ngày " + ngayketthuc);
+                $('#title_thong_ke').html("The results of the revenue statistics from " + ngaybatdau + " to " + ngayketthuc);
               } else {
                 chart.setData([{}])
-                $('#title_thong_ke').html("Từ ngày " + ngaybatdau + " đến ngày " + ngayketthuc + " không có đơn hàng nào");
+                $('#title_thong_ke').html("From" + ngaybatdau + " to " + ngayketthuc + " there are no orders");
               }
             }
           });
@@ -806,10 +806,10 @@
             data = JSON.parse(data);
             if (data['chart_data'].length == 0) {
               chart.setData([{}]);
-              $('#title_thong_ke').html("7 ngày qua không có đơn hàng");
+              $('#title_thong_ke').html("There have been no orders in the past 7 days");
             } else {
               chart.setData(data['chart_data']);
-              $('#title_thong_ke').html("Kết quả thống kê doanh thu 7 ngày qua");
+              $('#title_thong_ke').html("The results of the revenue statistics for the past 7 days");
             }
           }
         });
@@ -828,10 +828,10 @@
             //  console.log(data)
             if (data['chart_data'].length > 0) {
               chart.setData(data['chart_data']);
-              $('#title_thong_ke').html("Kết quả thống kê doanh thu doanh thu 1 tháng qua");
+              $('#title_thong_ke').html("The results of the revenue statistics for the past month");
             } else {
               chart.setData([{}]);
-              $('#title_thong_ke').html("1 tháng qua không có đơn hàng nào");
+              $('#title_thong_ke').html("There have been no orders in the past month");
             }
           }
         });
@@ -1089,7 +1089,7 @@
             data = JSON.parse(data);
             $('.td_role_manager_human' + data['id']).html(data['role']);
             Toastify({
-              text: "Chúc mừng bạn đã cập nhật phân quyền thành công!",
+              text: "Congratulations on successfully updating the delegation!",
               duration: 3000,
               newWindow: true,
               close: true,
@@ -1384,6 +1384,7 @@
           displayError('Please enter field name')
         }
       })
+
 
       $('.choose-role-user').on('change', function() {
         const role = $(this).val()

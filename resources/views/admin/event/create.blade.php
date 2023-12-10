@@ -59,12 +59,12 @@
                     </div>
                     <div class="ln_solid"></div>
                     <div class="form-group row justify-content-center mt-5">
-                            <a href="{{route('event.index')}}"><button type="button" class="primary-btn custom-primary-btn p-2 text-white btn-submit-store-form btn-update-category">@lang('lang.no')</button></a>
-                            <button class="primary-btn custom-primary-btn p-2 text-white btn-submit-store-form btn-update-category" type="reset">@lang('lang.reset')</button>
+                            <a href="{{route('event.index')}}"><button type="button" class="primary-btn custom-primary-btn p-2 text-white btn-submit-store-form btn-update-event">@lang('lang.no')</button></a>
+                            <button class="primary-btn custom-primary-btn p-2 text-white btn-submit-store-form btn-update-event" type="reset">@lang('lang.reset')</button>
                             @if(isset($event_edit))
-                            <button type="submit" class="primary-btn custom-primary-btn p-2 text-white btn-submit-store-form btn-update-category">@lang('lang.update')</button>
+                            <button type="submit" class="primary-btn custom-primary-btn p-2 text-white btn-submit-store-form btn-update-event">@lang('lang.update')</button>
                             @else
-                            <button type="submit" class="primary-btn custom-primary-btn p-2 text-white btn-submit-store-form btn-update-category">@lang('lang.submit')</button>
+                            <button id="btnUpdateEvent" type="submit" class="primary-btn custom-primary-btn p-2 text-white btn-submit-store-form btn-update-event">@lang('lang.submit')</button>
                             @endif
                     </div>
                     @csrf

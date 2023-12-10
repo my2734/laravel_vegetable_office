@@ -48,7 +48,7 @@ class ShipOrderController extends Controller
     }
 
     public function detail($id){
-        $order = Order::with('OrderDetail')->find($id);
+        $order = Order::with('OrderDetail','shipper')->find($id);
         $isOrder = "active";
         $isShipper = "";
         return view('ship.order.detail',compact('order','isOrder', 'isShipper'));

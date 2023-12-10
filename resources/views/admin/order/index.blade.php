@@ -23,7 +23,7 @@
             ?>
             <ul class="nav navbar-right panel_toolbox">
                 <li><a href="{{route('order.filter_status',0)}}"><button class="primary-btn custom-primary-btn {{$class_cho_xac_nhan}}">
-                           @lang('lang.order_pending_confirmation')
+                            @lang('lang.order_pending_confirmation')
                         </button></a>
                 </li>
                 <li class="dropdown ml-auto">
@@ -67,8 +67,11 @@
                     @foreach($orders as $key => $order)
                     <tr>
                         <td scope="row">{{$order->id}}</td>
-                        <td>{{$order->full_name}} <br>
+                        <td>
+                            {{$order->full_name}} <br>
+                            @if($order->status != -1)
                             <a class="badge badge-secondary" href="{{route('order.print_pdf',$order->id)}}"><i class="fa fa-print" aria-hidden="true"></i> @lang('lang.print_invoice')<a>
+                            @endif
                         </td>
                         <td style="width: 200px;">
                             @php
@@ -130,7 +133,7 @@
                         <td>
                             @if($order->payment_type == 1)
                             @lang('lang.payment_has_been_processed')
-                            @else 
+                            @else
                             @lang('lang.pay_delivery')
                             @endif
                         </td>

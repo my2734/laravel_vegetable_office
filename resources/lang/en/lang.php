@@ -243,5 +243,11 @@ return [
     'revenue_and_profit' => 'Revenue and profit',//Lợi nhuận và doanh thu
     'send' => 'SEND',//GỬI
     'fruit_fresh' => 'FRUIT FRESH',//TRÁI CÂY SẠCH
-    '' => 'Free Pickup and Delivery Available',//
+    'free_ship' => 'Free Pickup and Delivery Available',//Miễn phí free trong địa bàn Cần Thơ
+    'shop_now' => 'SHOP NOW',//MUA HÀNG
+    'vegetables' => 'Vegetables',//Nông sản sạch
+    'related_product' => 'Related Product',//Sản phẩm liên quan
+    'discount' => 'Discount',//Giảm giá
+    'apply' => 'Apply',//Áp mã
+    'cart_total' => 'Cart Total',//Giỏ hàng
 ];

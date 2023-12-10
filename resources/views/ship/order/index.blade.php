@@ -121,7 +121,7 @@
                                     </td>
                                     @if(isset($status) && $status==1)
                                     <td>
-                                        <select class="form-select choose_shipper{{$order->id}}" aria-label="Default select example">
+                                        <select class="form-select form-control choose_shipper{{$order->id}}" aria-label="Default select example">
                                             <option value="null">Chọn người giao</option>
                                             @if(isset($shippers))
                                             @foreach($shippers as $shipper)
@@ -132,7 +132,13 @@
                                         <br /> <button id="{{$order->id}}" class="choose_shipper_button badge badge-success">Update</button>
                                     </td>
                                     @elseif(isset($status) && ($status == 2 || $status == 3 || $status == 4 || $status == 5))
-                                    <td>{{isset($order->shipper)?$order->shipper->name:"Chưa có thông tin"}}</td>
+                                    <td>
+                                        @if(isset($order->shipper_id) && isset($order->shipper->name))
+                                        <p>{{$order->shipper->name}}</p>
+                                        @else
+                                        <p>Chưa xác định</p>
+                                        @endif
+                                    </td>
                                     @endif
                                     <td class="">
                                         <?php
@@ -143,7 +149,7 @@
                                         }
                                         ?> - <?php
                                                 if ($order->status == 1) {
-                                                    echo "Chờ xác nhận shipper";
+                                                    echo "Chờ bàn giao cho shipper";
                                                 } else if ($order->status == 2) {
                                                     echo "Đang giao";
                                                 } else if ($order->status == 3) {

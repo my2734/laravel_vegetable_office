@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 use App\Models\User;
 use App\Models\User_Info;
+use App\Models\News;
 use App\Events\Admin\Chat;
 use Carbon\Carbon;
 
@@ -12,6 +13,9 @@ use Carbon\Carbon;
 class AdminChatController extends Controller
 {
     function index(){      
+        $news = News::with('User')->with('User_Info')->where('status', 0)->orderBy('created_at', 'DESC')->take(6)->get();
+        $total_news = News::where('status', 0)->count();
+        
         $arr_list_user = [];
         if(Redis::exists('list_user')){
             $list_user = Redis::get('list_user');
@@ -22,10 +26,13 @@ class AdminChatController extends Controller
                 array_push($arr_list_user, $userItem);
             }
         }
-        return view('admin.message.index',compact('arr_list_user'));
+        return view('admin.message.index',compact('arr_list_user','news','total_news'));
     }
 
     function detail($id){
+        $news = News::with('User')->with('User_Info')->where('status', 0)->orderBy('created_at', 'DESC')->take(6)->get();
+        $total_news = News::where('status', 0)->count();
+
         $list_message_detail = [];
         if(Redis::exists('chat_log_'.$id)){
             $list_message_detail = Redis::get('chat_log_'.$id);
@@ -42,7 +49,7 @@ class AdminChatController extends Controller
             }
         }
         $userDetail = User::with('User_Info')->find($id);
-        return view('admin.message.index',compact('arr_list_user', 'list_message_detail', 'userDetail'));
+        return view('admin.message.index',compact('arr_list_user', 'list_message_detail', 'userDetail','news','total_news'));
     }
 
     function post_message(){

@@ -3,7 +3,7 @@
 <div class="hero__search__form" style="postion: relative;">
     <form action="{{route('home.search_product')}}" method="POST" style="postion: relative;">
         <input type="text" id="search_key" name="search_key" placeholder="What do yo u need?">
-        <button type="submit" class="site-btn">SEARCH</button>
+        <button type="submit" class="site-btn">@lang('lang.search')</button>
         @csrf
     </form>
 </div>
@@ -19,11 +19,11 @@
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="breadcrumb__text">
-                    <h2>Vegetable’s Package</h2>
+                    <h2>@lang('lang.vegetables')</h2>
                     <div class="breadcrumb__option">
-                        <a href="./index.html">Home</a>
-                        <a href="./index.html">Vegetables</a>
-                        <span>Vegetable’s Package</span>
+                        <a href="./index.html">@lang('lang.home')</a>
+                        <a href="./index.html">@lang('lang.vegetables')</a>
+                        <span>@lang('lang.vegetables')</span>
                     </div>
                 </div>
             </div>
@@ -194,7 +194,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="section-title related__product__title">
-                    <h2>Related Product</h2>
+                    <h2>@lang('lang.related_product')</h2>
                 </div>
             </div>
         </div>

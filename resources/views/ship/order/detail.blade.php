@@ -110,7 +110,11 @@
                                             </div>
                                         </td>
                                         <td class="text-right" style="vertical-align: top;">
-                                            Trịnh Thăng Bằng
+                                            @if(isset($order->shipper_id) && isset($order->shipper->name))
+                                            <p>{{$order->shipper->name}}</p>
+                                            @else
+                                            <p>Chưa xác định</p>
+                                            @endif
                                         </td>
                                         <td class="text-right" style="vertical-align: top;">
                                             {{date('Y-m-d', strtotime($order->created_at))}}

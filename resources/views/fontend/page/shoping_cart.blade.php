@@ -6,10 +6,10 @@
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="breadcrumb__text">
-                    <h2>Shopping Cart</h2>
+                    <h2>@lang('lang.go_shopping_cart')</h2>
                     <div class="breadcrumb__option">
-                        <a href="./index.html">Home</a>
-                        <span>Shopping Cart</span>
+                        <a href="./index.html">@lang('lang.home')</a>
+                        <span>@lang('lang.go_shopping_cart')</span>
                     </div>
                 </div>
             </div>
@@ -88,7 +88,7 @@
                         <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                            <h5 class="modal-title" id="discountLabel">Modal title</h5>
+                            <h5 class="modal-title" id="discountLabel">@lang('lang.discount')</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -110,8 +110,8 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                            <button type="button" class="primary-btn cart-btn" data-dismiss="modal">Đóng</button>
-                            <button type="button" style="background: #408e52;" class="text-white primary-btn cart-btn btn-apply-discount">Áp mã</button>
+                            <button type="button" class="primary-btn cart-btn" data-dismiss="modal">@lang('lang.close')</button>
+                            <button type="button" style="background: #408e52;" class="text-white primary-btn cart-btn btn-apply-discount">@lang('lang.apply')</button>
                             </div>
                         </div>
                         </div>
@@ -127,18 +127,16 @@
             </div>
             <div class="col-lg-6">
                 <div class="shoping__checkout">
-                    <h5>Cart Total</h5>
+                    <h5>@lang('lang.cart_total')</h5>
                     <ul>
-                        <li>Subtotal <span class="btn_sub_total_shopping_cart">{{$sub_total}}vnđ</span></li>
-                        <li>Total <span class="btn_total_shopping_cart">{{$sub_total}}vnđ</span></li>
+                        
+                        <li>@lang('lang.total') <span class="btn_total_shopping_cart">{{$sub_total}}vnđ</span></li>
                     </ul>
                     @if($quantity_cart > 0)
                         <a href="{{route('checkout.show')}}" class="primary-btn btn_click_showCart">@lang('lang.proceed_to_checkout')</a>
                     @else
                     <button  class="primary-btn btn-click-modal" data-toggle="modal" data-target="#exampleModal">@lang('lang.proceed_to_checkout')</button>
-                    {{-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                        Launch demo modal
-                    </button> --}}
+                    
                     @endif
                 </div>
             </div>

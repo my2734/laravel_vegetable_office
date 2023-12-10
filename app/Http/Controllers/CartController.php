@@ -14,6 +14,7 @@ use App\Models\Warehouse;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\User_Info;
+use App\Models\Order;
 use App\Models\Wish_List;
 use Cart;
 
@@ -77,14 +78,31 @@ class CartController extends Controller
 
         $date = date('m/d/Y h:i:s a', time());
 
+        //cac don dat hang co ap ma giam gia
+        $arrDiscountCurrentUserAplly = [];
+        $listOrderCurrentUser = Order::where('event_id', '!=', null)->get();
+
+        // foreach($listOrderCurrentUser as $orderCurrentUser){
+        //     $arrDiscountCurrentUserAplly[]
+        // }
+
         $arr_list_event = [];
         $list_event = Event::get();
 
         foreach ($list_event as $event) {
-            if (strtotime($date) <= strtotime($event->end_date) && strtotime($date) >= strtotime($event->start_date)) {
-                $arr_list_event[] = $event;
+            foreach ($listOrderCurrentUser as $orderItem) {
+                if (strtotime($date) <= strtotime($event->end_date) && strtotime($date) >= strtotime($event->start_date)) {
+                    if ($event->id == $orderItem->event_id) {
+                        if ($event->timestamp != $orderItem->event_time) {
+                            $arr_list_event[] = $event;
+                        }
+                    } else {
+                        $arr_list_event[] = $event;
+                    }
+                }
             }
         }
+        
         if (Auth::id()) {
             $user = User::find(Auth::id());
             $user_info = User_Info::where('user_id', Auth::id())->first();

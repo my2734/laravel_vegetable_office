@@ -19,6 +19,7 @@ use Cart;
 use Carbon\Carbon;
 // use Auth;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class CheckoutController extends Controller
 {
@@ -232,6 +233,8 @@ class CheckoutController extends Controller
             'email.required'             => 'Vui lòng nhập Email'
         ]);
 
+       
+
 
         // Insert tbl_order
         $order = new Order();
@@ -243,12 +246,22 @@ class CheckoutController extends Controller
         $order->address_detail = $request->address_detail;
         $order->phone = $request->phone;
         $order->email = $request->email;
-        $order->order_note = $request->order_note;
+        $order->order_note = $request->order_note;        
+        $order->total = $request->total;
         $order->created_at = Carbon::now();
         $order->updated_at = Carbon::now();
         if ($request->method_payment != 'offline') {
             $order->payment_type = 1;
         }
+
+        if(session('discount') && session('discount.id')){
+            $eventAplly = Event::find(session('discount.id'));
+            $order->event_id = $eventAplly->id;
+            $order->event_time = $eventAplly->timestamp;
+            $order->event_percent = $eventAplly->percent;
+            Session::forget('discount');
+        }
+
         $order->save();
 
         // Insert tbl_order_detail
@@ -287,7 +300,6 @@ class CheckoutController extends Controller
             array_push($order_data, $order_detail);
         }
 
-        $order->total = $total;
         $order->order_db = json_encode($order_data);
         $order->save();
 

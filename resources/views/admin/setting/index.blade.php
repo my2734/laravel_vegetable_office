@@ -25,7 +25,7 @@
         </form>
     </div>
     <div class="mt-5">
-        <h3>@lang('site_name')</h3>
+        <h3>@lang('lang.site_name')</h3>
         <form method="POST" action="{{route('setting.update_name_site_setting')}}">
             <input name="name_site" class="form-control" value="{{session('setting.name_site')}}" />
             <button class="primary-btn custom-primary-btn-sort mt-3">@lang('lang.update')</button>

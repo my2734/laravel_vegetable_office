@@ -6,10 +6,10 @@
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="breadcrumb__text">
-                    <h2>Blog</h2>
+                    <h2>@lang('lang.blog')</h2>
                     <div class="breadcrumb__option">
-                        <a href="{{route('home.index')}}">Home</a>
-                        <span>Blog - Tags({{$tags_of_blog_slug->name}})</span>
+                        <a href="{{route('home.index')}}">@lang('lang.home')</a>
+                        <span>@lang('lang.blog') - Tags({{$tags_of_blog_slug->name}})</span>
                     </div>
                 </div>
             </div>
@@ -88,7 +88,7 @@
                                     </ul>
                                     <h5><a href="{{route('home.blog_detail',$blog->slug)}}">{{$blog->title}}</a></h5>
                                     <p class="limit_text">{{$blog->detail_header}} </p>
-                                    <a href="{{route('home.blog_detail',$blog->slug)}}" class="blog__btn">READ MORE <span class="arrow_right"></span></a>
+                                    <a href="{{route('home.blog_detail',$blog->slug)}}" class="blog__btn">@lang('lang.read_more') <span class="arrow_right"></span></a>
                                 </div>
                             </div>
                         </div>  

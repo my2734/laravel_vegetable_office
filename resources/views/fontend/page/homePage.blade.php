@@ -41,8 +41,8 @@
     <div class="hero__text">
         <span>@lang('lang.fruit_fresh')</span>
         <h2>Vegetable <br />100% Organic</h2>
-        <p></p>
-        <a href="{{route('home.all_product')}}" class="primary-btn">SHOP NOW</a>
+        <p>@lang('lang.free_ship')</p>
+        <a href="{{route('home.all_product')}}" class="primary-btn">@lang('lang.shop_now')</a>
     </div>
 </div>
 @endsection
@@ -82,7 +82,7 @@
                     </div>
                     <div class="featured__controls">
                         <ul>
-                            <li class="active" data-filter="*">All</li>
+                            <li class="active" data-filter="*">@lang('lang.all')</li>
                             @foreach($categories as $key => $category)
                             <li data-filter=".demo{{$category->id}}">{{$category->name}}</li>
                             @endforeach

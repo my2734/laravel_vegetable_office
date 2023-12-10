@@ -58,7 +58,7 @@
                                         @else
                                             @foreach($order->OrderDetail as $order_detail)
                                             @php
-                                                $total += $order_detail->pro_price*$order_detail->pro_quantity;
+                                                $totalDetail += $order_detail->pro_price*$order_detail->pro_quantity;
                                             @endphp
                                             <span>
                                                 <span>{{$order_detail->pro_name}}</span>
@@ -69,7 +69,7 @@
                                             </span><br>
                                             @endforeach
                                         @endif
-                                        <p class="font-weight-bold mt-3">@lang('lang.payment') <span class="float-right ">{{number_format($total)}}vnđ</span></p>
+                                        <p class="font-weight-bold mt-3">@lang('lang.payment') <span class="float-right ">{{number_format(isset($order->total) ? $order->total : $orderDetail )}}vnđ</span></p>
                                     </td>
 
                                     <td>
@@ -95,7 +95,13 @@
                                         </div>
                                     </td>
                                     <td>{{$order->created_at}}</td>
-                                    <td>{{$order->payment_type==1 ? "Đã thanh toán online" :"Nhận khi thanh toán"}}</td>
+                                    <td>
+                                        @if($order->payment_type==1)
+                                        <p>@lang('lang.payment_has_been_processed')</p>
+                                        @else
+                                        <p>@lang('lang.pay_delivery')</p>
+                                        @endif
+                                    </td>
                                     <td>
                                        
 
